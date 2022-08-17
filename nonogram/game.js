@@ -149,11 +149,9 @@ function loadSavedGame() {
 
 	// Generate the grid
 	for (var x = 0; x < boardSize; x++) {
-		grid.push([]);
 		player_grid.push([])
 
 		for (var y = 0; y < boardSize; y++) {
-			grid[x].push(Math.round(Math.random()));
 			player_grid[x].push(0);
 		}
 	}
