@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sudoku Puzzle</title>
+		<script src="./game.js"></script>
+		<style>
+			canvas {
+				border: 1px solid black;
+				background-color: #FFF;
+			}
+
+			body {
+				font-family: sans-serif;
+				background-color: #ca74bf;
+			}
+			
+			button {
+				padding: 10px;
+				font-weight: bold;
+				background-color: gainsboro;
+				border-radius: 10px;
+			}
+
+
+			#aboveClues {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div id="aboveClues">
+				<h1>Sudoku</h1>
+				<button onclick="javascript:generateGame()">New Game</button>&nbsp;&nbsp;<button onclick="javascript:checkGame()">Check Answer</button>&nbsp;&nbsp;<button onclick="javascript:revealAnswer()">Reveal Answer</button>&nbsp;&nbsp;<button onclick="javascript:clearGrid()">Clear Grid</button><br/><br/>
+				
+				<br/>
+				<canvas id="gridCanvas" width=400 height=400></canvas>
+				<h2>Left click a square to increment its number.<br/>Right click to clear the square.</h2>
+				<h4>(on mobile, you can keeping clicking a number to clear it)</h4>
+			</div>
+		</div>
+	</body>
+</html>
