@@ -14,41 +14,87 @@ var clues_grid = [
 	[0,0,0, 0,9,0, 0,0,0],
 	[0,0,0, 0,0,0, 0,0,0],
 
-	[0,0,0, 0,0,0, 0,1,0],
-	[0,7,0, 0,0,0, 0,8,0],
+	[0,0,0, 0,0,0, 0,7,0],
+	[0,4,0, 0,0,0, 0,1,0],
 	[0,0,0, 0,0,0, 0,0,0]
 ];
 
 var player_grid = [
+	[1,0,0, 0,0,0, 0,0,0],
+	[0,0,0, 0,0,0, 0,2,0],
+	[0,0,0, 0,0,0, 0,0,0],
+
 	[0,0,0, 0,0,0, 0,0,0],
 	[0,0,0, 0,9,0, 0,0,0],
 	[0,0,0, 0,0,0, 0,0,0],
 
-	[0,0,0, 0,3,0, 0,0,0],
-	[0,0,0, 0,0,0, 0,0,0],
-	[0,1,0, 0,0,0, 0,0,0],
-
-	[0,0,0, 0,0,0, 0,0,0],
-	[0,7,0, 0,0,0, 0,0,0],
-	[0,0,0, 0,0,4, 0,0,0]
+	[0,0,0, 0,0,0, 0,7,0],
+	[0,4,0, 0,0,0, 0,1,0],
+	[0,0,0, 0,0,0, 0,0,0]
 ];
 
 var answer_grid = [
 	[1,2,3, 4,5,6, 7,8,9],
-	[0,0,0, 0,0,2, 1,2,2],
-	[0,0,0, 0,0,0, 0,0,0],
+	[4,5,6, 7,8,9, 1,2,3],
+	[7,8,9, 1,2,3, 4,5,6],
 
-	[0,0,0, 0,0,0, 0,0,0],
-	[0,0,0, 0,9,0, 0,0,0],
-	[0,0,0, 0,0,0, 0,0,0],
+	[2,3,1, 5,6,4, 8,9,7],
+	[5,6,4, 8,9,7, 2,3,1],
+	[8,9,7, 2,3,1, 5,6,4],
 
-	[0,0,0, 0,0,0, 0,1,0],
-	[0,7,0, 0,0,0, 0,8,0],
-	[0,0,0, 0,0,0, 0,0,0]
+	[3,1,2, 6,4,5, 9,7,8],
+	[6,4,5, 9,7,8, 3,1,2],
+	[9,7,8, 3,1,2, 6,4,5]
 ];
 
+const arrayColumn = (arr, n) => arr.map(x => x[n]); // Get column from 2D array
+const copy = (arr) => JSON.parse(JSON.stringify(arr)); // Deep copy array
+
 function checkGame() {
-	if (JSON.stringify(player_grid) == JSON.stringify(answer_grid)) {
+	// Create array of "truth values"
+	var truth_values = []
+
+	// Check if all rows are correct
+	for (var i = 0; i < 9; i++) {
+		var row = copy(player_grid[i]);
+
+		// Sort the row
+		row.sort();
+
+		// Check whether it is a solution
+		truth_values.push(row.join(',') == '1,2,3,4,5,6,7,8,9');
+	}
+
+	// Check if all columns are correct
+	for (var j = 0; j < 9; j++) {
+		var col = arrayColumn(player_grid, j);
+		
+		// Sort the column
+		col.sort();
+
+		// Check whether it is a solution
+		truth_values.push(col.join(',') == '1,2,3,4,5,6,7,8,9');
+	}
+
+	// Check if all cells are correct
+	for (var k = 0; k < 9; k++) {
+	    var x1 = (k * 3) % 9;
+	    var x2 = x1 + 3;
+
+	    var y1 = Math.floor(k / 3) * 3;
+	    var y2 = y1 + 3;
+
+	    var section = player_grid.slice(y1, y2).map(i => i.slice(x1, x2))
+		
+		var section_flat = section.flat()
+
+		section_flat.sort()
+
+		// Check whether it is a solution
+		truth_values.push(section_flat.join(',') == '1,2,3,4,5,6,7,8,9');
+	}
+
+	if (truth_values.every(function(e){return e;})) {
 		alert("You're correct!");
 	} else {
 		alert("Incorrect. Keep trying!");
@@ -125,46 +171,8 @@ function drawGrid() {
 }
 
 function generateClues() {
-	document.getElementById("horizontalClues").innerHTML = "";
-	document.getElementById("verticalClues").innerHTML = "";
+	// Generate clues randomly
 
-	// Generate horizontal clues
-	for (var y = 0; y < boardSize; y++) {
-		horizontal_clues = [0];
-
-		for (var x = 0; x < boardSize; x++) {
-			if (grid[x][y] == 1) {
-				horizontal_clues[horizontal_clues.length - 1] += 1;
-			} else if (horizontal_clues[horizontal_clues.length - 1] > 0) {
-				horizontal_clues.push(0);
-			}
-		}
-
-		if (horizontal_clues[horizontal_clues.length - 1] == 0) {
-			horizontal_clues.pop();
-		}
-
-		document.getElementById("horizontalClues").innerHTML += "<li>"+horizontal_clues.join(" ")+"</li>";
-	}
-
-	// Generate vertical clues
-	for (var x = 0; x < boardSize; x++) {
-		vertical_clues = [0];
-
-		for (var y = 0; y < boardSize; y++) {
-			if (grid[x][y] == 1) {
-				vertical_clues[vertical_clues.length - 1] += 1;
-			} else if (vertical_clues[vertical_clues.length - 1] > 0) {
-				vertical_clues.push(0);
-			}
-		}
-
-		if (vertical_clues[vertical_clues.length - 1] == 0) {
-			vertical_clues.pop();
-		}
-
-		document.getElementById("verticalClues").innerHTML += "<li>"+vertical_clues.join(" ")+"</li>";
-	}
 }
 
 function generateGame() {
@@ -190,7 +198,7 @@ function generateGame() {
 
 
 function revealAnswer() {
-	player_grid = JSON.parse(JSON.stringify(answer_grid));
+	player_grid = copy(answer_grid);
 
 	drawGrid();
 }
