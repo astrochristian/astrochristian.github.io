@@ -141,7 +141,7 @@ function main() {
           table_html += '</td></tr>';
 
           // Reload MathJaX
-          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+          reload_mathjax();
           
         }
         // Write to the table
