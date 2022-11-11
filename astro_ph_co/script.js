@@ -77,7 +77,7 @@ function main() {
           var auths = auths_el.innerHTML;
           
           auths = auths.replace(/<span class="descriptor">Authors:<\/span>/g, 'Authors:');
-          auths = auths.replace(/href\="\/'/g, 'href="https://arxiv.org/');
+          auths = auths.replace(/href\="https\/\/astrochristian.github.io\//g, 'href="https://arxiv.org/');
 
           table_html += '<div class="author">'+auths+'</div>';
 
@@ -101,12 +101,12 @@ function main() {
           // Add links
           if (typeof ident_el != 'undefined') {
             // Get link
-			console.log(ident_el.getElementsByTagName("a")[0].href);
+      			console.log(ident_el.getElementsByTagName("a")[0].href);
             var abs_link = ident_el.getElementsByTagName("a")[0].href;
-            abs_link = abs_link.replace(/href\="\//g, 'href="https://arxiv.org/');
+            abs_link = abs_link.replace(/href\="https\/\/astrochristian.github.io\//g, 'href="https://arxiv.org/');
 			
             var pdf_link = abs_link.replace("abs","pdf")+".pdf";
-            pdf_link = pdf_link.replace(/href\="\//g, 'href="https://arxiv.org/');
+            pdf_link = pdf_link.replace(/href\="https\/\/astrochristian.github.io\//g, 'href="https://arxiv.org/');
 
             table_html += '<div class="links"><a href="'+abs_link+'" target="_blank" rel="noopener noreferrer">abs</a></div>';
             table_html += '<div class="links"><a href="'+pdf_link+'" target="_blank" rel="noopener noreferrer">pdf</a></div>';
