@@ -1,3 +1,8 @@
+function updateMathContent(s) {
+   var math = MathJax.Hub.getAllJax("mathdiv")[0];
+   MathJax.Hub.Queue(["Text", math, s]);
+}
+
 Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
   var dd = this.getDate();
@@ -135,6 +140,8 @@ function main() {
           // Close row tag
           table_html += '</td></tr>';
 
+          // Reload MathJaX
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
           
         }
         // Write to the table
