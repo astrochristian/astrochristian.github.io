@@ -1,3 +1,13 @@
+Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+         ].join('');
+};
+
 // src: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
   var len_original   = array.length;
@@ -34,6 +44,12 @@ function main() {
   request.onload = function (e) {
     if (request.readyState === 4) {
       if (request.status === 200) {
+        // Seed random numbers with date
+        var date = new Date();
+        date_str = date.yyyymmdd();
+
+        Math.seedrandom(date_str);
+
         // Get HTML response
         var result = request.response;
 
@@ -84,7 +100,7 @@ function main() {
           // Add comments
           if (typeof comms_el != 'undefined') {
             var comms = comms_el.innerHTML;
-
+            console.log(comms);
             comms = comms.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
 
             table_html += '<div class="comms">'+comms+'</div>';
