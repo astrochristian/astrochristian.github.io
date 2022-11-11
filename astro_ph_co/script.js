@@ -84,7 +84,8 @@ function main() {
           // Add comments
           if (typeof comms_el != 'undefined') {
             var comms = comms_el.innerHTML;
-
+            comms = comms.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
+            
             table_html += '<div class="comms">'+comms+'</div>';
           }
 
