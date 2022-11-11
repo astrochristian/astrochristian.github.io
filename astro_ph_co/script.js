@@ -101,9 +101,10 @@ function main() {
           // Add links
           if (typeof ident_el != 'undefined') {
             // Get link
+			console.log(ident_el.getElementsByTagName("a")[0].innerHTML);
             var abs_link = ident_el.getElementsByTagName("a")[0].href;
             abs_link = abs_link.replace('href="/', 'href="https://arxiv.org/');
-			console.log(abs_link)
+			
             var pdf_link = abs_link.replace("abs","pdf")+".pdf";
             pdf_link = pdf_link.replace('href="/', 'href="https://arxiv.org/');
 
