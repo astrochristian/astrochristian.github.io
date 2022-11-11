@@ -79,6 +79,7 @@ function main() {
           auths = auths.replace('<span class="descriptor">Authors:</span>', 'Authors:');
 		  
 		  // Big changes here GITHUB
+		  console.log(auths)
           auths = auths.replace('href="./', 'href="https://arxiv.org/');
 
           table_html += '<div class="author">'+auths+'</div>';
