@@ -27,7 +27,7 @@ function main() {
 
   // Open arXiv
   var request = new XMLHttpRequest();
-  request.open("GET", "https://arxiv.org/list/astro-ph.CO/pastweek?show=1000", true);  // last parameter must be true
+  request.open("GET", "https://proxy.cors.sh/https://arxiv.org/list/astro-ph.CO/pastweek?show=1000", true);  // last parameter must be true
   request.responseType = "document";
 
   // Get response
