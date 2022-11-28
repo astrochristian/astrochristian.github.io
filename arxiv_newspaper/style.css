@@ -1,0 +1,103 @@
+@font-face {
+  font-family: newspaper_font;
+  src: url(media/newspaper_font.woff);
+}
+
+
+body {
+	background-image: url("newspaper_bg.jpg");
+	font-family: sans-serif;
+	font-size: 120%;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.container {
+	margin: auto;
+	background-image: url("paper_texture.jpg");
+    min-height: 100vh;
+    width: 80%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.headline_title {
+	text-align: center;
+}
+
+.headline_authors {
+	text-align: center;
+}
+
+.headline_img_container {
+	text-align: center;
+	display: block;
+}
+
+
+.headline_img {
+	width: 50%;
+}
+
+.headline_abstract {
+	text-align: center;
+}
+
+
+.entry_column {
+	width: 50%;
+	padding-left: 40px;
+	padding-right: 40px;
+	vertical-align: top;
+	border-bottom: solid black 3px;
+}
+
+.left_column {
+	border-right: solid black 3px;
+	border-top: solid black 3px;
+}
+
+.right_column {
+	border-left: solid black 3px;
+	border-top: solid black 3px;
+}
+
+.entry_title {
+	text-align: center;
+}
+
+.entry_authors {
+	text-align: center;
+}
+
+.entry_img_container {
+	text-align: center;
+	display: block;
+}
+
+.entry_img {
+	width: 60%;
+	horizontal-align: center;
+}
+
+.entry_abstract {
+	text-align: center;
+}
+
+
+
+table {
+	border-collapse: collapse;
+}
+
+a {
+	text-decoration: none;
+	color: steelblue;
+}
+
+a:visited {
+	color: steelblue;
+}
