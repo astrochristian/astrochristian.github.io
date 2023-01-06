@@ -83,7 +83,7 @@ function main() {
           // Add title
           var title = title_el.innerHTML;
 
-          title = title.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, " \\($2\\) ")
+          title = title.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, "$1\\($2\\)$3")
           
           var clean_title = title.replace(/<\/?[^>]+(>|$)/g, "");
           clean_title = clean_title.replace(/Title: /g, "");
