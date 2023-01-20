@@ -79,7 +79,7 @@ function main() {
         var shuffled_idx = shuffle(items);
 
         for (var i = 0; i < items.length; i++) {
-          if ( (remove_number > 0) && (i <= remove_number) {
+          if ( (remove_number > 0) && (i <= remove_number)) {
             var idx       = shuffled_idx[i];
             var item      = items[idx];
             var link_item = link_items[idx];
