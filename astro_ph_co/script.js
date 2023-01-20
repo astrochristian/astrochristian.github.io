@@ -58,6 +58,20 @@ function main() {
 
         var link_items = result.body.getElementsByTagName("dt");
 
+        // Load list of days at start
+        var days = result.body.getElementsByTagName("li");
+
+        // Check if there's another Friday
+        var remove_number = 0;
+
+        if (days[4].innerHTML.include("Fri")) {
+          // Get href of child a tag
+          var href_link = days[4].children[0].href;
+
+          // Match number
+          remove_number = href.match(/(?<=skip\=)\d+(?=\&)/g)[0];
+        }
+
         // Clear table
         var table_html = "";
 
@@ -65,78 +79,80 @@ function main() {
         var shuffled_idx = shuffle(items);
 
         for (var i = 0; i < items.length; i++) {
-          var idx       = shuffled_idx[i];
-          var item      = items[idx];
-          var link_item = link_items[idx];
+          if ( (remove_number > 0) && (i <= remove_number) {
+            var idx       = shuffled_idx[i];
+            var item      = items[idx];
+            var link_item = link_items[idx];
 
-          var title_el = item.getElementsByClassName("list-title")[0];
-          var auths_el = item.getElementsByClassName("list-authors")[0];
-          var comms_el = item.getElementsByClassName("list-comments")[0];
-          var subjs_el = item.getElementsByClassName("list-subjects")[0];
+            var title_el = item.getElementsByClassName("list-title")[0];
+            var auths_el = item.getElementsByClassName("list-authors")[0];
+            var comms_el = item.getElementsByClassName("list-comments")[0];
+            var subjs_el = item.getElementsByClassName("list-subjects")[0];
 
-          var ident_el = link_item.getElementsByClassName("list-identifier")[0];
+            var ident_el = link_item.getElementsByClassName("list-identifier")[0];
 
-          
-          // Add table row
-          table_html += '<tr class="arxiv_row"><td class="arxiv_item">';
-
-          // Add title
-          var title = title_el.innerHTML;
-
-          title = title.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, "$1\\($2\\)$3")
-          
-          var clean_title = title.replace(/<\/?[^>]+(>|$)/g, "");
-          clean_title = clean_title.replace(/Title: /g, "");
-
-          table_html += '<div class="title">['+(i+1)+"] "+clean_title+'</div>';
-
-          // Add authors
-          var auths = auths_el.innerHTML;
-          
-          auths = auths.replace(/<span class="descriptor">Authors:<\/span>/g, 'Authors:');
-          auths = auths.replace(/href="\//g, 'href="https://arxiv.org/');
-
-          table_html += '<div class="author">'+auths+'</div>';
-
-          // Add comments
-          if (typeof comms_el != 'undefined') {
-            var comms = comms_el.innerHTML;
             
-            comms = comms.replace(/href="\//g, 'href="https://arxiv.org/');
+            // Add table row
+            table_html += '<tr class="arxiv_row"><td class="arxiv_item">';
 
-            table_html += '<div class="comms">'+comms+'</div>';
+            // Add title
+            var title = title_el.innerHTML;
+
+            title = title.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, "$1\\($2\\)$3")
+            
+            var clean_title = title.replace(/<\/?[^>]+(>|$)/g, "");
+            clean_title = clean_title.replace(/Title: /g, "");
+
+            table_html += '<div class="title">['+(i+1)+"] "+clean_title+'</div>';
+
+            // Add authors
+            var auths = auths_el.innerHTML;
+            
+            auths = auths.replace(/<span class="descriptor">Authors:<\/span>/g, 'Authors:');
+            auths = auths.replace(/href="\//g, 'href="https://arxiv.org/');
+
+            table_html += '<div class="author">'+auths+'</div>';
+
+            // Add comments
+            if (typeof comms_el != 'undefined') {
+              var comms = comms_el.innerHTML;
+              
+              comms = comms.replace(/href="\//g, 'href="https://arxiv.org/');
+
+              table_html += '<div class="comms">'+comms+'</div>';
+            }
+
+            // Add subjects
+            if (typeof subjs_el != 'undefined') {
+              var subjs = subjs_el.innerHTML;
+
+              subjs = subjs.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
+
+              table_html += '<div class="subjs">'+subjs+'</div>';
+            }
+
+            // Close column tag
+            table_html += '</td><td class="arxiv_link">';
+
+            // Add links
+            if (typeof ident_el != 'undefined') {
+              // Get link
+              var abs_link = ident_el.getElementsByTagName("a")[0].href;
+              abs_link = abs_link.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
+  			
+              var pdf_link = abs_link.replace("abs","pdf")+".pdf";
+              pdf_link = pdf_link.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
+
+              table_html += '<div class="links"><a href="'+abs_link+'" target="_blank" rel="noopener noreferrer">abs</a></div>';
+              table_html += '<div class="links"><a href="'+pdf_link+'" target="_blank" rel="noopener noreferrer">pdf</a></div>';
+            }
+
+            // Close row tag
+            table_html += '</td></tr>';
+
+            // Reload MathJaX
+            reload_mathjax();
           }
-
-          // Add subjects
-          if (typeof subjs_el != 'undefined') {
-            var subjs = subjs_el.innerHTML;
-
-            subjs = subjs.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
-
-            table_html += '<div class="subjs">'+subjs+'</div>';
-          }
-
-          // Close column tag
-          table_html += '</td><td class="arxiv_link">';
-
-          // Add links
-          if (typeof ident_el != 'undefined') {
-            // Get link
-            var abs_link = ident_el.getElementsByTagName("a")[0].href;
-            abs_link = abs_link.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
-			
-            var pdf_link = abs_link.replace("abs","pdf")+".pdf";
-            pdf_link = pdf_link.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
-
-            table_html += '<div class="links"><a href="'+abs_link+'" target="_blank" rel="noopener noreferrer">abs</a></div>';
-            table_html += '<div class="links"><a href="'+pdf_link+'" target="_blank" rel="noopener noreferrer">pdf</a></div>';
-          }
-
-          // Close row tag
-          table_html += '</td></tr>';
-
-          // Reload MathJaX
-          reload_mathjax();
           
         }
         // Write to the table
