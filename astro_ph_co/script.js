@@ -69,7 +69,7 @@ function main() {
           var href_link = days[4].children[0].href;
 
           // Match number
-          remove_number = parseInt(href.match(/(?<=skip\=)\d+(?=\&)/g)[0]);
+          remove_number = parseInt(href_link.match(/(?<=skip\=)\d+(?=\&)/g)[0]);
         }
 
         // Clear table
