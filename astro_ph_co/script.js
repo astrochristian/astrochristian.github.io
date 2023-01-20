@@ -66,11 +66,15 @@ function main() {
 
         if (days[4].textContent.includes("Fri")) {
           // Get href of child a tag
-          var href_link = days[4].children[0].href;
+          var href_link = days[4].innerHTML;
+
+          console.log(href_link)
 
           // Match number
-          remove_number = parseInt(href_link.match(/(?<=skip\=)\d+(?=\&)/g)[0]);
+          remove_number = parseInt(href_link.match(/(?<=item)\d+(?=")/)[0]);
         }
+
+        console.log(remove_number);
 
         // Clear table
         var table_html = "";
@@ -79,7 +83,7 @@ function main() {
         var shuffled_idx = shuffle(items);
 
         for (var i = 0; i < items.length; i++) {
-          if ( (remove_number > 0) && (i <= remove_number)) {
+          if ( (remove_number > 0) && (i < remove_number)) {
             var idx       = shuffled_idx[i];
             var item      = items[idx];
             var link_item = link_items[idx];
