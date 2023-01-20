@@ -64,12 +64,12 @@ function main() {
         // Check if there's another Friday
         var remove_number = 0;
 
-        if (days[4].innerHTML.include("Fri")) {
+        if (days[4].textContent.include("Fri")) {
           // Get href of child a tag
           var href_link = days[4].children[0].href;
 
           // Match number
-          remove_number = href.match(/(?<=skip\=)\d+(?=\&)/g)[0];
+          remove_number = parseInt(href.match(/(?<=skip\=)\d+(?=\&)/g)[0]);
         }
 
         // Clear table
