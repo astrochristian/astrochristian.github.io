@@ -64,7 +64,7 @@ function main() {
         // Check if there's another Friday
         var remove_number = 0;
 
-        if (days[4].textContent.include("Fri")) {
+        if (days[4].textContent.includes("Fri")) {
           // Get href of child a tag
           var href_link = days[4].children[0].href;
 
