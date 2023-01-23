@@ -64,7 +64,13 @@ function main() {
         // Check if there's another Friday
         var remove_number = items.length;
 
-        if (days[4].textContent.includes("Fri")) {
+        // Get day of week (Friday repeated since no uploads on weekends)
+        var day_names = ["Fri", "Mon", "Tue", "Wed", "Thu", "Fri", "Fri"];
+
+        const d = new Date();
+        let day_name = day_names[d.getDay()];
+
+        if (days[4].textContent.includes(day_name)) {
           // Get href of child a tag
           var href_link = days[4].innerHTML;
 
