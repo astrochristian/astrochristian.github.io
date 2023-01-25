@@ -100,7 +100,7 @@ function main() {
 		entry = arxiv_entries[k];
 		
 		// Add title
-		entry.title = entry.title.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, " \\($2\\) ");
+		entry.title = entry.title.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, "$1\\($2\\)$3");
 		
 		entry.title = entry.title.replace(/\</g, "&lt;");
 		entry.title = entry.title.replace(/\>/g, "&gt;");
@@ -114,7 +114,7 @@ function main() {
 		entry_html += "<div class='entry_img_container'><img class='entry_img' src='" + entry.img_path + "' /></div>";
 			
 		// Add abstract
-		entry.abs = entry.abs.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, " \\($2\\) ");
+		entry.abs = entry.abs.replace(/(^|[^\$])\$([^\$]+)\$([^\$]|$)/g, "$1\\($2\\)$3");
 		
 		entry.abs = entry.abs.replace(/\</g, "&lt;");
 		entry.abs = entry.abs.replace(/\>/g, "&gt;");
