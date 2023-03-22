@@ -5,6 +5,20 @@ var answer_grid = [[]];
 var boardSize = 9;
 var cell_size = 45;
 
+var unsorted_grid = [
+	[1,2,3, 4,5,6, 7,8,9],
+	[4,5,6, 7,8,9, 1,2,3],
+	[7,8,9, 1,2,3, 4,5,6],
+
+	[2,3,1, 5,6,4, 8,9,7],
+	[5,6,4, 8,9,7, 2,3,1],
+	[8,9,7, 2,3,1, 5,6,4],
+
+	[3,1,2, 6,4,5, 9,7,8],
+	[6,4,5, 9,7,8, 3,1,2],
+	[9,7,8, 3,1,2, 6,4,5]
+];
+
 var clues_grid = [
 	[1,0,0, 0,0,0, 0,0,0],
 	[0,0,0, 0,0,0, 0,2,0],
@@ -171,29 +185,132 @@ function drawGrid() {
 }
 
 function generateClues() {
-	// Generate clues randomly
+	// Generate a blank clues grid
+	clues_grid = [];
 
+	for (var x = 0; x < boardSize; x++) {
+		clues_grid.push([])
+
+		for (var y = 0; y < boardSize; y++) {
+			clues_grid[x].push(0);
+		}
+	}
+
+	// Generate clues randomly
+	for (var i = 0; i < 30; i++) {
+		var x_pos = Math.floor(Math.random() * 9);
+		var y_pos = Math.floor(Math.random() * 9);
+
+		clues_grid[x_pos][y_pos] = answer_grid[x_pos][y_pos];
+	}
 }
 
+function arrayRotate(arr) {
+	arr.unshift(arr.pop());
+	return arr;
+}
+
+function transpose(a) {
+
+	// Calculate the width and height of the Array
+	var w = a.length || 0;
+	var h = a[0] instanceof Array ? a[0].length : 0;
+  
+	// In case it is a zero matrix, no transpose routine needed.
+	if(h === 0 || w === 0) { return []; }
+  
+	/**
+	 * @var {Number} i Counter
+	 * @var {Number} j Counter
+	 * @var {Array} t Transposed data is stored in this array.
+	 */
+	var i, j, t = [];
+  
+	// Loop through every item in the outer array (height)
+	for(i=0; i<h; i++) {
+  
+	  // Insert a new row (array)
+	  t[i] = [];
+  
+	  // Loop through every item per item in outer array (width)
+	  for(j=0; j<w; j++) {
+  
+		// Save transposed data.
+		t[i][j] = a[j][i];
+	  }
+	}
+  
+	return t;
+  }
+  
+
+
 function generateGame() {
-	boardSize = document.getElementById("boardSizeInput").value;
-	
-	grid = [];
+	// Set new grid to the unsorted grid
+	answer_grid = JSON.parse(JSON.stringify(unsorted_grid));
 	player_grid = [];
 
-	// Generate the grid
+	// Generate a blank player grid
 	for (var x = 0; x < boardSize; x++) {
-		grid.push([]);
 		player_grid.push([])
 
 		for (var y = 0; y < boardSize; y++) {
-			grid[x].push(Math.round(Math.random()));
 			player_grid[x].push(0);
 		}
 	}
 
-	drawGrid();
+	// Randomly sort the player grid while preserving solvability
+	var N_perms = 1000;
+
+	for (var i = 0; i < N_perms; i++) {
+		// Swap two lines within a block
+		var rotate_dir = Math.floor(Math.random() + 0.5);
+
+		// Choose block number
+		var block_no = Math.floor(2*Math.random() + 0.5);
+
+		// Choose line 1
+		var line1 = Math.floor(2*Math.random() + 0.5);
+
+		// Find line 2
+		var line2_shift = Math.floor(Math.random() + 0.5);
+
+		switch (line1) {
+			case 0:
+				var line2 = line2_shift + 1;
+				break;
+
+			case 1:
+				var line2 = 2*line2_shift;
+				break;
+
+			case 2:
+				var line2 = 1 - line2_shift;
+				break;
+		}
+
+		if (rotate_dir == 0) {
+			// Switch rows in horizontal direction
+			var answer_grid_tr = transpose(answer_grid)
+
+			var temp_array = answer_grid_tr[block_no * 3 + line1];
+
+			answer_grid_tr[block_no * 3 + line1] = answer_grid_tr[block_no * 3 + line2];
+			answer_grid_tr[block_no * 3 + line2] = temp_array;
+
+			answer_grid = transpose(answer_grid_tr);
+			
+		} else {
+			// Switch rows in vertical direction
+			var temp_array = answer_grid[block_no * 3 + line1];
+
+			answer_grid[block_no * 3 + line1] = answer_grid[block_no * 3 + line2];
+			answer_grid[block_no * 3 + line2] = temp_array;
+		}
+	}
+
 	generateClues();
+	drawGrid();
 }
 
 
