@@ -373,5 +373,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 	document.getElementById('gridCanvas').addEventListener('contextmenu', on_canvas_right_click, false);
 
+	generateGame();
 	drawGrid();
 });
