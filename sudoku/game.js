@@ -368,11 +368,37 @@ function on_canvas_right_click(ev) {
     return false;
 }
 
+function saveGame() {
+	var clues_encoded = btoa(JSON.stringify(clues_grid));
+	var player_encoded = btoa(JSON.stringify(player_grid));
+	var answer_encoded = btoa(JSON.stringify(answer_grid));
+
+	var lcode = clues_encoded + "," + player_encoded + "," + answer_encoded;
+	var link = location.protocol + '//' + location.host + location.pathname + "?code=" + lcode;
+
+	window.open(link);
+}
+
+function getURLParameter(name) {
+	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
+
+var rcode = getURLParameter("code");
+
 document.addEventListener("DOMContentLoaded", function(){
 	document.getElementById('gridCanvas').addEventListener('click', on_canvas_click, false);
 
 	document.getElementById('gridCanvas').addEventListener('contextmenu', on_canvas_right_click, false);
 
-	generateGame();
+	if (rcode !== null) {
+		var encoded_grids = rcode.split(",");
+
+		clues_grid = JSON.parse(atob(encoded_grids[0]));
+		player_grid = JSON.parse(atob(encoded_grids[1]));
+		answer_grid = JSON.parse(atob(encoded_grids[0]));
+	} else {
+		generateGame();
+	}
+	
 	drawGrid();
 });
