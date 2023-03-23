@@ -408,6 +408,9 @@ vue_app = {
 		incrementCell(row_index, col_index) {
 			this.grid[row_index][col_index] = (this.grid[row_index][col_index] + 1) % 10;
 		},
+		decrementCell(row_index, col_index) {
+			this.grid[row_index][col_index] = (this.grid[row_index][col_index] + 9) % 10;
+		},
 		clearCell(row_index, col_index) {
 			this.grid[row_index][col_index] = 0;
 		},

@@ -24,7 +24,7 @@
 						{{clues[row_index][col_index]}}
 					</div>
 					<div class="input cell" v-else @click="incrementCell(row_index, col_index)"
-						@contextmenu.prevent="clearCell(row_index, col_index)">
+						@contextmenu.prevent="decrementCell(row_index, col_index)">
 						{{cell == 0 ? '' : cell}}
 					</div>
 				</template>
