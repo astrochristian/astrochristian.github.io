@@ -411,6 +411,9 @@ vue_app = {
 		clearCell(row_index, col_index) {
 			this.grid[row_index][col_index] = 0;
 		},
+		clearGrid() {
+			this.grid = newBlankGrid();
+		},
 		newGame() {
 			this.clearGrid();
 			this.answer = newAnswerGrid();
