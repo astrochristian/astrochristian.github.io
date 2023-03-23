@@ -83,9 +83,7 @@ function getURLParameter(name) {
     ) || null
   );
 }
-
 var rcode = getURLParameter("code");
-
 document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("gridCanvas")
