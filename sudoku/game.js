@@ -427,6 +427,9 @@ vue_app = {
 				alert("Incorrect. Keep trying!");
 			}
 		},
+		revealAnswer() {
+			this.grid = JSON.parse(JSON.stringify(this.answer));
+		},
 	},
 	mounted() {
 		this.clues = clues_grid;
