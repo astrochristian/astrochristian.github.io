@@ -392,11 +392,16 @@ BLANK_GRID = [
 	[0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
+function newBlankGrid() {
+	return JSON.parse(JSON.stringify(BLANK_GRID));
+}
+
 vue_app = {
 	data() {
 		return {
-			grid: BLANK_GRID,
-			clues: BLANK_GRID,
+			grid: newBlankGrid(),
+			clues: newBlankGrid(),
+			answer: newBlankGrid(),
 		}
 	},
 	methods: {
