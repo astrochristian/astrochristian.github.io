@@ -23,29 +23,40 @@ const arrayColumn = (arr, n) => arr.map(x => x[n]); // Get column from 2D array
 const copy = (arr) => JSON.parse(JSON.stringify(arr)); // Deep copy array
 
 function checkGame() {
-	// Create array of "truth values"
-	var truth_values = []
+	const gameValid = isGameValid(player_grid);
 
+	if (gameValid) {
+		alert("You're correct!");
+	} else {
+		alert("Incorrect. Keep trying!");
+	}
+}
+
+function isGameValid(grid) {
 	// Check if all rows are correct
 	for (var i = 0; i < 9; i++) {
-		var row = copy(player_grid[i]);
+		var row = copy(grid[i]);
 
 		// Sort the row
 		row.sort();
 
 		// Check whether it is a solution
-		truth_values.push(row.join(',') == '1,2,3,4,5,6,7,8,9');
+		if (row.join(',') != '1,2,3,4,5,6,7,8,9') {
+			return false;
+		}
 	}
 
 	// Check if all columns are correct
 	for (var j = 0; j < 9; j++) {
-		var col = arrayColumn(player_grid, j);
+		var col = arrayColumn(grid, j);
 		
 		// Sort the column
 		col.sort();
 
 		// Check whether it is a solution
-		truth_values.push(col.join(',') == '1,2,3,4,5,6,7,8,9');
+		if (col.join(',') != '1,2,3,4,5,6,7,8,9') {
+			return false;
+		}
 	}
 
 	// Check if all cells are correct
@@ -56,21 +67,19 @@ function checkGame() {
 	    var y1 = Math.floor(k / 3) * 3;
 	    var y2 = y1 + 3;
 
-	    var section = player_grid.slice(y1, y2).map(i => i.slice(x1, x2))
+		var section = grid.slice(y1, y2).map(i => i.slice(x1, x2))
 		
 		var section_flat = section.flat()
 
 		section_flat.sort()
 
 		// Check whether it is a solution
-		truth_values.push(section_flat.join(',') == '1,2,3,4,5,6,7,8,9');
+		if (section_flat.join(',') != '1,2,3,4,5,6,7,8,9') {
+			return false;
+		}
 	}
 
-	if (truth_values.every(function(e){return e;})) {
-		alert("You're correct!");
-	} else {
-		alert("Incorrect. Keep trying!");
-	}
+	return true;
 }
 
 function drawGrid() {
@@ -142,9 +151,9 @@ function drawGrid() {
 	}
 }
 
-function generateClues() {
+function generateClues(answer_grid) {
 	// Generate a blank clues grid
-	clues_grid = [];
+	var clues_grid = [];
 
 	for (var x = 0; x < boardSize; x++) {
 		clues_grid.push([])
@@ -161,6 +170,8 @@ function generateClues() {
 
 		clues_grid[x_pos][y_pos] = answer_grid[x_pos][y_pos];
 	}
+
+	return clues_grid;
 }
 
 function arrayRotate(arr) {
@@ -201,22 +212,23 @@ function transpose(a) {
 	return t;
   }
   
+function newPlayerGrid() {
+	var new_grid = [];
 
-
-function generateGame() {
-	// Set new grid to the unsorted grid
-	answer_grid = JSON.parse(JSON.stringify(unsorted_grid));
-	player_grid = [];
-
-	// Generate a blank player grid
+	// Generate a blank new grid
 	for (var x = 0; x < boardSize; x++) {
-		player_grid.push([])
+		new_grid.push([])
 
 		for (var y = 0; y < boardSize; y++) {
-			player_grid[x].push(0);
+			new_grid[x].push(0);
 		}
 	}
 
+	return new_grid;
+}
+
+function newAnswerGrid() {
+	var new_answer_grid = JSON.parse(JSON.stringify(unsorted_grid));
 	// Randomly sort the player grid while preserving solvability
 	var N_perms = 1000;
 
@@ -249,28 +261,33 @@ function generateGame() {
 
 		if (rotate_dir == 0) {
 			// Switch rows in horizontal direction
-			var answer_grid_tr = transpose(answer_grid)
+			var answer_grid_tr = transpose(new_answer_grid)
 
 			var temp_array = answer_grid_tr[block_no * 3 + line1];
 
 			answer_grid_tr[block_no * 3 + line1] = answer_grid_tr[block_no * 3 + line2];
 			answer_grid_tr[block_no * 3 + line2] = temp_array;
 
-			answer_grid = transpose(answer_grid_tr);
+			new_answer_grid = transpose(answer_grid_tr);
 			
 		} else {
 			// Switch rows in vertical direction
-			var temp_array = answer_grid[block_no * 3 + line1];
+			var temp_array = new_answer_grid[block_no * 3 + line1];
 
-			answer_grid[block_no * 3 + line1] = answer_grid[block_no * 3 + line2];
-			answer_grid[block_no * 3 + line2] = temp_array;
+			new_answer_grid[block_no * 3 + line1] = new_answer_grid[block_no * 3 + line2];
+			new_answer_grid[block_no * 3 + line2] = temp_array;
 		}
 	}
-
-	generateClues();
-	drawGrid();
+	return new_answer_grid;
 }
 
+function generateGame() {
+	player_grid = newPlayerGrid();
+	answer_grid = newAnswerGrid();
+	clues_grid = generateClues(answer_grid);
+
+	drawGrid();
+}
 
 function revealAnswer() {
 	player_grid = copy(answer_grid);
