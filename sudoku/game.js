@@ -20,7 +20,6 @@ var player_grid = [];
 var answer_grid = [];
 
 const arrayColumn = (arr, n) => arr.map((x) => x[n]); // Get column from 2D array
-const copy = (arr) => JSON.parse(JSON.stringify(arr)); // Deep copy array
 
 function checkGame() {
   const gameValid = isGameValid(player_grid);
@@ -35,7 +34,7 @@ function checkGame() {
 function isGameValid(grid) {
   // Check if all rows are correct
   for (var i = 0; i < 9; i++) {
-    var row = copy(grid[i]);
+    var row = JSON.parse(JSON.stringify(grid[i]));
 
     // Sort the row
     row.sort();
@@ -291,7 +290,7 @@ function generateGame() {
 }
 
 function revealAnswer() {
-  player_grid = copy(answer_grid);
+  player_grid = JSON.parse(JSON.stringify(answer_grid));
 
   drawGrid();
 }
