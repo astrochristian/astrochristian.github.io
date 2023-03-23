@@ -181,11 +181,6 @@ function generateClues(answer_grid) {
   return clues_grid;
 }
 
-function arrayRotate(arr) {
-  arr.unshift(arr.pop());
-  return arr;
-}
-
 function transpose(a) {
   // Calculate the width and height of the Array
   var w = a.length || 0;
@@ -242,16 +237,16 @@ function newAnswerGrid() {
 
   for (var i = 0; i < N_perms; i++) {
     // Swap two lines within a block
-    var rotate_dir = Math.floor(Math.random() + 0.5);
+    var rotate_dir = Math.floor(2 * Math.random());
 
     // Choose block number
-    var block_no = Math.floor(2 * Math.random() + 0.5);
+    var block_no = Math.floor(3 * Math.random());
 
     // Choose line 1
-    var line1 = Math.floor(2 * Math.random() + 0.5);
+    var line1 = Math.floor(3 * Math.random());
 
     // Find line 2
-    var line2_shift = Math.floor(Math.random() + 0.5);
+    var line2_shift = Math.floor(2 * Math.random());
 
     switch (line1) {
       case 0:
