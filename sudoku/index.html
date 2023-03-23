@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Sudoku Puzzle</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 		<script src="./game.js"></script>
 		<style>
 			canvas {
@@ -29,17 +30,44 @@
 		</style>
 	</head>
 	<body>
-		<div id="container">
-			<div id="aboveClues">
 				<h1>Sudoku</h1>
-				<button onclick="javascript:generateGame()">New Game</button>&nbsp;&nbsp;<button onclick="javascript:checkGame()">Check Answer</button>&nbsp;&nbsp;<button onclick="javascript:revealAnswer()">Reveal Answer</button><br/><br/>
-				<button onclick="javascript:clearGrid()">Clear Grid</button>&nbsp;&nbsp;<button onclick="javascript:saveGame()">Save Game</button><br/>
-				
-				<br/>
-				<canvas id="gridCanvas" width=400 height=400></canvas>
-				<h2>Left click a square to increment its number.<br/>Right click to clear the square.</h2>
-				<h4>(on mobile, you can keeping clicking a number to clear it)</h4>
+	<div id="app">
+		<span>{{game_state}}</span>
+		<button @click="fillGrid">New Game</button>
+		<button @click="">Check Answer</button>
+		<button @click="">Reveal Answer</button>
+		<button @click="">Clear Grid</button>
+		<button @click="">Save Game</button>
+		<div class="grid">
+			<div class="row" v-for="(row, row_index) in grid">
+				<template v-for="(cell, col_index) in row">
+					<div class="clue cell" v-if="clues[row_index][col_index] != 0">
+						{{clues[row_index][col_index]}}
+					</div>
+					<div class="input cell" v-else @click="incrementCell(row_index, col_index)"
+						@contextmenu.prevent="clearCell(row_index, col_index)">
+						{{cell == 0 ? '' : cell}}
+					</div>
+				</template>
 			</div>
 		</div>
+	</div>
+	<div class="buttons">
+		<button onclick="javascript:generateGame()">New Game</button><button onclick="javascript:checkGame()">Check
+			Answer</button><button onclick="javascript:revealAnswer()">Reveal Answer</button>
+		<button onclick="javascript:clearGrid()">Clear Grid</button><button onclick="javascript:saveGame()">Save
+			Game</button>
+	</div>
+				<canvas id="gridCanvas" width=400 height=400></canvas>
+	<h2>Left click a square to increment its number.<br />Right click to clear the square.</h2>
+				<h4>(on mobile, you can keeping clicking a number to clear it)</h4>
+			</div>
+	<script>
+		const {createApp} = Vue;
+		const app = Vue.createApp(
+			vue_app
+		).mount('#app');
+	</script>
 	</body>
+
 </html>

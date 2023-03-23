@@ -402,3 +402,37 @@ document.addEventListener("DOMContentLoaded", function(){
 	
 	drawGrid();
 });
+
+// vue
+
+BLANK_GRID = [
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+
+vue_app = {
+	data() {
+		return {
+			grid: BLANK_GRID,
+			clues: BLANK_GRID,
+		}
+	},
+	methods: {
+		incrementCell(row_index, col_index) {
+			this.grid[row_index][col_index] = (this.grid[row_index][col_index] + 1) % 10;
+		},
+		clearCell(row_index, col_index) {
+			this.grid[row_index][col_index] = 0;
+		},
+	},
+	mounted() {
+		this.clues = clues_grid;
+	},
+}
