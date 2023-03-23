@@ -430,8 +430,28 @@ vue_app = {
 		revealAnswer() {
 			this.grid = JSON.parse(JSON.stringify(this.answer));
 		},
+		saveGame() {
+			const clues_encoded = btoa(JSON.stringify(this.clues));
+			const player_encoded = btoa(JSON.stringify(this.grid));
+			const answer_encoded = btoa(JSON.stringify(this.answer));
+
+			const lcode = clues_encoded + "," + player_encoded + "," + answer_encoded;
+			const link = location.protocol + '//' + location.host + location.pathname + "?code=" + lcode;
+
+			window.open(link);
+		},
 	},
 	mounted() {
-		this.clues = clues_grid;
+		const rcode = getURLParameter("code");
+
+		if (rcode !== null) {
+			const encoded_grids = rcode.split(",");
+
+			this.clues = JSON.parse(atob(encoded_grids[0]));
+			this.grid = JSON.parse(atob(encoded_grids[1]));
+			this.answer = JSON.parse(atob(encoded_grids[0]));
+		} else {
+			this.newGame();
+		}
 	},
 }
