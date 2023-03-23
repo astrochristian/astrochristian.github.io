@@ -411,6 +411,11 @@ vue_app = {
 		clearCell(row_index, col_index) {
 			this.grid[row_index][col_index] = 0;
 		},
+		newGame() {
+			this.clearGrid();
+			this.answer = newAnswerGrid();
+			this.clues = generateClues(this.answer);
+		},
 	},
 	mounted() {
 		this.clues = clues_grid;
