@@ -419,6 +419,14 @@ vue_app = {
 			this.answer = newAnswerGrid();
 			this.clues = generateClues(this.answer);
 		},
+		checkAnswer() {
+			const valid = isGameValid(this.grid);
+			if (valid) {
+				alert("You're Correct!");
+			} else {
+				alert("Incorrect. Keep trying!");
+			}
+		},
 	},
 	mounted() {
 		this.clues = clues_grid;
