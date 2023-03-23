@@ -335,8 +335,8 @@ function drawGrid() {
   // Draw the numbers
   for (var x = 0; x < boardSize; x++) {
     for (var y = 0; y < boardSize; y++) {
-      var clue_square = clues_grid[x][y];
-      var player_square = player_grid[x][y];
+      var clue_square = clues_grid[y][x];
+      var player_square = player_grid[y][x];
 
       if (clue_square > 0) {
         // Place number at position
@@ -360,8 +360,8 @@ function drawGrid() {
 function on_canvas_click(ev) {
   var canvas = document.getElementById("gridCanvas");
 
-  var x = ev.clientX - canvas.getBoundingClientRect().left;
-  var y = ev.clientY - canvas.getBoundingClientRect().top;
+  var y = ev.clientX - canvas.getBoundingClientRect().left;
+  var x = ev.clientY - canvas.getBoundingClientRect().top;
 
   // Find square
   var x_grid = Math.floor(x / cell_size);
@@ -379,8 +379,8 @@ function on_canvas_right_click(ev) {
 
   var canvas = document.getElementById("gridCanvas");
 
-  var x = ev.clientX - canvas.getBoundingClientRect().left;
-  var y = ev.clientY - canvas.getBoundingClientRect().top;
+  var y = ev.clientX - canvas.getBoundingClientRect().left;
+  var x = ev.clientY - canvas.getBoundingClientRect().top;
 
   // Find square
   var x_grid = Math.floor(x / cell_size);
