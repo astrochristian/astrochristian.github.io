@@ -77,7 +77,8 @@ function main() {
           console.log(href_link)
 
           // Match number
-          remove_number = parseInt(href_link.match(/(?:item)\d+(?=")/)[0]) - 1;
+          var remove_number_str = href_link.match(/(?:item)\d+(?=")/)[0]
+          remove_number = parseInt(remove_number_str.replace("item", "")) - 1;    
         }
 
         console.log(remove_number);
