@@ -1,404 +1,277 @@
-var clues_grid = [[]];
-var player_grid = [[]];
-var answer_grid = [[]];
-
-var boardSize = 9;
-var cell_size = 45;
-
 var unsorted_grid = [
-	[1,2,3, 4,5,6, 7,8,9],
-	[4,5,6, 7,8,9, 1,2,3],
-	[7,8,9, 1,2,3, 4,5,6],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [4, 5, 6, 7, 8, 9, 1, 2, 3],
+  [7, 8, 9, 1, 2, 3, 4, 5, 6],
 
-	[2,3,1, 5,6,4, 8,9,7],
-	[5,6,4, 8,9,7, 2,3,1],
-	[8,9,7, 2,3,1, 5,6,4],
+  [2, 3, 1, 5, 6, 4, 8, 9, 7],
+  [5, 6, 4, 8, 9, 7, 2, 3, 1],
+  [8, 9, 7, 2, 3, 1, 5, 6, 4],
 
-	[3,1,2, 6,4,5, 9,7,8],
-	[6,4,5, 9,7,8, 3,1,2],
-	[9,7,8, 3,1,2, 6,4,5]
+  [3, 1, 2, 6, 4, 5, 9, 7, 8],
+  [6, 4, 5, 9, 7, 8, 3, 1, 2],
+  [9, 7, 8, 3, 1, 2, 6, 4, 5],
 ];
 
-var clues_grid = [
-	[1,0,0, 0,0,0, 0,0,0],
-	[0,0,0, 0,0,0, 0,2,0],
-	[0,0,0, 0,0,0, 0,0,0],
-
-	[0,0,0, 0,0,0, 0,0,0],
-	[0,0,0, 0,9,0, 0,0,0],
-	[0,0,0, 0,0,0, 0,0,0],
-
-	[0,0,0, 0,0,0, 0,7,0],
-	[0,4,0, 0,0,0, 0,1,0],
-	[0,0,0, 0,0,0, 0,0,0]
+BLANK_GRID = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-var player_grid = [
-	[1,0,0, 0,0,0, 0,0,0],
-	[0,0,0, 0,0,0, 0,2,0],
-	[0,0,0, 0,0,0, 0,0,0],
-
-	[0,0,0, 0,0,0, 0,0,0],
-	[0,0,0, 0,9,0, 0,0,0],
-	[0,0,0, 0,0,0, 0,0,0],
-
-	[0,0,0, 0,0,0, 0,7,0],
-	[0,4,0, 0,0,0, 0,1,0],
-	[0,0,0, 0,0,0, 0,0,0]
-];
-
-var answer_grid = [
-	[1,2,3, 4,5,6, 7,8,9],
-	[4,5,6, 7,8,9, 1,2,3],
-	[7,8,9, 1,2,3, 4,5,6],
-
-	[2,3,1, 5,6,4, 8,9,7],
-	[5,6,4, 8,9,7, 2,3,1],
-	[8,9,7, 2,3,1, 5,6,4],
-
-	[3,1,2, 6,4,5, 9,7,8],
-	[6,4,5, 9,7,8, 3,1,2],
-	[9,7,8, 3,1,2, 6,4,5]
-];
-
-const arrayColumn = (arr, n) => arr.map(x => x[n]); // Get column from 2D array
-const copy = (arr) => JSON.parse(JSON.stringify(arr)); // Deep copy array
-
-function checkGame() {
-	// Create array of "truth values"
-	var truth_values = []
-
-	// Check if all rows are correct
-	for (var i = 0; i < 9; i++) {
-		var row = copy(player_grid[i]);
-
-		// Sort the row
-		row.sort();
-
-		// Check whether it is a solution
-		truth_values.push(row.join(',') == '1,2,3,4,5,6,7,8,9');
-	}
-
-	// Check if all columns are correct
-	for (var j = 0; j < 9; j++) {
-		var col = arrayColumn(player_grid, j);
-		
-		// Sort the column
-		col.sort();
-
-		// Check whether it is a solution
-		truth_values.push(col.join(',') == '1,2,3,4,5,6,7,8,9');
-	}
-
-	// Check if all cells are correct
-	for (var k = 0; k < 9; k++) {
-	    var x1 = (k * 3) % 9;
-	    var x2 = x1 + 3;
-
-	    var y1 = Math.floor(k / 3) * 3;
-	    var y2 = y1 + 3;
-
-	    var section = player_grid.slice(y1, y2).map(i => i.slice(x1, x2))
-		
-		var section_flat = section.flat()
-
-		section_flat.sort()
-
-		// Check whether it is a solution
-		truth_values.push(section_flat.join(',') == '1,2,3,4,5,6,7,8,9');
-	}
-
-	if (truth_values.every(function(e){return e;})) {
-		alert("You're correct!");
-	} else {
-		alert("Incorrect. Keep trying!");
-	}
+function newFrom(grid) {
+  return JSON.parse(JSON.stringify(grid));
 }
 
-function drawGrid() {
-	// Get canvas and context
-	var canvas = document.getElementById("gridCanvas");
+// game logic
 
-	canvas.width = boardSize * cell_size;
-	canvas.height = canvas.width;
+function isGameValid(grid) {
+  // check if the grid is valid by checking if each row, column and section has all numbers 1-9
+  // rows
+  for (var i = 0; i < 9; i++) {
+    var row = JSON.parse(JSON.stringify(grid[i]));
+    row.sort();
+    if (row.join(",") != "1,2,3,4,5,6,7,8,9") {
+      return false;
+    }
+  }
 
-	var ctx = canvas.getContext("2d");
-	
-	// Draw vertical lines
-	for (var x = 0; x < canvas.width; x+=cell_size) {
-		ctx.beginPath();
+  // columns
+  for (var j = 0; j < 9; j++) {
+    var col = grid.map((i) => i[j]);
+    col.sort();
+    if (col.join(",") != "1,2,3,4,5,6,7,8,9") {
+      return false;
+    }
+  }
 
-		if (x % (cell_size*3) == 0 && x > 0) {
-			ctx.strokeStyle = "#00F";
-			ctx.lineWidth = 2;
-		} else {
-			ctx.strokeStyle = "#777";
-			ctx.lineWidth = 1;
-		}
+  // sections
+  for (var k = 0; k < 9; k++) {
+    var x1 = (k * 3) % 9;
+    var x2 = x1 + 3;
 
-		ctx.moveTo(x, 0);
-		ctx.lineTo(x, canvas.height);
-		ctx.stroke();
-		ctx.closePath();
-	}
+    var y1 = Math.floor(k / 3) * 3;
+    var y2 = y1 + 3;
 
-	// Draw horizontal lines
-	for (var y = 0; y < canvas.height; y+=cell_size) {
-		ctx.beginPath();
-		
-		if (y % (cell_size*3) == 0 && y > 0) {
-			ctx.strokeStyle = "#00F";
-			ctx.lineWidth = 2;
-		} else {
-			ctx.strokeStyle = "#777";
-			ctx.lineWidth = 1;
-		}
+    var section = grid.slice(y1, y2).map((i) => i.slice(x1, x2));
 
-		ctx.moveTo(0, y);
-		ctx.lineTo(canvas.width, y);
-		ctx.stroke();
-		ctx.closePath();
-	}
+    var section_flat = section.flat();
+    section_flat.sort();
 
-	// Draw the numbers
-	for (var x = 0; x < boardSize; x++) {
-		for (var y = 0; y < boardSize; y++) {
-			var clue_square = clues_grid[x][y];
-			var player_square = player_grid[x][y];
+    if (section_flat.join(",") != "1,2,3,4,5,6,7,8,9") {
+      return false;
+    }
+  }
 
-			if (clue_square > 0) {
-				// Place number at position
-				ctx.font = "40px Arial";
-				ctx.fillStyle = "#F00";
-
-				ctx.fillText(clue_square, x*cell_size + 12, y*cell_size + 38); 
-
-			} else if (player_square > 0) {
-				// Place number at position
-				ctx.font = "40px Arial";
-				ctx.fillStyle = "#000";
-
-				ctx.fillText(player_square, x*cell_size + 12, y*cell_size + 38); 
-			}
-		}
-	}
+  return true;
 }
 
-function generateClues() {
-	// Generate a blank clues grid
-	clues_grid = [];
+function generateClues(answer_grid) {
+  // create a clues grid by randomly sampling from the answer grid
+  var clues_grid = [];
 
-	for (var x = 0; x < boardSize; x++) {
-		clues_grid.push([])
+  for (var x = 0; x < 9; x++) {
+    clues_grid.push([]);
+    for (var y = 0; y < 9; y++) {
+      clues_grid[x].push(0);
+    }
+  }
 
-		for (var y = 0; y < boardSize; y++) {
-			clues_grid[x].push(0);
-		}
-	}
+  // Generate clues randomly
+  for (var i = 0; i < 30; i++) {
+    var x_pos = Math.floor(Math.random() * 9);
+    var y_pos = Math.floor(Math.random() * 9);
 
-	// Generate clues randomly
-	for (var i = 0; i < 30; i++) {
-		var x_pos = Math.floor(Math.random() * 9);
-		var y_pos = Math.floor(Math.random() * 9);
+    clues_grid[x_pos][y_pos] = answer_grid[x_pos][y_pos];
+  }
 
-		clues_grid[x_pos][y_pos] = answer_grid[x_pos][y_pos];
-	}
-}
-
-function arrayRotate(arr) {
-	arr.unshift(arr.pop());
-	return arr;
+  return clues_grid;
 }
 
 function transpose(a) {
+  // transposes a 2D array
+  var w = a.length || 0;
+  var h = a[0] instanceof Array ? a[0].length : 0;
 
-	// Calculate the width and height of the Array
-	var w = a.length || 0;
-	var h = a[0] instanceof Array ? a[0].length : 0;
-  
-	// In case it is a zero matrix, no transpose routine needed.
-	if(h === 0 || w === 0) { return []; }
-  
-	/**
-	 * @var {Number} i Counter
-	 * @var {Number} j Counter
-	 * @var {Array} t Transposed data is stored in this array.
-	 */
-	var i, j, t = [];
-  
-	// Loop through every item in the outer array (height)
-	for(i=0; i<h; i++) {
-  
-	  // Insert a new row (array)
-	  t[i] = [];
-  
-	  // Loop through every item per item in outer array (width)
-	  for(j=0; j<w; j++) {
-  
-		// Save transposed data.
-		t[i][j] = a[j][i];
-	  }
-	}
-  
-	return t;
+  // In case it is a zero matrix, no transpose routine needed.
+  if (h === 0 || w === 0) {
+    return [];
   }
-  
 
+  /**
+   * @var {Number} i Counter
+   * @var {Number} j Counter
+   * @var {Array} t Transposed data is stored in this array.
+   */
+  var i,
+    j,
+    t = [];
 
-function generateGame() {
-	// Set new grid to the unsorted grid
-	answer_grid = JSON.parse(JSON.stringify(unsorted_grid));
-	player_grid = [];
+  // Loop through every item in the outer array (height)
+  for (i = 0; i < h; i++) {
+    // Insert a new row (array)
+    t[i] = [];
 
-	// Generate a blank player grid
-	for (var x = 0; x < boardSize; x++) {
-		player_grid.push([])
+    // Loop through every item per item in outer array (width)
+    for (j = 0; j < w; j++) {
+      // Save transposed data.
+      t[i][j] = a[j][i];
+    }
+  }
 
-		for (var y = 0; y < boardSize; y++) {
-			player_grid[x].push(0);
-		}
-	}
-
-	// Randomly sort the player grid while preserving solvability
-	var N_perms = 1000;
-
-	for (var i = 0; i < N_perms; i++) {
-		// Swap two lines within a block
-		var rotate_dir = Math.floor(Math.random() + 0.5);
-
-		// Choose block number
-		var block_no = Math.floor(2*Math.random() + 0.5);
-
-		// Choose line 1
-		var line1 = Math.floor(2*Math.random() + 0.5);
-
-		// Find line 2
-		var line2_shift = Math.floor(Math.random() + 0.5);
-
-		switch (line1) {
-			case 0:
-				var line2 = line2_shift + 1;
-				break;
-
-			case 1:
-				var line2 = 2*line2_shift;
-				break;
-
-			case 2:
-				var line2 = 1 - line2_shift;
-				break;
-		}
-
-		if (rotate_dir == 0) {
-			// Switch rows in horizontal direction
-			var answer_grid_tr = transpose(answer_grid)
-
-			var temp_array = answer_grid_tr[block_no * 3 + line1];
-
-			answer_grid_tr[block_no * 3 + line1] = answer_grid_tr[block_no * 3 + line2];
-			answer_grid_tr[block_no * 3 + line2] = temp_array;
-
-			answer_grid = transpose(answer_grid_tr);
-			
-		} else {
-			// Switch rows in vertical direction
-			var temp_array = answer_grid[block_no * 3 + line1];
-
-			answer_grid[block_no * 3 + line1] = answer_grid[block_no * 3 + line2];
-			answer_grid[block_no * 3 + line2] = temp_array;
-		}
-	}
-
-	generateClues();
-	drawGrid();
+  return t;
 }
 
+function newPlayerGrid() {
+  // Generate a blank player grid (9x9 array of 0s)
+  var new_grid = [];
 
-function revealAnswer() {
-	player_grid = copy(answer_grid);
+  // Generate a blank new grid
+  for (var x = 0; x < boardSize; x++) {
+    new_grid.push([]);
 
-	drawGrid();
+    for (var y = 0; y < boardSize; y++) {
+      new_grid[x].push(0);
+    }
+  }
+
+  return new_grid;
 }
 
-function clearGrid() {
-	for (var x = 0; x < boardSize; x++) {
-		for (var y = 0; y < boardSize; y++) {
-			player_grid[x][y] = 0;
-		}
-	}
+function newAnswerGrid() {
+  // Generate a new answer grid by randomly permuting the answer grid, preserving solvability
+  var new_answer_grid = newFrom(unsorted_grid);
 
-	drawGrid();
-}
+  var N_perms = 1000;
+  for (var i = 0; i < N_perms; i++) {
+    // Swap two lines within a block
+    var rotate_dir = Math.floor(2 * Math.random());
 
-function on_canvas_click(ev) {
-	var canvas = document.getElementById("gridCanvas");
+    // Choose block number
+    var block_no = Math.floor(3 * Math.random());
 
-    var x = ev.clientX - canvas.getBoundingClientRect().left;
-    var y = ev.clientY - canvas.getBoundingClientRect().top;
+    // Choose line 1
+    var line1 = Math.floor(3 * Math.random());
 
-    // Find square
-    var x_grid = Math.floor(x/cell_size);
-    var y_grid = Math.floor(y/cell_size);
+    // Find line 2
+    var line2_shift = Math.floor(2 * Math.random());
 
-    if (clues_grid[x_grid][y_grid] == 0) {
-	    player_grid[x_grid][y_grid] = (player_grid[x_grid][y_grid] + 1) % 10;
-	}
+    switch (line1) {
+      case 0:
+        var line2 = line2_shift + 1;
+        break;
 
-    drawGrid();
-}
+      case 1:
+        var line2 = 2 * line2_shift;
+        break;
 
-function on_canvas_right_click(ev) {
-    ev.preventDefault();
-	   	
-    var canvas = document.getElementById("gridCanvas");
-
-    var x = ev.clientX - canvas.getBoundingClientRect().left;
-    var y = ev.clientY - canvas.getBoundingClientRect().top;
-
-    // Find square
-    var x_grid = Math.floor(x/cell_size);
-    var y_grid = Math.floor(y/cell_size);
-
-    if (clues_grid[x_grid][y_grid] == 0) {
-    	player_grid[x_grid][y_grid] = 0;
+      case 2:
+        var line2 = 1 - line2_shift;
+        break;
     }
 
-    drawGrid();
+    if (rotate_dir == 0) {
+      // Switch rows in horizontal direction
+      var answer_grid_tr = transpose(new_answer_grid);
 
-    return false;
+      var temp_array = answer_grid_tr[block_no * 3 + line1];
+
+      answer_grid_tr[block_no * 3 + line1] =
+        answer_grid_tr[block_no * 3 + line2];
+      answer_grid_tr[block_no * 3 + line2] = temp_array;
+
+      new_answer_grid = transpose(answer_grid_tr);
+    } else {
+      // Switch rows in vertical direction
+      var temp_array = new_answer_grid[block_no * 3 + line1];
+
+      new_answer_grid[block_no * 3 + line1] =
+        new_answer_grid[block_no * 3 + line2];
+      new_answer_grid[block_no * 3 + line2] = temp_array;
+    }
+  }
+  return new_answer_grid;
 }
 
-function saveGame() {
-	var clues_encoded = btoa(JSON.stringify(clues_grid));
-	var player_encoded = btoa(JSON.stringify(player_grid));
-	var answer_encoded = btoa(JSON.stringify(answer_grid));
+// vue
 
-	var lcode = clues_encoded + "," + player_encoded + "," + answer_encoded;
-	var link = location.protocol + '//' + location.host + location.pathname + "?code=" + lcode;
+vue_app = {
+  data() {
+    return {
+      grid: newFrom(BLANK_GRID),
+      clues: newFrom(BLANK_GRID),
+      answer: newFrom(BLANK_GRID),
+    };
+  },
+  methods: {
+    incrementCell(row_index, col_index) {
+      this.grid[row_index][col_index] =
+        (this.grid[row_index][col_index] + 1) % 10;
+    },
+    decrementCell(row_index, col_index) {
+      this.grid[row_index][col_index] =
+        (this.grid[row_index][col_index] + 9) % 10;
+    },
+    clearCell(row_index, col_index) {
+      this.grid[row_index][col_index] = 0;
+    },
+    clearGrid() {
+      this.grid = newFrom(BLANK_GRID);
+    },
+    newGame() {
+      this.clearGrid();
+      this.answer = newAnswerGrid();
+      this.clues = generateClues(this.answer);
+    },
+    checkAnswer() {
+      const valid = isGameValid(this.grid);
+      if (valid) {
+        alert("You're Correct!");
+      } else {
+        alert("Incorrect. Keep trying!");
+      }
+    },
+    revealAnswer() {
+      this.grid = JSON.parse(JSON.stringify(this.answer));
+    },
+    saveGame() {
+      const clues_encoded = btoa(JSON.stringify(this.clues));
+      const player_encoded = btoa(JSON.stringify(this.grid));
+      const answer_encoded = btoa(JSON.stringify(this.answer));
 
-	window.open(link);
-}
+      const lcode = clues_encoded + "," + player_encoded + "," + answer_encoded;
+      const link =
+        location.protocol +
+        "//" +
+        location.host +
+        location.pathname +
+        "?code=" +
+        lcode;
 
-function getURLParameter(name) {
-	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-}
+      window.open(link);
+    },
+  },
+  mounted() {
+    const rcode =
+      decodeURIComponent(
+        (new RegExp("[?|&]" + "code" + "=" + "([^&;]+?)(&|#|;|$)").exec(
+          location.search
+        ) || [null, ""])[1].replace(/\+/g, "%20")
+      ) || null;
 
-var rcode = getURLParameter("code");
+    if (rcode !== null) {
+      const encoded_grids = rcode.split(",");
 
-document.addEventListener("DOMContentLoaded", function(){
-	document.getElementById('gridCanvas').addEventListener('click', on_canvas_click, false);
-
-	document.getElementById('gridCanvas').addEventListener('contextmenu', on_canvas_right_click, false);
-
-	if (rcode !== null) {
-		var encoded_grids = rcode.split(",");
-
-		clues_grid = JSON.parse(atob(encoded_grids[0]));
-		player_grid = JSON.parse(atob(encoded_grids[1]));
-		answer_grid = JSON.parse(atob(encoded_grids[0]));
-	} else {
-		generateGame();
-	}
-	
-	drawGrid();
-});
+      this.clues = JSON.parse(atob(encoded_grids[0]));
+      this.grid = JSON.parse(atob(encoded_grids[1]));
+      this.answer = JSON.parse(atob(encoded_grids[0]));
+    } else {
+      this.newGame();
+    }
+  },
+};
