@@ -9,40 +9,33 @@
 </head>
 
 <body>
-	<h1>Sudoku</h1>
 	<div id="app">
-		<span>{{game_state}}</span>
-		<button @click="newGame">New Game</button>
-		<button @click="checkAnswer">Check Answer</button>
-		<button @click="revealAnswer">Reveal Answer</button>
-		<button @click="clearGrid">Clear Grid</button>
-		<button @click="saveGame">Save Game</button>
+		<h1>Sudoku</h1>
+		<div class="buttons">
+			<button @click="newGame">New Game</button>
+			<button @click="checkAnswer">Check Answer</button>
+			<button @click="revealAnswer">Reveal Answer</button>
+			<button @click="clearGrid">Clear Grid</button>
+			<button @click="saveGame">Save Game</button>
+		</div>
 		<div class="grid">
-			<div class="row" v-for="(row, row_index) in grid">
-				<template v-for="(cell, col_index) in row">
-					<div class="clue cell" v-if="clues[row_index][col_index] != 0">
-						{{clues[row_index][col_index]}}
-					</div>
-					<div class="input cell" v-else @click="incrementCell(row_index, col_index)"
-						@contextmenu.prevent="decrementCell(row_index, col_index)">
-						{{cell == 0 ? '' : cell}}
+			<div class="row" v-for="(row, row_index) in grid" :key="row_index">
+				<template v-for="(cell, col_index) in row" :key="col_index">
+					<div class="cell" :class="{ 'clue': clues[row_index][col_index] != 0}"
+						@click="incrementCell(row_index, col_index)" @contextmenu.prevent="decrementCell(row_index, col_index)">
+						<span v-if="clues[row_index][col_index] != 0" :key="clues[row_index][col_index]">
+							{{clues[row_index][col_index]}}
+						</span>
+						<span v-else-if="cell != 0" :key="cell">
+							{{grid[row_index][col_index]}}
+						</span>
+						<span v-else :key="cell">
+						</span>
 					</div>
 				</template>
 			</div>
 		</div>
-	</div>
-	<div class="buttons">
-		<button onclick="javascript:generateGame()">New Game</button>
-		<button onclick="javascript:checkGame()">Check
-			Answer</button>
-		<button onclick="javascript:revealAnswer()">Reveal Answer</button>
-		<button onclick="javascript:clearGrid()">Clear Grid</button>
-		<button onclick="javascript:saveGame()">Save
-			Game</button>
-	</div>
-	<canvas id="gridCanvas" width=400 height=400></canvas>
-	<h2>Left click a square to increment its number.<br />Right click to clear the square.</h2>
-	<h4>(on mobile, you can keeping clicking a number to clear it)</h4>
+		<h2>Left click a square to increment its number.<br />Right click/hold to decrement.</h2>
 	</div>
 	<script>
 		const {createApp} = Vue;

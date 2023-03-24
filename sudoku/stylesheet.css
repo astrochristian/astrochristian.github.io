@@ -1,7 +1,12 @@
+/* app */
+
 body {
   font-family: sans-serif;
   background-color: #0b5345;
   color: #fff;
+}
+
+#app {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,11 +14,23 @@ body {
   text-align: center;
 }
 
+/* header */
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+/* buttons */
+
 button {
-  padding: 10px;
+  padding: 0.75rem;
+  margin: 0.5rem;
   font-weight: bold;
   background-color: gainsboro;
   border-radius: 10px;
+  min-width: 5rem;
 }
 
 button:hover {
@@ -22,14 +39,7 @@ button:hover {
   cursor: pointer;
 }
 
-/* canvas */
-
-canvas {
-  border: 1px solid black;
-  background-color: #fff;
-}
-
-/* divs */
+/* sudoku grid */
 
 .grid {
   user-select: none;
@@ -51,7 +61,7 @@ canvas {
   background-color: #fff;
   font-size: 2rem;
   font-weight: bold;
-  color: #0b5345;
+  color: black;
 }
 .cell:nth-child(3n):not(:last-child) {
   border-right: 3px solid blue;
@@ -60,14 +70,23 @@ canvas {
   border-bottom: 3px solid blue;
 }
 
-.clue.cell {
+.clue {
   color: red;
 }
 
-.input.cell:hover {
+.cell:hover:not(.clue) {
   background-color: #ddffdd;
   cursor: pointer;
 }
-.input.cell {
-  color: black;
+
+/* animations */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.05s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
