@@ -1,5 +1,5 @@
 body {
-	background-image: url("ll_ori.jpg");
+	background-image: url("reach.jpg");
 	font-family: sans-serif;
 }
 
@@ -12,18 +12,21 @@ table{
 	background-color: gainsboro;
     min-height: 100vh;
     width: 80%;
-    padding-left: 2%;
-    padding-right: 2%;
+
 }
 
-
-
 .arxiv_item {
-	padding-left: 10px;
-	padding-right: 10px;
+	width: 100%;
+	padding-left: 25px;
+	padding-right: 25px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	border-bottom: 4px solid black;
+	border-top: 4px solid black;
+}
+
+.arxiv_item:hover {
+	background-color:#f6f6f6;
 }
 
 .arxiv_link {
@@ -45,6 +48,12 @@ table{
 .author {
 	padding-bottom: 10px;
 	font-size:150%;
+}
+
+.date {
+	padding-bottom: 10px;
+	font-size:120%;
+	text-align: right;
 }
 
 .comms {

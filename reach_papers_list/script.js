@@ -25,10 +25,12 @@ function main() {
 
                     var title = paper.title[0];
                     var authors = paper.author;
-                    var date = paper.pubdate;
+                    var date_raw = paper.date;
+                    var link = "https://doi.org/" + paper.doi[0];
+                    
 
                     // Add table row
-                    table_html += '<tr class="arxiv_row"><td class="arxiv_item">';
+                    table_html += '<tr class="arxiv_row"><td class="arxiv_item"><a style="color:black" href="'+link+'">';
 
                     // Add title
                     title = title.replace(/(\$)([^\$]+)(\$)/g, "\\($2\\)")
@@ -36,7 +38,7 @@ function main() {
                     var clean_title = title.replace(/<\/?[^>]+(>|$)/g, "");
                     clean_title = clean_title.replace(/Title: /g, "");
 
-                    table_html += '<div class="title">['+(i+1)+"] "+clean_title+'</div>';
+                    table_html += '<div class="title">'+clean_title+'</div>';
 
                     // Improve formatting of authors
                     var clean_authors = [];
@@ -50,15 +52,16 @@ function main() {
                     clean_authors = clean_authors.join(', ')
                     table_html += '<div class="author">'+clean_authors+'</div>';
 
+                    // Add date
+                    var date_parsed = new Date(Date.parse(date_raw));
+                    console.log(date_raw)
+                    console.log(date_parsed)
+                    var date = strftime("%B %Y", date_parsed);
+
+                    table_html += '<div class="date">'+date+'</div>';
+
                     // Close column tag
-                    table_html += '</td><td class="arxiv_link">';
-
-                    var link = "https://doi.org/" + paper.doi[0];
-                    table_html += '<div class="links"><a href="'+link+'" target="_blank" rel="noopener noreferrer">🔗</a></div>';
-            
-                    // Close row tag
-                    table_html += '</td></tr>';
-
+                    table_html += '</a></td></tr>';
                     // Reload MathJaX
                     reload_mathjax();
                     
