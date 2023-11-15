@@ -26,12 +26,16 @@ function main() {
                     var title = paper.title[0];
                     var authors = paper.author;
                     var date_raw = paper.date;
-                    var link = "https://doi.org/" + paper.doi[0];
+
+                    if ("doi" in paper) {
+                        var link = "https://doi.org/" + paper.doi[0];
+                        // Add table row
+                        table_html += '<tr class="arxiv_row"><td class="arxiv_item_w_link"><a style="color:black" href="'+link+'">';
+                    } else {
+                        // Add table row
+                        table_html += '<tr class="arxiv_row"><td class="arxiv_item">';
+                    }
                     
-
-                    // Add table row
-                    table_html += '<tr class="arxiv_row"><td class="arxiv_item"><a style="color:black" href="'+link+'">';
-
                     // Add title
                     title = title.replace(/(\$)([^\$]+)(\$)/g, "\\($2\\)")
                     
@@ -60,8 +64,14 @@ function main() {
 
                     table_html += '<div class="date">'+date+'</div>';
 
-                    // Close column tag
-                    table_html += '</a></td></tr>';
+                    if ("doi" in paper) {
+                        // Close column tag
+                        table_html += '</a></td></tr>';
+                    } else {
+                        // Close column tag
+                        table_html += '</td></tr>';
+                    }
+                    
                     // Reload MathJaX
                     reload_mathjax();
                     

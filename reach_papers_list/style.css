@@ -25,7 +25,17 @@ table{
 	border-top: 4px solid black;
 }
 
-.arxiv_item:hover {
+.arxiv_item_w_link {
+	width: 100%;
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-bottom: 4px solid black;
+	border-top: 4px solid black;
+}
+
+.arxiv_item_w_link:hover {
 	background-color:#f6f6f6;
 }
 
