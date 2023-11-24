@@ -26,6 +26,7 @@ function main() {
                     var title = paper.title[0];
                     var authors = paper.author;
                     var date_raw = paper.date;
+                    var pub = paper.pub;
 
                     if ("doi" in paper) {
                         var link = "https://doi.org/" + paper.doi[0];
@@ -42,7 +43,7 @@ function main() {
                     var clean_title = title.replace(/<\/?[^>]+(>|$)/g, "");
                     clean_title = clean_title.replace(/Title: /g, "");
 
-                    table_html += '<div class="title">'+clean_title+'</div>';
+                    table_html += '<div class="title">['+(papers.length - i)+'] '+clean_title+'</div>';
 
                     // Improve formatting of authors
                     var clean_authors = [];
@@ -55,6 +56,9 @@ function main() {
                     // Add authors
                     clean_authors = clean_authors.join(', ')
                     table_html += '<div class="author">'+clean_authors+'</div>';
+
+                    // Add publisher
+                    table_html += '<div class="pub">'+pub+'</div>';
 
                     // Add date
                     var date_parsed = new Date(Date.parse(date_raw));

@@ -56,8 +56,14 @@ table{
 
 
 .author {
-	padding-bottom: 10px;
+	padding-bottom: 20px;
 	font-size:150%;
+}
+
+.pub {
+	padding-bottom: 10px;
+	font-size:110%;
+	color: darkred;
 }
 
 .date {
