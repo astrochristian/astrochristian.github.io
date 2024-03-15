@@ -37,7 +37,7 @@ function main() {
 
   // Open arXiv
   var request = new XMLHttpRequest();
-  request.open("GET", "./astro_ph_co.html", true);  // last parameter must be true
+  request.open("GET", "https://raw.githubusercontent.com/astrochristian/astro_ph_co/master/astro_ph_co.html", true);  // last parameter must be true
   request.responseType = "document";
 
   // Get response
