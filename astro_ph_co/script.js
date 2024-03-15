@@ -38,7 +38,7 @@ function main() {
   // Open arXiv
   var request = new XMLHttpRequest();
   request.open("GET", "https://raw.githubusercontent.com/astrochristian/astro_ph_co/master/astro_ph_co.html", true);  // last parameter must be true
-  request.responseType = "document";
+  request.responseType = "text";
 
   // Get response
   request.onload = function (e) {
@@ -51,15 +51,16 @@ function main() {
         Math.seedrandom(date_str);
 
         // Get HTML response
-        var result = request.response;
+        var result = document.createElement( 'html' );
+        result.innerHTML = request.response;
 
         // Identify all papers on arXiv page
-        var items = result.body.getElementsByTagName("dd");
+        var items = result.getElementsByTagName("dd");
 
-        var link_items = result.body.getElementsByTagName("dt");
+        var link_items = result.getElementsByTagName("dt");
 
         // Load list of days at start
-        var days = result.body.getElementsByTagName("li");
+        var days = result.getElementsByTagName("li");
 
         // Check if there's another Friday
         var remove_number = items.length;
@@ -74,14 +75,10 @@ function main() {
           // Get href of child a tag
           var href_link = days[4].innerHTML;
 
-          console.log(href_link)
-
           // Match number
           var remove_number_str = href_link.match(/(?:item)\d+(?=")/)[0]
           remove_number = parseInt(remove_number_str.replace("item", "")) - 1;    
         }
-
-        console.log(remove_number);
 
         // Remove wrong day
         items = Array.from(items).slice(0, remove_number);
