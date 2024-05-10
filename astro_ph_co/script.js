@@ -100,13 +100,17 @@ function main() {
           var comms_el = item.getElementsByClassName("list-comments")[0];
           var subjs_el = item.getElementsByClassName("list-subjects")[0];
 
-          var ident_el = link_item.getElementsByClassName("list-identifier")[0];
-
+          var ident_el = link_item//.getElementsByTagName("list-identifier")[0];
           
+          // Remove descriptor span tags
+          title_el.querySelector('.descriptor').remove();
+          subjs_el.querySelector('.descriptor').remove();
+
           // Add table row
           table_html += '<tr class="arxiv_row"><td class="arxiv_item">';
 
           // Add title
+    
           var title = title_el.innerHTML;
 
           title = title.replace(/(\$)([^\$]+)(\$)/g, "\\($2\\)")
@@ -148,9 +152,11 @@ function main() {
           // Add links
           if (typeof ident_el != 'undefined') {
             // Get link
-            var abs_link = ident_el.getElementsByTagName("a")[0].href;
+            var abs_link = ident_el.getElementsByTagName("a")[1].href;
+
             abs_link = abs_link.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
 			
+
             var pdf_link = abs_link.replace("abs","pdf")+".pdf";
             pdf_link = pdf_link.replace(/https:\/\/astrochristian.github.io\//g, 'https://arxiv.org/');
 
