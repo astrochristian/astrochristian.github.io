@@ -101,6 +101,8 @@ function main() {
           var subjs_el = item.getElementsByClassName("list-subjects")[0];
 
           var ident_el = link_item//.getElementsByTagName("list-identifier")[0];
+
+          var arxiv_num = ident_el.getElementsByTagName("a")[1].id;
           
           // Remove descriptor span tags
           title_el.querySelector('.descriptor').remove();
@@ -145,6 +147,9 @@ function main() {
 
             table_html += '<div class="subjs">'+subjs+'</div>';
           }
+
+          // arXiv identifier
+          table_html += '<div class="ident">'+arxiv_num+'</div>';
 
           // Close column tag
           table_html += '</td><td class="arxiv_link">';

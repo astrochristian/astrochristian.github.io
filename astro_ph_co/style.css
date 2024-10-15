@@ -52,6 +52,12 @@ table{
 	font-size: 110%;
 }
 
+.ident {
+	padding-bottom: 10px;
+	font-size: 120%;
+	color: red;
+}
+
 .subjs {
 	padding-bottom: 20px;
 	font-size: 110%;
