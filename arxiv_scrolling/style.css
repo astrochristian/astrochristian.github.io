@@ -1,0 +1,106 @@
+body {
+	background-image: url("ll_ori.jpg");
+	font-family: sans-serif;
+}
+
+table{
+	border-collapse: collapse;
+}
+
+.container {
+	margin:auto;
+	background-color: gainsboro;
+    min-height: 100vh;
+    width: 80%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+
+
+.arxiv_item {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-bottom: 4px solid black;
+}
+
+.arxiv_link {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-bottom: 4px solid black;
+}
+
+.title {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	font-weight: bold;
+	font-size: 200%;
+}
+
+
+.author {
+	padding-bottom: 10px;
+	font-size:150%;
+}
+
+.comms {
+	padding-bottom: 10px;
+	font-size: 110%;
+}
+
+.ident {
+	padding-bottom: 10px;
+	font-size: 120%;
+	color: red;
+}
+
+.subjs {
+	padding-bottom: 20px;
+	font-size: 110%;
+	font-style: italic;
+}
+
+.links {
+	padding-bottom: 10px;
+	font-size:300%;
+}
+
+a {
+	text-decoration: none;
+	color: steelblue;
+}
+
+a:visited {
+	color: steelblue;
+}
+
+#options_table {
+    width: 50%;
+    margin: 10px auto;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f9f9f9; /* Light background color for visibility */
+}
+
+#options_table td {
+    padding: 10px; /* Increased padding for better visibility */
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: #fff; /* White background for cells */
+}
+
+#options_table label {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+}
+
+#options_table td.selected {
+	background-color: #000000; /* Darker color to indicate selection */
+	color: #fff;
+}
