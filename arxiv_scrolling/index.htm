@@ -59,6 +59,28 @@
 			tableCells.forEach(cell => {
 				cell.addEventListener('click', function() {
 					this.classList.toggle('selected');
+
+					// Update URL with selected categories
+					
+					var selected_subjects = Array.from(tableCells)
+						.filter(cell => cell.classList.contains('selected'))
+						.map(cell => cell.id)
+						.join(',');
+
+					// Update the URL to add the selected subjects
+					var new_url = window.location.href.split("?")[0] + "?";
+
+					for (var i = 0; i < selected_subjects.length; i++) {
+					new_url += selected_subjects[i] + "&";
+					}
+
+					// Remove last "&"
+					new_url = new_url.slice(0, -1);
+
+					// Update URL
+					window.history.pushState({}, document.title, new_url);
+
+					
 					main();
 				});
 			});
