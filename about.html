@@ -12,6 +12,18 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<link rel="icon" type="image/ico" href="/images/favicon.ico">
+		<!-- Redirect /about to /research -->
+		<link rel="canonical" href="/research" />
+		<meta http-equiv="refresh" content="0; url=/research" />
+		<meta name="robots" content="noindex,follow" />
+		<script>
+			// JS redirect as a robust fallback
+			window.addEventListener('DOMContentLoaded', function () {
+				if (window.location.pathname.match(/\/about\/?$/)) {
+					window.location.replace('/research');
+				}
+			});
+		</script>
 	</head>
 	<body class="is-preload">
 
@@ -41,20 +53,16 @@
 						</ul>
 					</nav>
 
-				<!-- Main -->
+				<!-- Main (minimal fallback content) -->
 					<div id="main" class="alt">
-
-						<!-- One -->
-							<section id="one">
-								<div class="inner">
-									<header class="major">
-										<h1>About Me</h1>
-									</header>
-									<span class="image main"><img src="images/about_banner.jpg" alt="" /></span>
-									<p>Hi, I am a third year Astrophysics student at the University of Cambridge, working with Eloy de Lera Acedo and Dominic Anstey in the <a href="https://www.cavendishradiocosmology.com/">Cavendish Radio Cosmology</a> group. My work involves using Bayesian analysis to detect the global 21cm hydrogen signal at high redshifts with the <a href="https://ui.adsabs.harvard.edu/abs/2022NatAs...6..984D/abstract">REACH radio telescope</a> in order to constrain our knowledge about the Epoch of Reionisation and Cosmic Dawn.</p>
-								</div>
-							</section>
-
+						<section id="one">
+							<div class="inner">
+								<header class="major">
+									<h1>Redirecting…</h1>
+								</header>
+								<p>This page has moved. If you are not redirected automatically, please visit the <a href="/research" style="text-decoration:underline">Research</a> page.</p>
+							</div>
+						</section>
 					</div>
 
 				<!-- Footer -->
