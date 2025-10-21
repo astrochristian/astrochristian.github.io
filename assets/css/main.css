@@ -2865,10 +2865,20 @@ input, select, textarea {
 
 		}
 
+/* Make a tile span full width when marked as wide on larger screens */
+.tiles article.wide {
+	width: 100% !important;
+}
+
 		@media screen and (max-width: 980px) {
 
 			.tiles article {
 				width: 50% !important;
+			}
+
+			/* Keep explicitly wide tiles full-width on tablet sizes */
+			.tiles article.wide {
+				width: 100% !important;
 			}
 
 		}
