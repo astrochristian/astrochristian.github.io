@@ -118,6 +118,134 @@ ul, ol {
 }
 
 /* ===================================
+   Dark Mode
+   =================================== */
+
+html[data-theme="dark"] {
+	--text-dark: #e4e4e7;
+	--text-medium: #d4d4d8;
+	--text-light: #a1a1aa;
+	--text-lighter: #71717a;
+	--bg-white: #18181b;
+	--bg-light: #27272a;
+	--bg-lighter: #3f3f46;
+	--border-color: #52525b;
+	--border-light: #3f3f46;
+}
+
+html[data-theme="dark"] body {
+	background-color: var(--bg-white);
+	color: var(--text-medium);
+}
+
+html[data-theme="dark"] .nav-bar {
+	background-color: rgba(24, 24, 27, 0.95);
+	border-bottom-color: var(--border-color);
+}
+
+html[data-theme="dark"] .nav-logo,
+html[data-theme="dark"] .nav-menu li a {
+	color: var(--text-medium);
+}
+
+html[data-theme="dark"] .nav-toggle span {
+	background-color: var(--text-medium);
+}
+
+html[data-theme="dark"] .about-section {
+	background-color: var(--bg-light);
+}
+
+html[data-theme="dark"] .highlight-card,
+html[data-theme="dark"] .link-card {
+	background-color: var(--bg-lighter);
+	border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .highlight-card h3 {
+	color: var(--text-lighter);
+}
+
+html[data-theme="dark"] .highlight-card p {
+	color: var(--text-dark);
+}
+
+html[data-theme="dark"] .link-card-content h3 {
+	color: var(--text-dark);
+}
+
+html[data-theme="dark"] .link-card-content p {
+	color: var(--text-light);
+}
+
+html[data-theme="dark"] .research-intro,
+html[data-theme="dark"] .publications-list,
+html[data-theme="dark"] .misc-intro {
+	background-color: var(--bg-lighter);
+}
+
+html[data-theme="dark"] .talk-item {
+	background-color: var(--bg-lighter);
+	border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .talk-title {
+	color: var(--text-dark);
+}
+
+html[data-theme="dark"] .talk-venue {
+	color: var(--text-light);
+}
+
+html[data-theme="dark"] .contact-info-card {
+	background-color: var(--bg-lighter);
+}
+
+html[data-theme="dark"] .contact-info-content h3 {
+	color: var(--text-dark);
+}
+
+html[data-theme="dark"] .contact-info-content p {
+	color: var(--text-light);
+}
+
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group textarea {
+	background-color: var(--bg-lighter);
+	border-color: var(--border-color);
+	color: var(--text-medium);
+}
+
+html[data-theme="dark"] .form-group input:focus,
+html[data-theme="dark"] .form-group textarea:focus {
+	border-color: var(--primary-color);
+}
+
+html[data-theme="dark"] .btn-secondary {
+	background-color: var(--bg-lighter);
+	border-color: var(--border-color);
+	color: var(--text-medium);
+}
+
+html[data-theme="dark"] .project-card {
+	background-color: var(--bg-lighter);
+	border-color: var(--border-color);
+}
+
+html[data-theme="dark"] .project-title a {
+	color: var(--text-dark);
+}
+
+html[data-theme="dark"] .project-description,
+html[data-theme="dark"] .project-features li {
+	color: var(--text-light);
+}
+
+html[data-theme="dark"] .footer {
+	background-color: #09090b;
+}
+
+/* ===================================
    Navigation
    =================================== */
 
@@ -158,6 +286,58 @@ ul, ol {
 
 .nav-logo:hover {
 	color: var(--primary-color);
+}
+
+.nav-right {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-md);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 2px solid var(--border-color);
+	background-color: transparent;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all var(--transition-fast);
+	position: relative;
+}
+
+.theme-toggle:hover {
+	background-color: var(--bg-light);
+	border-color: var(--primary-color);
+}
+
+.theme-toggle .sun-icon,
+.theme-toggle .moon-icon {
+	position: absolute;
+	transition: all var(--transition-fast);
+}
+
+html[data-theme="light"] .theme-toggle .sun-icon {
+	opacity: 0;
+	transform: rotate(180deg);
+}
+
+html[data-theme="light"] .theme-toggle .moon-icon {
+	opacity: 1;
+	transform: rotate(0deg);
+}
+
+html[data-theme="dark"] .theme-toggle .sun-icon {
+	opacity: 1;
+	transform: rotate(0deg);
+}
+
+html[data-theme="dark"] .theme-toggle .moon-icon {
+	opacity: 0;
+	transform: rotate(-180deg);
 }
 
 .nav-menu {
@@ -341,49 +521,6 @@ ul, ol {
 }
 
 /* ===================================
-   Featured Image Section
-   =================================== */
-
-.featured-image-section {
-	background-color: var(--bg-white);
-	padding: var(--spacing-xxl) 0;
-}
-
-.featured-image-wrapper {
-	position: relative;
-	border-radius: 12px;
-	overflow: hidden;
-	box-shadow: var(--shadow-xl);
-	transition: transform var(--transition-normal);
-}
-
-.featured-image-wrapper:hover {
-	transform: scale(1.02);
-}
-
-.featured-image {
-	width: 100%;
-	height: auto;
-	display: block;
-}
-
-.featured-image-caption {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-	padding: var(--spacing-lg);
-	color: white;
-}
-
-.featured-image-caption p {
-	margin: 0;
-	font-size: 0.95rem;
-	font-style: italic;
-}
-
-/* ===================================
    Page Header
    =================================== */
 
@@ -397,39 +534,9 @@ ul, ol {
 	overflow: hidden;
 }
 
-.page-header::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	opacity: 0.15;
-	background-size: cover;
-	background-position: center;
-	z-index: 0;
-}
-
 .page-header .container {
 	position: relative;
 	z-index: 1;
-}
-
-/* Page-specific backgrounds */
-.page-header-research::before {
-	background-image: url('../images/dark_ages.jpg');
-}
-
-.page-header-talks::before {
-	background-image: url('../images/jwst_carina.png');
-}
-
-.page-header-contact::before {
-	background-image: url('../images/observatory.jpg');
-}
-
-.page-header-misc::before {
-	background-image: url('../images/black_eye.jpg');
 }
 
 .page-title {
