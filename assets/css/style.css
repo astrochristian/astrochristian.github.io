@@ -201,6 +201,10 @@ html[data-theme="dark"] .talk-venue {
 	color: var(--text-light);
 }
 
+html[data-theme="dark"] .talk-date {
+	color: var(--text-lighter);
+}
+
 html[data-theme="dark"] .contact-info-card {
 	background-color: var(--bg-lighter);
 }
@@ -607,7 +611,7 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 
 .about-grid {
 	display: grid;
-	grid-template-columns: 300px 1fr;
+	grid-template-columns: 200px 1fr;
 	gap: var(--spacing-xl);
 	margin-top: var(--spacing-lg);
 	align-items: start;
@@ -838,7 +842,15 @@ html[data-theme="dark"] .theme-toggle .moon-icon {
 .talk-venue {
 	color: var(--text-light);
 	font-size: 0.95rem;
+	margin-bottom: 0.25rem;
+}
+
+.talk-date {
+	color: var(--text-lighter);
+	font-size: 0.875rem;
+	margin-top: 0.25rem;
 	margin-bottom: 0;
+	font-style: italic;
 }
 
 .talk-type {
