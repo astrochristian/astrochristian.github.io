@@ -193,6 +193,54 @@
 			let time = 0;
 			let phase = 'blank'; // blank -> stars -> bubbles
 			let phaseTime = 0;
+			let alienTransmissionTriggered = false;
+			let transmissionSourceStar = null; // Star that sends the transmission
+			const ALIEN_TRANSMISSION_TIME = 30000; // 5 minutes in frames (at 60fps ~ 300 seconds)
+
+			function drawAlienTransmission() {
+				// Transmission radiates from the source star
+				if (!transmissionSourceStar) return;
+				
+				const centerX = transmissionSourceStar.x;
+				const centerY = transmissionSourceStar.y;
+				const maxRadius = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height);
+				
+				// Beacon pulsation cycle is 2π / 0.1 ≈ 62.8 frames per pulse
+				// Create one ring per beacon pulse cycle
+				const pulseInterval = (Math.PI * 2) / 0.1; // Frames per complete pulse cycle
+				const ringCount = Math.floor(time / pulseInterval) + 1;
+				
+				// Draw rings from each pulse cycle
+				for (let ringIdx = 0; ringIdx < ringCount; ringIdx++) {
+					const ringBirthTime = ringIdx * pulseInterval;
+					const ringAge = time - ringBirthTime;
+					const ringRadius = (ringAge / pulseInterval) * maxRadius * 0.04165; // 2x slower (0.04165x speed)
+					
+					if (ringRadius < maxRadius && ringRadius > 0) {
+						const opacity = Math.max(0, 1 - (ringRadius / maxRadius)) * 0.5;
+						
+						ctx.strokeStyle = `rgba(0, 255, 150, ${opacity})`; // Cyan-green alien transmission color
+						ctx.lineWidth = 2;
+						ctx.beginPath();
+						ctx.arc(centerX, centerY, ringRadius, 0, Math.PI * 2);
+						ctx.stroke();
+					}
+				}
+				
+				// Small bright beacon at the transmitting star with continuous pulse
+				const beaconPulse = Math.sin(time * 0.1) * 0.3 + 0.7;
+				ctx.fillStyle = `rgba(0, 255, 150, ${0.9 * beaconPulse})`;
+				ctx.beginPath();
+				ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+				ctx.fill();
+				
+				// Pulsing glow around transmitting star
+				const beaconGlow = beaconPulse;
+				ctx.fillStyle = `rgba(0, 255, 150, ${beaconGlow * 0.3})`;
+				ctx.beginPath();
+				ctx.arc(centerX, centerY, 20, 0, Math.PI * 2);
+				ctx.fill();
+			}
 
 			function resizeCanvas() {
 				canvas.width = window.innerWidth;
@@ -333,24 +381,60 @@
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				time++;
 
-				// Update phase
-				if (time > 60 && phase === 'blank') {
-					phase = 'stars';
-				}
-				if (time > 120 && phase === 'stars') {
-					phase = 'bubbles';
-				}
-
-				// Draw bubbles first
-				for (let bubble of bubbles) {
-					bubble.update(time);
-					bubble.draw();
+				// Check for alien transmission easter egg (5 minutes)
+				if (time >= ALIEN_TRANSMISSION_TIME && !alienTransmissionTriggered) {
+					alienTransmissionTriggered = true;
+					// Pick a random star to be the transmission source
+					if (stars.length > 0) {
+						transmissionSourceStar = stars[Math.floor(Math.random() * stars.length)];
+					}
 				}
 
-				// Draw stars (always on top, persistent)
-				for (let star of stars) {
-					star.update(time);
-					star.draw();
+				if (alienTransmissionTriggered && transmissionSourceStar) {
+					// Draw normal animation but highlight the transmission star
+					// Update phase
+					if (time > 60 && phase === 'blank') {
+						phase = 'stars';
+					}
+					if (time > 120 && phase === 'stars') {
+						phase = 'bubbles';
+					}
+
+					// Draw bubbles first
+					for (let bubble of bubbles) {
+						bubble.update(time);
+						bubble.draw();
+					}
+
+					// Draw stars (always on top, persistent)
+					for (let star of stars) {
+						star.update(time);
+						star.draw();
+					}
+
+					// Draw transmission effect on top
+					drawAlienTransmission();
+				} else {
+					// Normal animation
+					// Update phase
+					if (time > 60 && phase === 'blank') {
+						phase = 'stars';
+					}
+					if (time > 120 && phase === 'stars') {
+						phase = 'bubbles';
+					}
+
+					// Draw bubbles first
+					for (let bubble of bubbles) {
+						bubble.update(time);
+						bubble.draw();
+					}
+
+					// Draw stars (always on top, persistent)
+					for (let star of stars) {
+						star.update(time);
+						star.draw();
+					}
 				}
 
 				animationId = requestAnimationFrame(animate);
@@ -375,6 +459,18 @@
 			// Reinitialize when theme changes
 			themeToggle.addEventListener('click', () => {
 				setTimeout(init, 100);
+			});
+
+			// Manual trigger for alien transmission easter egg (Press 'X' for testing)
+			document.addEventListener('keydown', (e) => {
+				if (e.key.toLowerCase() === 'x') {
+					alienTransmissionTriggered = true;
+					// Pick a random star to be the transmission source
+					if (stars.length > 0) {
+						transmissionSourceStar = stars[Math.floor(Math.random() * stars.length)];
+						console.log('Alien transmission triggered from star at:', transmissionSourceStar.x, transmissionSourceStar.y);
+					}
+				}
 			});
 
 			// Typing animation with random tagline selection
