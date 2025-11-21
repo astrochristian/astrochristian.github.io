@@ -1,0 +1,43 @@
+name: Update Last Modified Timestamp
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'index.html'
+      - '**.html'
+      - '**.css'
+      - '**.js'
+      - '.github/workflows/update-timestamp.yml'
+
+jobs:
+  update-timestamp:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git log
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Update timestamp
+        run: node update-timestamp.js
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add index.html
+            git commit -m "chore: update last modified timestamp"
+            git push
+          fi

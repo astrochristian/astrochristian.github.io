@@ -1244,6 +1244,13 @@ html[data-theme="dark"] .photo-glow {
 	font-size: 0.95rem;
 }
 
+.last-updated {
+	margin: 8px 0 0 0;
+	font-size: 0.85rem;
+	opacity: 0.7;
+	font-style: italic;
+}
+
 .footer-right {
 	display: flex;
 	gap: var(--spacing-md);
