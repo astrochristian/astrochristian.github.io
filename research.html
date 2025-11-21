@@ -211,84 +211,110 @@
 			const centerY = height / 2;
 			const time = dickeTime * 0.01;
 
-			// Integration time increases - noise decreases
-			const integrationTime = Math.min(dickeTime / 300, 1); // Reaches 1 after 300 frames
-			const noiseScale = Math.max(0, 1 - integrationTime); // Noise goes from 1 to 0
-
-			// ===== PHASE 1: Noise/Confusion =====
-			// Starting with chaotic noisy data
-
-			// Large systematic effect - the dominant sinusoid
+			// ===== PHASE 1: Systematic effect =====
+			// The dominant sinusoid pattern
 			dickeCtx.strokeStyle = 'rgba(251, 146, 60, 1)';
 			dickeCtx.lineWidth = 5;
 			dickeCtx.beginPath();
 			for (let x = 0; x < width; x += 3) {
 				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
-				const gaussNoise = gaussianRandom() * 100 * noiseScale; // Reduced noise
-				const y = centerY + systematic + gaussNoise;
+				const y = centerY + systematic;
 				if (x === 0) dickeCtx.moveTo(x, y);
 				else dickeCtx.lineTo(x, y);
 			}
 			dickeCtx.stroke();
 
-			// ===== PHASE 2: Hidden 21-cm Signal =====
-			// The small signal getting clearer as noise reduces
-			
-			const gpStrength = 0.5 + 0.3 * Math.sin(time * 0.5);
-			
-			dickeCtx.strokeStyle = `rgba(147, 197, 253, ${1 + gpStrength * 0.5})`;
+			// ===== PHASE 2: 21-cm Signal =====
+			// The 21-cm absorption and emission profile signal
+			dickeCtx.strokeStyle = 'rgba(147, 197, 253, 1)';
 			dickeCtx.lineWidth = 4;
 			dickeCtx.beginPath();
 			for (let x = 0; x < width; x += 2) {
-				// Small 21-cm signal - a Gaussian profile instead of sinusoidal
-				const gaussianCenter = width / 2;
-				const gaussianWidth = 100;
-				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
-				const gaussNoise = gaussianRandom() * 60 * noiseScale; // Reduced noise
-				const y = centerY - 40 + signal21cm + gaussNoise; // Offset upward so it's visible
+				// 21-cm signal - realistic profile: flat baseline, shallow absorption trough, deep absorption trough, small emission peak
+				const normalizedX = (x - centerX - 80) / 60;
+				
+				// Start with flat baseline
+				let signal = 0;
+				
+				// Shallow absorption trough on the left side - moved 1.5x further left and 2x deeper
+				if (normalizedX < -0.3) {
+					signal += 50 * Math.exp(-Math.pow(normalizedX + 2.2, 2) * 0.9);
+				}
+				
+				// Deep absorption trough in the middle - 1.5x deeper
+				signal += 165 * Math.exp(-Math.pow(normalizedX, 2) * 1.8);
+				
+				// Small emission peak on the right side - 1.5x height
+				if (normalizedX > 0.5) {
+					signal -= 18 * Math.exp(-Math.pow(normalizedX - 1.2, 2) * 2.5);
+				}
+				
+				const y = centerY - 80 + signal;
+				
 				if (x === 0) dickeCtx.moveTo(x, y);
 				else dickeCtx.lineTo(x, y);
 			}
 			dickeCtx.stroke();
 
-			// ===== PHASE 3: Fitted signal with confidence region =====
-			// Purple band showing uncertainty around the fitted model
+			// ===== PHASE 3: Fitted model with confidence region =====
+			// Purple band showing the fitted model and uncertainty
 			
 			// Draw confidence band
-			dickeCtx.fillStyle = `rgba(167, 139, 250, ${0.25 + gpStrength * 0.15})`;
+			dickeCtx.fillStyle = 'rgba(167, 139, 250, 0.25)';
 			dickeCtx.beginPath();
 			for (let x = 0; x < width; x += 2) {
 				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
-				const gaussianCenter = width / 2;
-				const gaussianWidth = 100;
-				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
-				const centerSignal = centerY - 40 + systematic + signal21cm;
+				const normalizedX = (x - centerX - 80) / 60;
+				let signal = 0;
+				if (normalizedX < -0.3) {
+					signal += 50 * Math.exp(-Math.pow(normalizedX + 2.2, 2) * 0.9);
+				}
+				signal += 165 * Math.exp(-Math.pow(normalizedX, 2) * 1.8);
+				if (normalizedX > 0.5) {
+					signal -= 18 * Math.exp(-Math.pow(normalizedX - 1.2, 2) * 2.5);
+				}
+				const signal21cm = signal;
+				const centerSignal = centerY - 80 + systematic + signal21cm;
 				const uncertainty = 20 + 8 * Math.sin(time * 0.3 + x * 0.01);
 				if (x === 0) dickeCtx.moveTo(x, centerSignal - uncertainty);
 				else dickeCtx.lineTo(x, centerSignal - uncertainty);
 			}
-			for (let x = width; x >= 0; x -= 2) {
+        			for (let x = width; x >= 0; x -= 2) {
 				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
-				const gaussianCenter = width / 2;
-				const gaussianWidth = 100;
-				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
-				const centerSignal = centerY - 40 + systematic + signal21cm;
+				const normalizedX = (x - centerX - 80) / 60;
+				let signal = 0;
+				if (normalizedX < -0.3) {
+					signal += 50 * Math.exp(-Math.pow(normalizedX + 2.2, 2) * 0.45);
+				}
+				signal += 165 * Math.exp(-Math.pow(normalizedX, 2) * 1.8);
+				if (normalizedX > 0.5) {
+					signal -= 18 * Math.exp(-Math.pow(normalizedX - 1.2, 2) * 2.5);
+				}
+				const signal21cm = signal;
+				const centerSignal = centerY - 80 + systematic + signal21cm;
 				const uncertainty = 20 + 8 * Math.sin(time * 0.3 + x * 0.01);
 				dickeCtx.lineTo(x, centerSignal + uncertainty);
 			}
 			dickeCtx.closePath();
 			dickeCtx.fill();
 
-			// Draw the fitted model line (purple, going through the middle)
-			dickeCtx.strokeStyle = `rgba(167, 139, 250, ${0.8 + gpStrength * 0.2})`;
+			// Draw the fitted model line (purple)
+			dickeCtx.strokeStyle = 'rgba(167, 139, 250, 0.8)';
 			dickeCtx.lineWidth = 3;
 			dickeCtx.beginPath();
-			for (let x = 0; x < width; x += 2) {
+      		for (let x = 0; x < width; x += 2) {
 				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
-				const gaussianCenter = width / 2;
-				const gaussianWidth = 100;
-				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
-				const y = centerY - 40 + systematic + signal21cm;
+				const normalizedX = (x - centerX - 80) / 60;
+				let signal = 0;
+				if (normalizedX < -0.3) {
+					signal += 50 * Math.exp(-Math.pow(normalizedX + 2.2, 2) * 0.9);
+				}
+				signal += 165 * Math.exp(-Math.pow(normalizedX, 2) * 1.8);
+				if (normalizedX > 0.5) {
+					signal -= 18 * Math.exp(-Math.pow(normalizedX - 1.2, 2) * 2.5);
+				}
+				const signal21cm = signal;
+				const y = centerY - 80 + systematic + signal21cm;
 				if (x === 0) dickeCtx.moveTo(x, y);
 				else dickeCtx.lineTo(x, y);
 			}
