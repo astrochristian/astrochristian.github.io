@@ -574,6 +574,141 @@ html[data-theme="dark"] .hero-photo img {
 	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
+/* Cosmic Canvas */
+.cosmic-canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+	opacity: 0.6;
+}
+
+.hero-container {
+	position: relative;
+	z-index: 1;
+}
+
+/* Glitch Text Effect */
+.glitch-text {
+	position: relative;
+	display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+	content: attr(data-text);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.8;
+}
+
+.glitch-text::before {
+	animation: glitch-1 3s infinite;
+	color: #667eea;
+	z-index: -1;
+}
+
+.glitch-text::after {
+	animation: glitch-2 3s infinite;
+	color: #764ba2;
+	z-index: -2;
+}
+
+@keyframes glitch-1 {
+	0%, 100% {
+		transform: translate(0);
+		opacity: 0;
+	}
+	33% {
+		transform: translate(-2px, 2px);
+		opacity: 0.8;
+	}
+	66% {
+		transform: translate(2px, -2px);
+		opacity: 0;
+	}
+}
+
+@keyframes glitch-2 {
+	0%, 100% {
+		transform: translate(0);
+		opacity: 0;
+	}
+	33% {
+		transform: translate(2px, -2px);
+		opacity: 0;
+	}
+	66% {
+		transform: translate(-2px, 2px);
+		opacity: 0.8;
+	}
+}
+
+/* Hero Tagline */
+.hero-tagline {
+	margin: var(--spacing-md) 0 var(--spacing-lg) 0;
+	font-size: 1.2rem;
+	color: rgba(255, 255, 255, 0.9);
+	font-weight: 400;
+	min-height: 1.5em;
+}
+
+.typing-text {
+	border-right: 2px solid rgba(255, 255, 255, 0.8);
+	animation: blink 0.7s infinite;
+	padding-right: 5px;
+}
+
+@keyframes blink {
+	0%, 49% { border-color: rgba(255, 255, 255, 0.8); }
+	50%, 100% { border-color: transparent; }
+}
+
+/* Photo Glow Effect */
+.photo-glow {
+	position: absolute;
+	inset: -20px;
+	background: linear-gradient(135deg, #667eea, #764ba2);
+	border-radius: 12px;
+	filter: blur(30px);
+	opacity: 0.4;
+	z-index: -1;
+	animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+	0%, 100% { opacity: 0.4; transform: scale(1); }
+	50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+/* Pulse Animation for Scroll */
+.pulse-animation {
+	animation: bounce 2s infinite, pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 0.8; }
+	50% { opacity: 1; }
+}
+
+/* Dark mode adjustments for glitch */
+html[data-theme="dark"] .glitch-text::before {
+	color: #93c5fd;
+}
+
+html[data-theme="dark"] .glitch-text::after {
+	color: #a78bfa;
+}
+
+html[data-theme="dark"] .photo-glow {
+	opacity: 0.3;
+}
+
 /* ===================================
    Page Header
    =================================== */

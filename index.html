@@ -44,11 +44,17 @@
 
 		<!-- Hero Section -->
 		<header class="hero hero-with-photo">
+			<canvas id="cosmicCanvas" class="cosmic-canvas"></canvas>
 			<div class="hero-container">
 				<div class="hero-content">
-					<h1 class="hero-title">Christian Kirkham</h1>
+					<h1 class="hero-title">
+						<span class="glitch-text" data-text="Christian Kirkham">Christian Kirkham</span>
+					</h1>
 					<p class="hero-subtitle">Astrophysics PhD Student</p>
 					<p class="hero-affiliation">University of Cambridge</p>
+					<div class="hero-tagline">
+						<span class="typing-text">Detecting the cosmic dawn through 21-cm calibration</span>
+					</div>
 					<div class="hero-links">
 						<a href="https://github.com/astrochristian" class="hero-link" target="_blank" rel="noopener">
 							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
@@ -61,10 +67,11 @@
 					</div>
 				</div>
 				<div class="hero-photo">
+					<div class="photo-glow"></div>
 					<img src="images/IMG_2291.jpg" alt="Christian Kirkham" />
 				</div>
 			</div>
-			<div class="hero-scroll">
+			<div class="hero-scroll pulse-animation">
 				<span>Scroll</span>
 				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
 			</div>
@@ -234,6 +241,119 @@
 
 				lastScroll = currentScroll;
 			});
+
+			// Cosmic Canvas Animation
+			const canvas = document.getElementById('cosmicCanvas');
+			const ctx = canvas.getContext('2d');
+			let particles = [];
+			let animationId;
+
+			function resizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+
+			class Particle {
+				constructor() {
+					this.x = Math.random() * canvas.width;
+					this.y = Math.random() * canvas.height;
+					this.size = Math.random() * 2 + 0.5;
+					this.speedX = Math.random() * 0.5 - 0.25;
+					this.speedY = Math.random() * 0.5 - 0.25;
+					this.opacity = Math.random() * 0.5 + 0.2;
+				}
+
+				update() {
+					this.x += this.speedX;
+					this.y += this.speedY;
+
+					if (this.x > canvas.width) this.x = 0;
+					if (this.x < 0) this.x = canvas.width;
+					if (this.y > canvas.height) this.y = 0;
+					if (this.y < 0) this.y = canvas.height;
+				}
+
+				draw() {
+					const theme = html.getAttribute('data-theme');
+					const color = theme === 'dark' ? '147, 197, 253' : '102, 126, 234'; // blue-300 for dark, primary for light
+					ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
+					ctx.beginPath();
+					ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+					ctx.fill();
+				}
+			}
+
+			function init() {
+				particles = [];
+				const particleCount = Math.min(150, Math.floor((canvas.width * canvas.height) / 10000));
+				for (let i = 0; i < particleCount; i++) {
+					particles.push(new Particle());
+				}
+			}
+
+			function connect() {
+				const theme = html.getAttribute('data-theme');
+				const color = theme === 'dark' ? '147, 197, 253' : '102, 126, 234';
+				for (let a = 0; a < particles.length; a++) {
+					for (let b = a; b < particles.length; b++) {
+						const dx = particles[a].x - particles[b].x;
+						const dy = particles[a].y - particles[b].y;
+						const distance = Math.sqrt(dx * dx + dy * dy);
+
+						if (distance < 120) {
+							const opacity = (1 - distance / 120) * 0.15;
+							ctx.strokeStyle = `rgba(${color}, ${opacity})`;
+							ctx.lineWidth = 0.5;
+							ctx.beginPath();
+							ctx.moveTo(particles[a].x, particles[a].y);
+							ctx.lineTo(particles[b].x, particles[b].y);
+							ctx.stroke();
+						}
+					}
+				}
+			}
+
+			function animate() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				for (let particle of particles) {
+					particle.update();
+					particle.draw();
+				}
+
+				connect();
+				animationId = requestAnimationFrame(animate);
+			}
+
+			resizeCanvas();
+			init();
+			animate();
+
+			window.addEventListener('resize', () => {
+				resizeCanvas();
+				init();
+			});
+
+			// Reinitialize particles when theme changes
+			themeToggle.addEventListener('click', () => {
+				setTimeout(init, 100);
+			});
+
+			// Typing animation
+			const typingText = document.querySelector('.typing-text');
+			const text = typingText.textContent;
+			typingText.textContent = '';
+			let charIndex = 0;
+
+			function typeText() {
+				if (charIndex < text.length) {
+					typingText.textContent += text.charAt(charIndex);
+					charIndex++;
+					setTimeout(typeText, 50);
+				}
+			}
+
+			setTimeout(typeText, 500);
 		</script>
 	</body>
 </html>
