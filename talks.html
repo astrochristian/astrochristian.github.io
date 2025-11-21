@@ -42,6 +42,7 @@
 
 		<!-- Page Header -->
 		<header class="page-header page-header-talks">
+			<canvas id="emWaveCanvas" class="em-wave-canvas"></canvas>
 			<div class="container">
 				<h1 class="page-title">Talks & Presentations</h1>
 				<p class="page-subtitle">Conference talks, workshops, and posters</p>
@@ -214,6 +215,138 @@
 
 		<!-- Scripts -->
 		<script>
+			// EM Wave + Dipole Antenna Animation
+			const emWaveCanvas = document.getElementById('emWaveCanvas');
+			const emWaveCtx = emWaveCanvas.getContext('2d');
+			let emWaveAnimationId;
+			let emWaveTime = 0;
+			let spikes = []; // Store spike positions and heights
+
+			function resizeEmWaveCanvas() {
+				emWaveCanvas.width = emWaveCanvas.offsetWidth;
+				emWaveCanvas.height = emWaveCanvas.offsetHeight;
+				generateSpikes();
+			}
+			
+
+			function generateSpikes() {
+				const width = emWaveCanvas.width;
+				const height = emWaveCanvas.height;
+				spikes = [];
+				
+				// Generate 25 random spikes
+				const numSpikes = 25;
+				const minHeight = height * 0.5; // Minimum height (same as original)
+				const maxHeight = height * 0.8; // Maximum height
+				
+				for (let i = 0; i < numSpikes; i++) {
+					const xPos = Math.random() * width * 0.8 + width * 0.1; // Keep spikes away from edges
+					const heightMultiplier = Math.random() * (maxHeight - minHeight) + minHeight;
+					const spikeWidth = Math.random() * 0.8 + 0.4; // Very thin: 0.4-1.2 pixels
+					
+					spikes.push({
+						x: xPos,
+						height: heightMultiplier,
+						width: spikeWidth
+					});
+					
+					// Add secondary peaks (harmonics/artifacts) near main spike
+					if (Math.random() > 0.6) {
+						const numSecondary = Math.floor(Math.random() * 2) + 1;
+						for (let j = 0; j < numSecondary; j++) {
+							const offset = (Math.random() - 0.5) * 40; // Offset from main peak
+							const secondaryHeight = heightMultiplier * (0.3 + Math.random() * 0.4); // 30-70% of main peak
+							const secondaryWidth = Math.random() * 0.5 + 0.2; // Very thin secondary peaks
+							
+							spikes.push({
+								x: xPos + offset,
+								height: secondaryHeight,
+								width: secondaryWidth
+							});
+						}
+					}
+				}
+				
+				// Sort spikes by x position for consistent rendering
+				spikes.sort((a, b) => a.x - b.x);
+			}
+
+			function drawEmWave() {
+				const width = emWaveCanvas.width;
+				const height = emWaveCanvas.height;
+
+				// Clear canvas
+				emWaveCtx.clearRect(0, 0, width, height);
+
+				const baselineY = height * 0.85;
+				const time = emWaveTime * 0.02;
+
+				// Draw power/intensity scale on left side
+				emWaveCtx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+				emWaveCtx.font = '10px Inter, sans-serif';
+				emWaveCtx.textAlign = 'right';
+				const scaleMarks = [0, -20, -40, -60];
+				scaleMarks.forEach(mark => {
+					const yPos = baselineY - (baselineY - height * 0.15) * ((-mark) / 60);
+					emWaveCtx.fillText(mark + ' dB', 30, yPos + 3);
+					emWaveCtx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+					emWaveCtx.lineWidth = 1;
+					emWaveCtx.beginPath();
+					emWaveCtx.moveTo(35, yPos);
+					emWaveCtx.lineTo(width, yPos);
+					emWaveCtx.stroke();
+				});
+
+				// Draw flat baseline
+				emWaveCtx.strokeStyle = 'rgba(147, 197, 253, 0.7)';
+				emWaveCtx.lineWidth = 1.5;
+				emWaveCtx.beginPath();
+				emWaveCtx.moveTo(40, baselineY);
+				emWaveCtx.lineTo(width, baselineY);
+				emWaveCtx.stroke();
+
+				// Add random noise peaks across the baseline
+				emWaveCtx.strokeStyle = 'rgba(147, 197, 253, 0.4)';
+				emWaveCtx.lineWidth = 0.5;
+				for (let i = 0; i < 30; i++) {
+					const peakX = Math.random() * width;
+					const peakHeight = Math.random() * 15;
+					emWaveCtx.beginPath();
+					emWaveCtx.moveTo(peakX, baselineY);
+					emWaveCtx.lineTo(peakX, baselineY - peakHeight);
+					emWaveCtx.stroke();
+				}
+
+				// Draw all spikes with varying widths and gradients
+				spikes.forEach(spike => {
+					// Create gradient for spike
+					const gradient = emWaveCtx.createLinearGradient(
+						spike.x - spike.width / 2, baselineY,
+						spike.x - spike.width / 2, baselineY - spike.height
+					);
+					gradient.addColorStop(0, 'rgba(147, 197, 253, 0.3)');
+					gradient.addColorStop(0.5, 'rgba(147, 197, 253, 0.9)');
+					gradient.addColorStop(1, 'rgba(100, 150, 255, 0.6)');
+
+					// Draw filled spike with gradient
+					emWaveCtx.fillStyle = gradient;
+					emWaveCtx.fillRect(spike.x - spike.width / 2, baselineY - spike.height, spike.width, spike.height);
+
+					// Draw spike outline
+					emWaveCtx.strokeStyle = 'rgba(147, 197, 253, 0.9)';
+					emWaveCtx.lineWidth = 0.5;
+					emWaveCtx.strokeRect(spike.x - spike.width / 2, baselineY - spike.height, spike.width, spike.height);
+				});
+
+				emWaveTime += 1;
+				emWaveAnimationId = requestAnimationFrame(drawEmWave);
+			}
+
+			// Handle canvas resize
+			window.addEventListener('resize', resizeEmWaveCanvas);
+			resizeEmWaveCanvas();
+			drawEmWave();
+
 			// Dark mode toggle - default to dark mode
 			const themeToggle = document.getElementById('themeToggle');
 			const html = document.documentElement;
@@ -260,17 +393,8 @@
 					nav.classList.remove('scrolled');
 				}
 
-			lastScroll = currentScroll;
-		});
-	</script>
-	<!-- Footer -->
-	<footer class="footer">
-		<div class="footer-content">
-			<div class="footer-left">
-				<p>&copy; 2025 Christian Kirkham</p>
-				<!-- LAST_UPDATED -->
-			</div>
-		</div>
-	</footer>
+				lastScroll = currentScroll;
+			});
+		</script>
 	</body>
 </html>
