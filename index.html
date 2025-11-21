@@ -446,9 +446,16 @@
 			init();
 			animate();
 
+			// Track previous width to only reinit when width changes (not on mobile scroll)
+			let previousWidth = canvas.width;
 			window.addEventListener('resize', () => {
+				const newWidth = window.innerWidth;
 				resizeCanvas();
-				init();
+				// Only reinitialize if width changed (not just height from mobile address bar)
+				if (Math.abs(newWidth - previousWidth) > 10) {
+					init();
+					previousWidth = newWidth;
+				}
 			});
 
 			// Reinitialize when theme changes

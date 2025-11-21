@@ -1299,6 +1299,11 @@ html[data-theme="dark"] .photo-glow {
 		font-size: 2rem;
 	}
 
+	/* Hide REACH logo on mobile to reduce crowding */
+	.reach-logo {
+		display: none;
+	}
+
 	.nav-toggle {
 		display: flex;
 	}
