@@ -236,7 +236,7 @@ html[data-theme="dark"] .project-card {
 	border-color: var(--border-color);
 }
 
-html[data-theme="dark"] .project-title a {
+html[data-theme="dark"] .project-title {
 	color: var(--text-dark);
 }
 
@@ -1016,15 +1016,22 @@ html[data-theme="dark"] .hero-photo img {
 	gap: var(--spacing-lg);
 }
 
+.project-card-link {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+}
+
 .project-card {
 	background-color: var(--bg-lighter);
 	padding: var(--spacing-lg);
 	border-radius: 8px;
 	border: 2px solid var(--border-light);
 	transition: all var(--transition-normal);
+	height: 100%;
 }
 
-.project-card:hover {
+.project-card-link:hover .project-card {
 	transform: translateY(-4px);
 	box-shadow: var(--shadow-md);
 	border-color: var(--primary-color);
@@ -1032,14 +1039,11 @@ html[data-theme="dark"] .hero-photo img {
 
 .project-title {
 	margin-bottom: var(--spacing-md);
-}
-
-.project-title a {
 	color: var(--text-dark);
 	font-size: 1.25rem;
 }
 
-.project-title a:hover {
+.project-card-link:hover .project-title {
 	color: var(--primary-color);
 }
 
