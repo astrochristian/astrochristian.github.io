@@ -242,86 +242,218 @@
 				lastScroll = currentScroll;
 			});
 
-			// Cosmic Canvas Animation
+			// Epoch of Reionization Simulation
 			const canvas = document.getElementById('cosmicCanvas');
 			const ctx = canvas.getContext('2d');
-			let particles = [];
+			let bubbles = [];
+			let stars = [];
 			let animationId;
+			let time = 0;
 
 			function resizeCanvas() {
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight;
 			}
 
-			class Particle {
-				constructor() {
-					this.x = Math.random() * canvas.width;
-					this.y = Math.random() * canvas.height;
-					this.size = Math.random() * 2 + 0.5;
-					this.speedX = Math.random() * 0.5 - 0.25;
-					this.speedY = Math.random() * 0.5 - 0.25;
-					this.opacity = Math.random() * 0.5 + 0.2;
+			// Ionized bubble class
+			class IonizedBubble {
+				constructor(x, y, birthTime) {
+					this.x = x;
+					this.y = y;
+					this.radius = 0;
+					this.maxRadius = Math.random() * 60 + 30;
+					this.growthRate = Math.random() * 0.3 + 0.15;
+					this.birthTime = birthTime;
+					this.opacity = 0;
 				}
 
-				update() {
-					this.x += this.speedX;
-					this.y += this.speedY;
-
-					if (this.x > canvas.width) this.x = 0;
-					if (this.x < 0) this.x = canvas.width;
-					if (this.y > canvas.height) this.y = 0;
-					if (this.y < 0) this.y = canvas.height;
+				update(currentTime) {
+					const age = currentTime - this.birthTime;
+					if (age > 0 && this.radius < this.maxRadius) {
+						this.radius += this.growthRate;
+						this.opacity = Math.min(0.4, age / 100);
+					}
 				}
 
 				draw() {
 					const theme = html.getAttribute('data-theme');
-					const color = theme === 'dark' ? '147, 197, 253' : '102, 126, 234'; // blue-300 for dark, primary for light
-					ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
+					// Ionized regions are bright (blue/cyan)
+					const centerColor = theme === 'dark' ? 'rgba(147, 197, 253, ' : 'rgba(102, 126, 234, ';
+					const edgeColor = theme === 'dark' ? 'rgba(56, 189, 248, ' : 'rgba(139, 92, 246, ';
+
+					// Create gradient for bubble
+					const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+					gradient.addColorStop(0, centerColor + (this.opacity * 0.3) + ')');
+					gradient.addColorStop(0.7, edgeColor + (this.opacity * 0.2) + ')');
+					gradient.addColorStop(1, edgeColor + '0)');
+
+					ctx.fillStyle = gradient;
 					ctx.beginPath();
-					ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+					ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+					ctx.fill();
+
+					// Draw edge glow
+					ctx.strokeStyle = edgeColor + (this.opacity * 0.5) + ')';
+					ctx.lineWidth = 2;
+					ctx.beginPath();
+					ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+					ctx.stroke();
+				}
+			}
+
+			// Star/source class
+			class Star {
+				constructor(x, y) {
+					this.x = x;
+					this.y = y;
+					this.brightness = Math.random() * 0.5 + 0.5;
+					this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+					this.twinklePhase = Math.random() * Math.PI * 2;
+				}
+
+				update() {
+					this.twinklePhase += this.twinkleSpeed;
+				}
+
+				draw() {
+					const theme = html.getAttribute('data-theme');
+					const twinkle = Math.sin(this.twinklePhase) * 0.3 + 0.7;
+					const opacity = this.brightness * twinkle;
+
+					// Stars are bright points
+					const color = theme === 'dark' ? `rgba(255, 255, 255, ${opacity})` : `rgba(102, 126, 234, ${opacity})`;
+
+					// Draw star
+					ctx.fillStyle = color;
+					ctx.beginPath();
+					ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+					ctx.fill();
+
+					// Draw glow
+					const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
+					gradient.addColorStop(0, theme === 'dark' ? `rgba(147, 197, 253, ${opacity * 0.6})` : `rgba(102, 126, 234, ${opacity * 0.4})`);
+					gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+					ctx.fillStyle = gradient;
+					ctx.beginPath();
+					ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
 					ctx.fill();
 				}
 			}
 
 			function init() {
-				particles = [];
-				const particleCount = Math.min(150, Math.floor((canvas.width * canvas.height) / 10000));
-				for (let i = 0; i < particleCount; i++) {
-					particles.push(new Particle());
+				bubbles = [];
+				stars = [];
+				time = 0;
+
+				// Create initial stars (first sources of ionization)
+				const starCount = Math.floor((canvas.width * canvas.height) / 50000);
+				for (let i = 0; i < starCount; i++) {
+					stars.push(new Star(
+						Math.random() * canvas.width,
+						Math.random() * canvas.height
+					));
+				}
+
+				// Create initial bubbles around some stars
+				for (let i = 0; i < Math.min(5, starCount); i++) {
+					const star = stars[Math.floor(Math.random() * stars.length)];
+					bubbles.push(new IonizedBubble(star.x, star.y, Math.random() * 100));
 				}
 			}
 
-			function connect() {
+			// Draw 21-cm signal curve in corner
+			function draw21cmSignal() {
 				const theme = html.getAttribute('data-theme');
-				const color = theme === 'dark' ? '147, 197, 253' : '102, 126, 234';
-				for (let a = 0; a < particles.length; a++) {
-					for (let b = a; b < particles.length; b++) {
-						const dx = particles[a].x - particles[b].x;
-						const dy = particles[a].y - particles[b].y;
-						const distance = Math.sqrt(dx * dx + dy * dy);
+				const width = 200;
+				const height = 80;
+				const margin = 20;
+				const x = canvas.width - width - margin;
+				const y = margin;
 
-						if (distance < 120) {
-							const opacity = (1 - distance / 120) * 0.15;
-							ctx.strokeStyle = `rgba(${color}, ${opacity})`;
-							ctx.lineWidth = 0.5;
-							ctx.beginPath();
-							ctx.moveTo(particles[a].x, particles[a].y);
-							ctx.lineTo(particles[b].x, particles[b].y);
-							ctx.stroke();
-						}
+				// Semi-transparent background
+				ctx.fillStyle = theme === 'dark' ? 'rgba(24, 24, 27, 0.7)' : 'rgba(255, 255, 255, 0.7)';
+				ctx.fillRect(x - 10, y - 10, width + 20, height + 20);
+
+				// Draw axes
+				ctx.strokeStyle = theme === 'dark' ? 'rgba(228, 228, 231, 0.5)' : 'rgba(63, 63, 70, 0.5)';
+				ctx.lineWidth = 1;
+				ctx.beginPath();
+				ctx.moveTo(x, y + height);
+				ctx.lineTo(x + width, y + height);
+				ctx.moveTo(x, y);
+				ctx.lineTo(x, y + height);
+				ctx.stroke();
+
+				// Label
+				ctx.fillStyle = theme === 'dark' ? 'rgba(228, 228, 231, 0.8)' : 'rgba(63, 63, 70, 0.8)';
+				ctx.font = '10px Inter';
+				ctx.fillText('21-cm Signal', x, y - 5);
+				ctx.fillText('z', x + width, y + height + 12);
+
+				// Draw characteristic signal curve (absorption trough during EoR)
+				ctx.strokeStyle = theme === 'dark' ? 'rgba(147, 197, 253, 0.9)' : 'rgba(102, 126, 234, 0.9)';
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+
+				const points = 100;
+				for (let i = 0; i <= points; i++) {
+					const t = i / points;
+					const z = 6 + t * 14; // Redshift from ~20 to ~6
+
+					// Simplified 21-cm signal: absorption trough during reionization
+					let signal;
+					if (z > 15) {
+						// Before reionization: gradual increase
+						signal = -50 * (1 - (z - 15) / 5);
+					} else if (z > 10) {
+						// Early reionization: deep absorption
+						signal = -150 + 50 * Math.sin((z - 10) * Math.PI / 5);
+					} else if (z > 7) {
+						// Mid reionization: signal recovery
+						signal = -100 + 80 * (1 - (z - 7) / 3);
+					} else {
+						// Late/post reionization: return to emission
+						signal = 20 - 30 * (z - 6);
+					}
+
+					const px = x + (1 - t) * width;
+					const py = y + height - (signal + 150) * height / 200;
+
+					if (i === 0) {
+						ctx.moveTo(px, py);
+					} else {
+						ctx.lineTo(px, py);
 					}
 				}
+				ctx.stroke();
 			}
 
 			function animate() {
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				time++;
 
-				for (let particle of particles) {
-					particle.update();
-					particle.draw();
+				// Occasionally spawn new bubbles around stars
+				if (time % 150 === 0 && bubbles.length < 30) {
+					const star = stars[Math.floor(Math.random() * stars.length)];
+					bubbles.push(new IonizedBubble(star.x, star.y, time));
 				}
 
-				connect();
+				// Update and draw stars
+				for (let star of stars) {
+					star.update();
+					star.draw();
+				}
+
+				// Update and draw bubbles (older bubbles first)
+				bubbles.sort((a, b) => a.birthTime - b.birthTime);
+				for (let bubble of bubbles) {
+					bubble.update(time);
+					bubble.draw();
+				}
+
+				// Draw 21-cm signal visualization
+				draw21cmSignal();
+
 				animationId = requestAnimationFrame(animate);
 			}
 
@@ -334,7 +466,7 @@
 				init();
 			});
 
-			// Reinitialize particles when theme changes
+			// Reinitialize when theme changes
 			themeToggle.addEventListener('click', () => {
 				setTimeout(init, 100);
 			});
