@@ -338,8 +338,7 @@
 					emWaveCtx.strokeRect(spike.x - spike.width / 2, baselineY - spike.height, spike.width, spike.height);
 				});
 
-				emWaveTime += 1;
-				emWaveAnimationId = requestAnimationFrame(drawEmWave);
+				// Don't animate, just draw once
 			}
 
 			// Handle canvas resize
