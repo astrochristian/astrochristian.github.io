@@ -61,6 +61,7 @@
 
 		<!-- Page Header -->
 		<header class="page-header page-header-research">
+			<canvas id="dickeCanvas" class="dicke-canvas"></canvas>
 			<div class="container">
 				<h1 class="page-title">Research</h1>
 				<p class="page-subtitle">21-cm Radio Cosmology with REACH</p>
@@ -179,6 +180,128 @@
 
 			lastScroll = currentScroll;
 		});
+
+		// 21-cm Signal Detection Visualization
+		const dickeCanvas = document.getElementById('dickeCanvas');
+		const dickeCtx = dickeCanvas.getContext('2d');
+		let dickeAnimationId;
+		let dickeTime = 0;
+
+		function resizeDickeCanvas() {
+			dickeCanvas.width = dickeCanvas.offsetWidth;
+			dickeCanvas.height = dickeCanvas.offsetHeight;
+		}
+
+		// Gaussian random number generator (Box-Muller transform)
+		function gaussianRandom() {
+			let u = 0, v = 0;
+			while(u === 0) u = Math.random();
+			while(v === 0) v = Math.random();
+			return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+		}
+
+		function drawDickeSwitching() {
+			const width = dickeCanvas.width;
+			const height = dickeCanvas.height;
+
+			// Clear canvas with transparency
+			dickeCtx.clearRect(0, 0, width, height);
+
+			const centerX = width / 2;
+			const centerY = height / 2;
+			const time = dickeTime * 0.01;
+
+			// Integration time increases - noise decreases
+			const integrationTime = Math.min(dickeTime / 300, 1); // Reaches 1 after 300 frames
+			const noiseScale = Math.max(0, 1 - integrationTime); // Noise goes from 1 to 0
+
+			// ===== PHASE 1: Noise/Confusion =====
+			// Starting with chaotic noisy data
+
+			// Large systematic effect - the dominant sinusoid
+			dickeCtx.strokeStyle = 'rgba(251, 146, 60, 1)';
+			dickeCtx.lineWidth = 5;
+			dickeCtx.beginPath();
+			for (let x = 0; x < width; x += 3) {
+				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
+				const gaussNoise = gaussianRandom() * 100 * noiseScale; // Reduced noise
+				const y = centerY + systematic + gaussNoise;
+				if (x === 0) dickeCtx.moveTo(x, y);
+				else dickeCtx.lineTo(x, y);
+			}
+			dickeCtx.stroke();
+
+			// ===== PHASE 2: Hidden 21-cm Signal =====
+			// The small signal getting clearer as noise reduces
+			
+			const gpStrength = 0.5 + 0.3 * Math.sin(time * 0.5);
+			
+			dickeCtx.strokeStyle = `rgba(147, 197, 253, ${1 + gpStrength * 0.5})`;
+			dickeCtx.lineWidth = 4;
+			dickeCtx.beginPath();
+			for (let x = 0; x < width; x += 2) {
+				// Small 21-cm signal - a Gaussian profile instead of sinusoidal
+				const gaussianCenter = width / 2;
+				const gaussianWidth = 100;
+				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
+				const gaussNoise = gaussianRandom() * 60 * noiseScale; // Reduced noise
+				const y = centerY - 40 + signal21cm + gaussNoise; // Offset upward so it's visible
+				if (x === 0) dickeCtx.moveTo(x, y);
+				else dickeCtx.lineTo(x, y);
+			}
+			dickeCtx.stroke();
+
+			// ===== PHASE 3: Fitted signal with confidence region =====
+			// Purple band showing uncertainty around the fitted model
+			
+			// Draw confidence band
+			dickeCtx.fillStyle = `rgba(167, 139, 250, ${0.25 + gpStrength * 0.15})`;
+			dickeCtx.beginPath();
+			for (let x = 0; x < width; x += 2) {
+				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
+				const gaussianCenter = width / 2;
+				const gaussianWidth = 100;
+				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
+				const centerSignal = centerY - 40 + systematic + signal21cm;
+				const uncertainty = 20 + 8 * Math.sin(time * 0.3 + x * 0.01);
+				if (x === 0) dickeCtx.moveTo(x, centerSignal - uncertainty);
+				else dickeCtx.lineTo(x, centerSignal - uncertainty);
+			}
+			for (let x = width; x >= 0; x -= 2) {
+				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
+				const gaussianCenter = width / 2;
+				const gaussianWidth = 100;
+				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
+				const centerSignal = centerY - 40 + systematic + signal21cm;
+				const uncertainty = 20 + 8 * Math.sin(time * 0.3 + x * 0.01);
+				dickeCtx.lineTo(x, centerSignal + uncertainty);
+			}
+			dickeCtx.closePath();
+			dickeCtx.fill();
+
+			// Draw the fitted model line (purple, going through the middle)
+			dickeCtx.strokeStyle = `rgba(167, 139, 250, ${0.8 + gpStrength * 0.2})`;
+			dickeCtx.lineWidth = 3;
+			dickeCtx.beginPath();
+			for (let x = 0; x < width; x += 2) {
+				const systematic = Math.sin(x * 0.015 - time * 0.1) * 80 + Math.sin(x * 0.007 - time * 0.15) * 40 + Math.sin(x * 0.03 - time * 0.05) * 25;
+				const gaussianCenter = width / 2;
+				const gaussianWidth = 100;
+				const signal21cm = 100 * Math.exp(-Math.pow(x - gaussianCenter, 2) / (2 * gaussianWidth * gaussianWidth));
+				const y = centerY - 40 + systematic + signal21cm;
+				if (x === 0) dickeCtx.moveTo(x, y);
+				else dickeCtx.lineTo(x, y);
+			}
+			dickeCtx.stroke();
+
+			dickeTime += 1;
+			dickeAnimationId = requestAnimationFrame(drawDickeSwitching);
+		}
+
+		// Handle canvas resize
+		window.addEventListener('resize', resizeDickeCanvas);
+		resizeDickeCanvas();
+		drawDickeSwitching();
 	</script>
 	<!-- Footer -->
 	<footer class="footer">
