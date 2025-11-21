@@ -286,10 +286,24 @@ html[data-theme="dark"] .footer {
 	font-weight: 600;
 	color: var(--text-dark);
 	transition: color var(--transition-fast);
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
 }
 
 .nav-logo:hover {
 	color: var(--primary-color);
+}
+
+.reach-logo {
+	height: 32px;
+	width: auto;
+	display: block;
+}
+
+/* Invert REACH logo in dark mode since it's a dark logo */
+html[data-theme="dark"] .reach-logo {
+	filter: invert(1) brightness(1.1);
 }
 
 .nav-right {
