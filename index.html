@@ -255,6 +255,10 @@
 			function resizeCanvas() {
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight;
+				// Fill canvas with initial cyan color
+				const ionizedColor = '56, 189, 248'; // cyan-400
+				ctx.fillStyle = `rgba(${ionizedColor}, 1)`;
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
 			}
 
 			// Expanding ionization bubble (like ripples on water)
@@ -263,69 +267,33 @@
 					this.x = x;
 					this.y = y;
 					this.birthTime = birthTime + delay;
-					this.rings = []; // Multiple expanding rings like water ripples
-					this.maxRings = 1; // Only one ring at a time
-					this.ringInterval = 30; // Frames between new rings
-					this.lastRingTime = birthTime + delay;
-					this.maxRadius = Math.min(canvas.width, canvas.height) * 0.8;
-					this.growthRate = 0.6; // Slower growth (half of 1.2)
+					this.radius = 0;
+					this.maxRadius = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height); // Diagonal distance to cover entire canvas
+					this.growthRate = 0.2; // 4x slower growth to paint canvas gradually
 				}
 
 				update(currentTime) {
 					const age = currentTime - this.birthTime;
-
-					// Create new rings periodically
-					if (age > 0 &&
-						currentTime - this.lastRingTime > this.ringInterval &&
-						this.rings.length < this.maxRings) {
-						this.rings.push({ radius: 0, opacity: 1, age: 0 });
-						this.lastRingTime = currentTime;
+					if (age > 0) {
+						this.radius = Math.min(this.maxRadius, this.radius + this.growthRate);
 					}
-
-					// Update existing rings
-					for (let ring of this.rings) {
-						ring.radius += this.growthRate;
-						ring.age++;
-						// Fade out gradually
-						ring.opacity = Math.max(0, 1 - (ring.radius / this.maxRadius));
-					}
-
-					// Remove fully faded rings
-					this.rings = this.rings.filter(ring => ring.opacity > 0.05 && ring.radius < this.maxRadius);
 				}
 
 				draw() {
-					// Always use cyan color scheme for both themes
-					const ionizedColor = '56, 189, 248'; // cyan-400
+					// Always use dark color scheme for both themes (inverse of before)
+					const darkColor = '15, 23, 42'; // slate-900
 
-					for (let ring of this.rings) {
-						// Filled circle with gradient
-						const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, ring.radius);
-						gradient.addColorStop(0, `rgba(${ionizedColor}, ${ring.opacity * 0.15})`);
-						gradient.addColorStop(0.5, `rgba(${ionizedColor}, ${ring.opacity * 0.08})`);
-						gradient.addColorStop(1, `rgba(${ionizedColor}, 0)`);
+					if (this.radius > 0) {
+						// Filled circle that paints the canvas dark
+						const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+						gradient.addColorStop(0, `rgba(${darkColor}, 1)`);
+						gradient.addColorStop(0.9, `rgba(${darkColor}, 1)`);
+						gradient.addColorStop(1, `rgba(${darkColor}, 0.8)`);
 
 						ctx.fillStyle = gradient;
 						ctx.beginPath();
-						ctx.arc(this.x, this.y, ring.radius, 0, Math.PI * 2);
+						ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
 						ctx.fill();
-
-						// Crisp outer ring edge (like water ripple)
-						const edgeWidth = 3;
-						ctx.strokeStyle = `rgba(${ionizedColor}, ${ring.opacity * 0.6})`;
-						ctx.lineWidth = edgeWidth;
-						ctx.beginPath();
-						ctx.arc(this.x, this.y, ring.radius, 0, Math.PI * 2);
-						ctx.stroke();
-
-						// Inner bright ring
-						if (ring.radius > 10) {
-							ctx.strokeStyle = `rgba(${ionizedColor}, ${ring.opacity * 0.3})`;
-							ctx.lineWidth = 1;
-							ctx.beginPath();
-							ctx.arc(this.x, this.y, ring.radius - 5, 0, Math.PI * 2);
-							ctx.stroke();
-						}
 					}
 				}
 			}
@@ -393,8 +361,8 @@
 				phase = 'blank';
 				phaseTime = 0;
 
-				// Prepare star positions
-				const starCount = Math.floor((canvas.width * canvas.height) / 80000);
+				// Prepare star positions (4x more stars)
+				const starCount = Math.floor((canvas.width * canvas.height) / 20000);
 				const starPositions = [];
 
 				for (let i = 0; i < starCount; i++) {
@@ -409,8 +377,8 @@
 					const birthTime = 60 + i * 8; // Start after blank phase, stagger births
 					stars.push(new Star(pos.x, pos.y, birthTime));
 
-					// Schedule bubble for this star
-					const bubbleBirthTime = birthTime + 40; // Bubble starts after star is visible
+					// Schedule bubble for this star - starts right after star appears
+					const bubbleBirthTime = birthTime + 40;
 					bubbles.push(new IonizationBubble(pos.x, pos.y, bubbleBirthTime));
 				});
 			}
@@ -427,16 +395,16 @@
 					phase = 'bubbles';
 				}
 
-				// Draw stars
-				for (let star of stars) {
-					star.update(time);
-					star.draw();
-				}
-
-				// Draw bubbles
+				// Draw bubbles first
 				for (let bubble of bubbles) {
 					bubble.update(time);
 					bubble.draw();
+				}
+
+				// Draw stars (always on top, persistent)
+				for (let star of stars) {
+					star.update(time);
+					star.draw();
 				}
 
 				animationId = requestAnimationFrame(animate);
