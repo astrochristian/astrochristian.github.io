@@ -148,6 +148,10 @@ html[data-theme="dark"] .nav-menu li a {
 	color: var(--text-medium);
 }
 
+html[data-theme="dark"] .nav-menu {
+	background-color: rgba(24, 24, 27, 0.98);
+}
+
 html[data-theme="dark"] .nav-toggle span {
 	background-color: var(--text-medium);
 }
@@ -1359,7 +1363,7 @@ html[data-theme="dark"] .photo-glow {
 		left: 0;
 		right: 0;
 		flex-direction: column;
-		background-color: white;
+		background-color: var(--bg-light);
 		padding: var(--spacing-lg);
 		gap: var(--spacing-md);
 		box-shadow: var(--shadow-lg);
@@ -1367,6 +1371,10 @@ html[data-theme="dark"] .photo-glow {
 		opacity: 0;
 		visibility: hidden;
 		transition: all var(--transition-normal);
+	}
+
+	.nav-menu li a {
+		color: var(--text-dark);
 	}
 
 	.nav-menu.active {
