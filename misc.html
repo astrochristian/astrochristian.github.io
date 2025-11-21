@@ -42,6 +42,7 @@
 
 		<!-- Page Header -->
 		<header class="page-header page-header-misc">
+			<canvas id="miscCanvas" class="page-header-canvas"></canvas>
 			<div class="container">
 				<h1 class="page-title">Miscellaneous Projects</h1>
 				<p class="page-subtitle">Programming languages, games, and hobby projects</p>
@@ -139,6 +140,140 @@
 
 		<!-- Scripts -->
 		<script>
+			// Miscellaneous Projects Animation - Background code typing
+			const miscCanvas = document.getElementById('miscCanvas');
+			const miscCtx = miscCanvas.getContext('2d');
+			let miscAnimationId;
+			let miscTime = 0;
+
+			// All code characters to type continuously
+			const allCode = `request.onload = function (e) {
+  if (request.readyState === 4) {
+    if (request.status === 200) {
+      var date = new Date();
+      date_str = date.yyyymmdd();
+      Math.seedrandom(date_str);
+      var result = document.createElement( 'html' );
+      result.innerHTML = request.response;
+      var items = result.getElementsByTagName("dd");
+      var link_items = result.getElementsByTagName("dt");
+      var days = result.getElementsByTagName("li");
+      var remove_number = items.length;
+      var day_names = ["Fri", "Mon", "Tue", "Wed", "Thu", "Fri", "Fri"];
+      const d = new Date();
+      let day_name = day_names[d.getDay()];
+      if (days[4].textContent.includes(day_name)) {
+        var href_link = days[4].innerHTML;
+        var remove_number_str = href_link.match(/(?:item)\d+(?=")/)[0];
+        remove_number = parseInt(remove_number_str.replace("item", "")) - 1;
+      }
+      items = Array.from(items).slice(0, remove_number);
+      link_items = Array.from(link_items).slice(0, remove_number);
+      var table_html = "";
+      var shuffled_idx = shuffle(items);
+      for (var i = 0; i < items.length; i++) {
+        var idx = shuffled_idx[i];
+        var item = items[idx];
+        var link_item = link_items[idx];
+        var title_el = item.getElementsByClassName("list-title")[0];
+        var auths_el = item.getElementsByClassName("list-authors")[0];
+        var comms_el = item.getElementsByClassName("list-comments")[0];
+        var subjs_el = item.getElementsByClassName("list-subjects")[0];
+        var ident_el = link_item;
+        var arxiv_num = ident_el.getElementsByTagName("a")[1].id;
+        title_el.querySelector('.descriptor').remove();
+        subjs_el.querySelector('.descriptor').remove();
+        table_html += '<tr class="arxiv_row"><td class="arxiv_item">';
+        var title = title_el.innerHTML;
+        title = title.replace(/(\$)([^\$]+)(\$)/g, "\\($2\\)");
+        var clean_title = title.replace(/<\/?[^>]+(>|$)/g, "");
+        clean_title = clean_title.replace(/Title: /g, "");
+        table_html += '<div class="title">['+(i+1)+"] "+clean_title+'</div>';
+        var auths = auths_el.innerHTML;
+        auths = auths.replace(/<span class="descriptor">Authors:<\/span>/g, 'Authors:');
+        auths = auths.replace(/href="\//g, 'href="https://arxiv.org/');
+        table_html += '<div class="author">'+auths+'</div>';
+      }
+      document.getElementById("main_table").innerHTML = table_html;
+    }
+  }
+};`;
+
+			function resizeMiscCanvas() {
+				const rect = miscCanvas.getBoundingClientRect();
+				miscCanvas.width = rect.width * window.devicePixelRatio;
+				miscCanvas.height = rect.height * window.devicePixelRatio;
+				miscCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+			}
+
+			function drawMiscAnimation() {
+				const width = miscCanvas.width;
+				const height = miscCanvas.height;
+
+				// Clear canvas
+				miscCtx.clearRect(0, 0, width, height);
+
+				const fontSize = 20;
+				const lineHeight = fontSize + 6;
+				const padding = 20;
+				const maxWidth = width - (padding * 2);
+
+				// Set up font
+				miscCtx.font = `${fontSize}px 'Courier New', monospace`;
+				miscCtx.textBaseline = 'top';
+				miscCtx.fillStyle = 'rgba(147, 197, 253, 0.5)';
+
+				// Calculate how many characters to display based on time
+				const charsPerSecond = 40;
+				const totalChars = (miscTime / 60) * charsPerSecond;
+				const displayChar = Math.floor(totalChars % (allCode.length + 100));
+
+				// Get substring to display
+				let displayText = '';
+				for (let i = 0; i < displayChar && i < allCode.length; i++) {
+					displayText += allCode[i];
+				}
+
+				// Split into lines and draw with proper wrapping
+				const lines = displayText.split('\n');
+				let yPos = padding;
+				
+				for (let i = 0; i < lines.length; i++) {
+					const line = lines[i];
+					let x = padding;
+					let currentLine = '';
+					
+					// Measure and wrap text to fit canvas width
+					for (let j = 0; j < line.length; j++) {
+						currentLine += line[j];
+						const metrics = miscCtx.measureText(currentLine);
+						
+						if (metrics.width > maxWidth) {
+							// Backtrack and render previous version
+							currentLine = currentLine.slice(0, -1);
+							miscCtx.fillText(currentLine, padding, yPos);
+							yPos += lineHeight;
+							currentLine = line[j];
+						}
+					}
+					
+					// Draw remaining text
+					if (currentLine) {
+						miscCtx.fillText(currentLine, padding, yPos);
+						yPos += lineHeight;
+					}
+					
+					if (yPos > miscCanvas.height - lineHeight) break;
+				}
+
+				miscTime += 1;
+				miscAnimationId = requestAnimationFrame(drawMiscAnimation);
+			}
+
+			// Handle canvas resize
+			window.addEventListener('resize', resizeMiscCanvas);
+			resizeMiscCanvas();
+			drawMiscAnimation();
 			// Dark mode toggle - default to dark mode
 			const themeToggle = document.getElementById('themeToggle');
 			const html = document.documentElement;
@@ -188,14 +323,5 @@
 			lastScroll = currentScroll;
 		});
 	</script>
-	<!-- Footer -->
-	<footer class="footer">
-		<div class="footer-content">
-			<div class="footer-left">
-				<p>&copy; 2025 Christian Kirkham</p>
-				<!-- LAST_UPDATED -->
-			</div>
-		</div>
-	</footer>
 	</body>
 </html>
