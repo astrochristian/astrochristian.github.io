@@ -172,7 +172,7 @@ html[data-theme="dark"] .highlight-card p {
 
 html[data-theme="dark"] .highlight-card p a {
 	color: var(--text-dark);
-	border-bottom-color: var(--text-light);
+	border-bottom-color: var(--border-light);
 }
 
 html[data-theme="dark"] .highlight-card p a:hover {
@@ -849,7 +849,7 @@ html[data-theme="dark"] .photo-glow {
 .highlight-card p a {
 	color: var(--text-dark);
 	text-decoration: none;
-	border-bottom: 1px solid var(--text-light);
+	border-bottom: 1px solid var(--text-lighter);
 	transition: all var(--transition-fast);
 }
 
