@@ -318,6 +318,7 @@ html[data-theme="dark"] .footer {
 .theme-toggle .moon-icon {
 	position: absolute;
 	transition: all var(--transition-fast);
+	color: var(--text-dark);
 }
 
 html[data-theme="light"] .theme-toggle .sun-icon {
@@ -333,6 +334,7 @@ html[data-theme="light"] .theme-toggle .moon-icon {
 html[data-theme="dark"] .theme-toggle .sun-icon {
 	opacity: 1;
 	transform: rotate(0deg);
+	color: var(--text-dark);
 }
 
 html[data-theme="dark"] .theme-toggle .moon-icon {
