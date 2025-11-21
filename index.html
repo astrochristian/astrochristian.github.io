@@ -242,100 +242,149 @@
 				lastScroll = currentScroll;
 			});
 
-			// Epoch of Reionization Simulation
+			// Epoch of Reionization - Expanding Bubbles Animation
 			const canvas = document.getElementById('cosmicCanvas');
 			const ctx = canvas.getContext('2d');
 			let bubbles = [];
 			let stars = [];
 			let animationId;
 			let time = 0;
+			let phase = 'blank'; // blank -> stars -> bubbles
+			let phaseTime = 0;
 
 			function resizeCanvas() {
 				canvas.width = window.innerWidth;
 				canvas.height = window.innerHeight;
 			}
 
-			// Ionized bubble class
-			class IonizedBubble {
-				constructor(x, y, birthTime) {
+			// Expanding ionization bubble (like ripples on water)
+			class IonizationBubble {
+				constructor(x, y, birthTime, delay = 0) {
 					this.x = x;
 					this.y = y;
-					this.radius = 0;
-					this.maxRadius = Math.random() * 60 + 30;
-					this.growthRate = Math.random() * 0.3 + 0.15;
-					this.birthTime = birthTime;
-					this.opacity = 0;
+					this.birthTime = birthTime + delay;
+					this.rings = []; // Multiple expanding rings like water ripples
+					this.maxRings = 3;
+					this.ringInterval = 30; // Frames between new rings
+					this.lastRingTime = birthTime + delay;
+					this.maxRadius = Math.min(canvas.width, canvas.height) * 0.8;
+					this.growthRate = 1.2;
 				}
 
 				update(currentTime) {
 					const age = currentTime - this.birthTime;
-					if (age > 0 && this.radius < this.maxRadius) {
-						this.radius += this.growthRate;
-						this.opacity = Math.min(0.4, age / 100);
+
+					// Create new rings periodically
+					if (age > 0 &&
+						currentTime - this.lastRingTime > this.ringInterval &&
+						this.rings.length < this.maxRings) {
+						this.rings.push({ radius: 0, opacity: 1, age: 0 });
+						this.lastRingTime = currentTime;
 					}
+
+					// Update existing rings
+					for (let ring of this.rings) {
+						ring.radius += this.growthRate;
+						ring.age++;
+						// Fade out gradually
+						ring.opacity = Math.max(0, 1 - (ring.radius / this.maxRadius));
+					}
+
+					// Remove fully faded rings
+					this.rings = this.rings.filter(ring => ring.opacity > 0.05 && ring.radius < this.maxRadius);
 				}
 
 				draw() {
 					const theme = html.getAttribute('data-theme');
-					// Ionized regions are bright (blue/cyan)
-					const centerColor = theme === 'dark' ? 'rgba(147, 197, 253, ' : 'rgba(102, 126, 234, ';
-					const edgeColor = theme === 'dark' ? 'rgba(56, 189, 248, ' : 'rgba(139, 92, 246, ';
 
-					// Create gradient for bubble
-					const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
-					gradient.addColorStop(0, centerColor + (this.opacity * 0.3) + ')');
-					gradient.addColorStop(0.7, edgeColor + (this.opacity * 0.2) + ')');
-					gradient.addColorStop(1, edgeColor + '0)');
+					// Color scheme: ionized regions (cyan/blue tones)
+					const ionizedColor = theme === 'dark' ? '56, 189, 248' : '139, 92, 246'; // cyan-400 / purple-500
 
-					ctx.fillStyle = gradient;
-					ctx.beginPath();
-					ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-					ctx.fill();
+					for (let ring of this.rings) {
+						// Filled circle with gradient
+						const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, ring.radius);
+						gradient.addColorStop(0, `rgba(${ionizedColor}, ${ring.opacity * 0.15})`);
+						gradient.addColorStop(0.5, `rgba(${ionizedColor}, ${ring.opacity * 0.08})`);
+						gradient.addColorStop(1, `rgba(${ionizedColor}, 0)`);
 
-					// Draw edge glow
-					ctx.strokeStyle = edgeColor + (this.opacity * 0.5) + ')';
-					ctx.lineWidth = 2;
-					ctx.beginPath();
-					ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-					ctx.stroke();
+						ctx.fillStyle = gradient;
+						ctx.beginPath();
+						ctx.arc(this.x, this.y, ring.radius, 0, Math.PI * 2);
+						ctx.fill();
+
+						// Crisp outer ring edge (like water ripple)
+						const edgeWidth = 3;
+						ctx.strokeStyle = `rgba(${ionizedColor}, ${ring.opacity * 0.6})`;
+						ctx.lineWidth = edgeWidth;
+						ctx.beginPath();
+						ctx.arc(this.x, this.y, ring.radius, 0, Math.PI * 2);
+						ctx.stroke();
+
+						// Inner bright ring
+						if (ring.radius > 10) {
+							ctx.strokeStyle = `rgba(${ionizedColor}, ${ring.opacity * 0.3})`;
+							ctx.lineWidth = 1;
+							ctx.beginPath();
+							ctx.arc(this.x, this.y, ring.radius - 5, 0, Math.PI * 2);
+							ctx.stroke();
+						}
+					}
 				}
 			}
 
-			// Star/source class
+			// Star source (bright point)
 			class Star {
-				constructor(x, y) {
+				constructor(x, y, birthTime) {
 					this.x = x;
 					this.y = y;
-					this.brightness = Math.random() * 0.5 + 0.5;
-					this.twinkleSpeed = Math.random() * 0.02 + 0.01;
-					this.twinklePhase = Math.random() * Math.PI * 2;
+					this.birthTime = birthTime;
+					this.size = 0;
+					this.maxSize = Math.random() * 2 + 2;
+					this.opacity = 0;
+					this.pulsePhase = Math.random() * Math.PI * 2;
+					this.pulseSpeed = 0.05;
 				}
 
-				update() {
-					this.twinklePhase += this.twinkleSpeed;
+				update(currentTime) {
+					const age = currentTime - this.birthTime;
+
+					// Fade in
+					if (age > 0 && age < 30) {
+						this.opacity = Math.min(1, age / 30);
+						this.size = this.maxSize * this.opacity;
+					} else if (age >= 30) {
+						this.opacity = 1;
+						this.size = this.maxSize;
+					}
+
+					this.pulsePhase += this.pulseSpeed;
 				}
 
 				draw() {
+					if (this.opacity <= 0) return;
+
 					const theme = html.getAttribute('data-theme');
-					const twinkle = Math.sin(this.twinklePhase) * 0.3 + 0.7;
-					const opacity = this.brightness * twinkle;
+					const pulse = Math.sin(this.pulsePhase) * 0.3 + 0.7;
+					const brightness = this.opacity * pulse;
 
-					// Stars are bright points
-					const color = theme === 'dark' ? `rgba(255, 255, 255, ${opacity})` : `rgba(102, 126, 234, ${opacity})`;
+					// Star color - bright white/yellow for dark mode, bright blue for light
+					const starColor = theme === 'dark' ? '255, 255, 255' : '102, 126, 234';
 
-					// Draw star
-					ctx.fillStyle = color;
+					// Core
+					ctx.fillStyle = `rgba(${starColor}, ${brightness})`;
 					ctx.beginPath();
-					ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+					ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
 					ctx.fill();
 
-					// Draw glow
-					const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 8);
-					gradient.addColorStop(0, theme === 'dark' ? `rgba(147, 197, 253, ${opacity * 0.6})` : `rgba(102, 126, 234, ${opacity * 0.4})`);
-					gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-					ctx.fillStyle = gradient;
+					// Glow
+					const glowGradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 4);
+					glowGradient.addColorStop(0, `rgba(${starColor}, ${brightness * 0.4})`);
+					glowGradient.addColorStop(0.5, `rgba(${starColor}, ${brightness * 0.2})`);
+					glowGradient.addColorStop(1, `rgba(${starColor}, 0)`);
+
+					ctx.fillStyle = glowGradient;
 					ctx.beginPath();
-					ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
+					ctx.arc(this.x, this.y, this.size * 4, 0, Math.PI * 2);
 					ctx.fill();
 				}
 			}
@@ -344,115 +393,54 @@
 				bubbles = [];
 				stars = [];
 				time = 0;
+				phase = 'blank';
+				phaseTime = 0;
 
-				// Create initial stars (first sources of ionization)
-				const starCount = Math.floor((canvas.width * canvas.height) / 50000);
+				// Prepare star positions
+				const starCount = Math.floor((canvas.width * canvas.height) / 80000);
+				const starPositions = [];
+
 				for (let i = 0; i < starCount; i++) {
-					stars.push(new Star(
-						Math.random() * canvas.width,
-						Math.random() * canvas.height
-					));
+					starPositions.push({
+						x: Math.random() * canvas.width,
+						y: Math.random() * canvas.height
+					});
 				}
 
-				// Create initial bubbles around some stars
-				for (let i = 0; i < Math.min(5, starCount); i++) {
-					const star = stars[Math.floor(Math.random() * stars.length)];
-					bubbles.push(new IonizedBubble(star.x, star.y, Math.random() * 100));
-				}
-			}
+				// Schedule star formation (staggered)
+				starPositions.forEach((pos, i) => {
+					const birthTime = 60 + i * 8; // Start after blank phase, stagger births
+					stars.push(new Star(pos.x, pos.y, birthTime));
 
-			// Draw 21-cm signal curve in corner
-			function draw21cmSignal() {
-				const theme = html.getAttribute('data-theme');
-				const width = 200;
-				const height = 80;
-				const margin = 20;
-				const x = canvas.width - width - margin;
-				const y = margin;
-
-				// Semi-transparent background
-				ctx.fillStyle = theme === 'dark' ? 'rgba(24, 24, 27, 0.7)' : 'rgba(255, 255, 255, 0.7)';
-				ctx.fillRect(x - 10, y - 10, width + 20, height + 20);
-
-				// Draw axes
-				ctx.strokeStyle = theme === 'dark' ? 'rgba(228, 228, 231, 0.5)' : 'rgba(63, 63, 70, 0.5)';
-				ctx.lineWidth = 1;
-				ctx.beginPath();
-				ctx.moveTo(x, y + height);
-				ctx.lineTo(x + width, y + height);
-				ctx.moveTo(x, y);
-				ctx.lineTo(x, y + height);
-				ctx.stroke();
-
-				// Label
-				ctx.fillStyle = theme === 'dark' ? 'rgba(228, 228, 231, 0.8)' : 'rgba(63, 63, 70, 0.8)';
-				ctx.font = '10px Inter';
-				ctx.fillText('21-cm Signal', x, y - 5);
-				ctx.fillText('z', x + width, y + height + 12);
-
-				// Draw characteristic signal curve (absorption trough during EoR)
-				ctx.strokeStyle = theme === 'dark' ? 'rgba(147, 197, 253, 0.9)' : 'rgba(102, 126, 234, 0.9)';
-				ctx.lineWidth = 2;
-				ctx.beginPath();
-
-				const points = 100;
-				for (let i = 0; i <= points; i++) {
-					const t = i / points;
-					const z = 6 + t * 14; // Redshift from ~20 to ~6
-
-					// Simplified 21-cm signal: absorption trough during reionization
-					let signal;
-					if (z > 15) {
-						// Before reionization: gradual increase
-						signal = -50 * (1 - (z - 15) / 5);
-					} else if (z > 10) {
-						// Early reionization: deep absorption
-						signal = -150 + 50 * Math.sin((z - 10) * Math.PI / 5);
-					} else if (z > 7) {
-						// Mid reionization: signal recovery
-						signal = -100 + 80 * (1 - (z - 7) / 3);
-					} else {
-						// Late/post reionization: return to emission
-						signal = 20 - 30 * (z - 6);
-					}
-
-					const px = x + (1 - t) * width;
-					const py = y + height - (signal + 150) * height / 200;
-
-					if (i === 0) {
-						ctx.moveTo(px, py);
-					} else {
-						ctx.lineTo(px, py);
-					}
-				}
-				ctx.stroke();
+					// Schedule bubble for this star
+					const bubbleBirthTime = birthTime + 40; // Bubble starts after star is visible
+					bubbles.push(new IonizationBubble(pos.x, pos.y, bubbleBirthTime));
+				});
 			}
 
 			function animate() {
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				time++;
 
-				// Occasionally spawn new bubbles around stars
-				if (time % 150 === 0 && bubbles.length < 30) {
-					const star = stars[Math.floor(Math.random() * stars.length)];
-					bubbles.push(new IonizedBubble(star.x, star.y, time));
+				// Update phase
+				if (time > 60 && phase === 'blank') {
+					phase = 'stars';
+				}
+				if (time > 120 && phase === 'stars') {
+					phase = 'bubbles';
 				}
 
-				// Update and draw stars
+				// Draw stars
 				for (let star of stars) {
-					star.update();
+					star.update(time);
 					star.draw();
 				}
 
-				// Update and draw bubbles (older bubbles first)
-				bubbles.sort((a, b) => a.birthTime - b.birthTime);
+				// Draw bubbles
 				for (let bubble of bubbles) {
 					bubble.update(time);
 					bubble.draw();
 				}
-
-				// Draw 21-cm signal visualization
-				draw21cmSignal();
 
 				animationId = requestAnimationFrame(animate);
 			}
