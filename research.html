@@ -18,6 +18,14 @@
 			div.arxivfeed {margin-bottom: 5px; width:100%;}
 			.list-title {color:#667eea;}
 			.list-authors {color:#555;}
+			.list-subjects {color:#777;}
+			.list-comments {color:#666;}
+
+			/* Dark mode styles for arXiv widget */
+			html[data-theme="dark"] .list-title {color:#a78bfa;}
+			html[data-theme="dark"] .list-authors {color:#d4d4d8;}
+			html[data-theme="dark"] .list-subjects {color:#a1a1aa;}
+			html[data-theme="dark"] .list-comments {color:#9ca3af;}
 		</style>
 		<script type="text/javascript" src="https://arxiv.org/js/myarticles.js"></script>
 	</head>
@@ -87,6 +95,12 @@
 				<!-- Publications -->
 				<section class="content-section">
 					<h2 class="content-heading">Publications</h2>
+					<p class="publications-intro">
+						View my full publication list on
+						<a href="https://arxiv.org/a/0000-0001-5385-6329.html" target="_blank" rel="noopener">arXiv</a>,
+						<a href="https://ui.adsabs.harvard.edu/search/q=orcid%3A0000-0001-5385-6329&sort=date%20desc" target="_blank" rel="noopener">NASA ADS</a>, or
+						<a href="https://orcid.org/0000-0001-5385-6329" target="_blank" rel="noopener">ORCID</a>.
+					</p>
 					<div id="arxivfeed" class="publications-list"></div>
 				</section>
 			</div>
