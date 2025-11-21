@@ -309,6 +309,8 @@
 					this.opacity = 0;
 					this.pulsePhase = Math.random() * Math.PI * 2;
 					this.pulseSpeed = 0.025; // Slower pulse (half of 0.05)
+					this.twinklePhase = Math.random() * Math.PI * 2;
+					this.twinkleSpeed = 0.04; // 2x faster twinkling
 				}
 
 				update(currentTime) {
@@ -324,13 +326,15 @@
 					}
 
 					this.pulsePhase += this.pulseSpeed;
+					this.twinklePhase += this.twinkleSpeed;
 				}
 
 				draw() {
 					if (this.opacity <= 0) return;
 
 					const pulse = Math.sin(this.pulsePhase) * 0.3 + 0.7;
-					const brightness = this.opacity * pulse;
+					const twinkle = Math.sin(this.twinklePhase) * 0.12 + 0.88; // Subtle 76-100% brightness variation
+					const brightness = this.opacity * pulse * twinkle;
 
 					// Always use white color for stars
 					const starColor = '255, 255, 255';
