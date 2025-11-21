@@ -1,115 +1,156 @@
 <!DOCTYPE HTML>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
+<html lang="en">
 	<head>
 		<title>Misc - Christian Kirkham</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="assets/css/style.css" />
 		<link rel="icon" type="image/ico" href="/images/favicon.ico">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
 	</head>
-	<body class="is-preload">
+	<body>
+		<!-- Navigation -->
+		<nav class="nav-bar">
+			<div class="nav-container">
+				<a href="/" class="nav-logo">Christian Kirkham</a>
+				<button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+				<ul class="nav-menu" id="navMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/research">Research</a></li>
+					<li><a href="/talks">Talks</a></li>
+					<li><a href="CV_christian_kirkham.pdf">CV</a></li>
+					<li><a href="/misc" class="active">Misc</a></li>
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</div>
+		</nav>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+		<!-- Page Header -->
+		<header class="page-header">
+			<div class="container">
+				<h1 class="page-title">Miscellaneous Projects</h1>
+				<p class="page-subtitle">Programming languages, games, and hobby projects</p>
+			</div>
+		</header>
 
-				<!-- Header -->
-					<header id="header" class="alt">
-						<a href="/" class="logo"><strong>Christian Kirkham</strong> <span>Astrophysics PhD Student</span></a>
-						<nav>
-							<a href="#menu">Menu</a>
-						</nav>
-					</header>
+		<!-- Main Content -->
+		<main class="main-content">
+			<div class="container content-container">
+				<section class="content-section">
+					<p class="misc-intro">Here you can find various hobby projects of mine, implemented in JavaScript and HTML. These include the interpreters for the stack-based esoteric programming languages I designed: Fourier and Noether. Some of these projects use my <a href="https://github.com/beta-decay" target="_blank" rel="noopener">other Github account</a>.</p>
 
-				<!-- Menu -->
-					<nav id="menu">
-						<ul class="links">
-							<li><a href="/">Home</a></li>
-							<li><a href="/research">Research</a></li>
-							<li><a href="CV_christian_kirkham.pdf">CV</a></li>
-                            <li><a href="/talks">Talks</a></li>
-							<li><a href="/misc">Misc</a></li>							
-							<li><a href="/contact">Contact Me</a></li>
-						</ul>
-						<ul class="actions stacked">
-							<li><a href="https://github.com/astrochristian" class="button fit">Github</a></li>
-						</ul>
-					</nav>
+					<div class="projects-grid">
+						<div class="project-card">
+							<h3 class="project-title">
+								<a href="../nonogram/">Nonogram</a>
+							</h3>
+							<p class="project-description">JavaScript implementation of the puzzle game, <a href="https://en.wikipedia.org/wiki/Nonogram" target="_blank" rel="noopener">Nonogram (or Picross)</a></p>
+						</div>
 
-				<!-- Main -->
-					<div id="main" class="alt">
+						<div class="project-card">
+							<h3 class="project-title">
+								<a href="../sudoku/">Sudoku</a>
+							</h3>
+							<p class="project-description">JavaScript implementation of Sudoku. Note that puzzles are generated randomly so may not be solvable or have a unique solution.</p>
+						</div>
 
-						<!-- One -->
-							<section id="one">
-								<div class="inner">
-									<header class="major">
-										<h1>Miscellaneous Projects</h1>
-									</header>
-									<p>Here you can find various hobby projects of mine, implemented in JavaScript and HTML. These include the interpreters for the stack-based esoteric programming languages I designed: Fourier and Noether. Some of these projects use my <a href="https://github.com/beta-decay">other Github account</a>.</p>
-					                
-					                <h3><a href="../nonogram/" style="text-decoration:underline;text-decoration-style: dotted;">Nonogram</a></h3>
-					                <ul>
-					                    <li>JavaScript implementation of the puzzle game, <a href="https://en.wikipedia.org/wiki/Nonogram">Nonogram (or Picross)</a></li>
-					                </ul>
-
-									<h3><a href="../sudoku/" style="text-decoration:underline;text-decoration-style: dotted;">Sudoku</a></h3>
-					                <ul>
-					                    <li>JavaScript implementation of Sudoku. Note that puzzles are generated randomly so may not be solvable or have a unique solution.</a></li>
-					                </ul>
-					           
-					                <h3><a href="../editor" style="text-decoration:underline;text-decoration-style: dotted;">FourIDE: An IDE for Fourier</a></h3>
-					                <ul>
-					                    <li>Function reference</li>
-					                    <li>Byte counting of code</li>
-					                    <li>Permalinking</li>
-					                </ul>
-					                <h3><a href="../noether" style="text-decoration:underline;text-decoration-style: dotted;">Noether: A Stack Based Fourier</a></h3>
-					                <ul>
-					                    <li>Overloading of functions</li>
-					                    <li>String operations</li>
-					                    <li>Functions with practical use</li>
-					                </ul>
-									<h3><a href="../astro_ph_co" style="text-decoration:underline;text-decoration-style: dotted;">Randomised Weekly astro-ph.CO</a></h3>
-					                <ul>
-					                    <li>Designed for use with <a href="https://www.willhandley.co.uk/">Will Handley's</a> weekly "arXiv Scrolling Club"</li>
-					                    <li>Updates list of papers every six hours</li>
-					                    <li>Set up to change the random seed every day, allowing people to view the same list</li>
-					                    <li>MathJaX support to properly render paper titles</li>
-					                </ul>
-
-								</div>
-							</section>
-
-					</div>
-
-				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<ul class="icons">
-								<li><a href="https://github.com/astrochristian" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								<li><a href="https://www.linkedin.com/in/christian-k-0a3699216/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-							</ul>
-							<ul class="copyright">
-								<li>&copy; Christian Kirkham</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+						<div class="project-card">
+							<h3 class="project-title">
+								<a href="../editor">FourIDE: An IDE for Fourier</a>
+							</h3>
+							<ul class="project-features">
+								<li>Function reference</li>
+								<li>Byte counting of code</li>
+								<li>Permalinking</li>
 							</ul>
 						</div>
-					</footer>
 
+						<div class="project-card">
+							<h3 class="project-title">
+								<a href="../noether">Noether: A Stack Based Fourier</a>
+							</h3>
+							<ul class="project-features">
+								<li>Overloading of functions</li>
+								<li>String operations</li>
+								<li>Functions with practical use</li>
+							</ul>
+						</div>
+
+						<div class="project-card">
+							<h3 class="project-title">
+								<a href="../astro_ph_co">Randomised Weekly astro-ph.CO</a>
+							</h3>
+							<ul class="project-features">
+								<li>Designed for use with <a href="https://www.willhandley.co.uk/" target="_blank" rel="noopener">Will Handley's</a> weekly "arXiv Scrolling Club"</li>
+								<li>Updates list of papers every six hours</li>
+								<li>Set up to change the random seed every day, allowing people to view the same list</li>
+								<li>MathJaX support to properly render paper titles</li>
+							</ul>
+						</div>
+					</div>
+				</section>
 			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="container">
+				<div class="footer-content">
+					<div class="footer-left">
+						<p>&copy; 2025 Christian Kirkham</p>
+					</div>
+					<div class="footer-right">
+						<a href="https://github.com/astrochristian" target="_blank" rel="noopener" aria-label="GitHub">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+						</a>
+						<a href="https://www.linkedin.com/in/christian-k-0a3699216/" target="_blank" rel="noopener" aria-label="LinkedIn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+						</a>
+					</div>
+				</div>
+			</div>
+		</footer>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		<script>
+			// Mobile navigation toggle
+			const navToggle = document.getElementById('navToggle');
+			const navMenu = document.getElementById('navMenu');
 
+			navToggle.addEventListener('click', () => {
+				navMenu.classList.toggle('active');
+				navToggle.classList.toggle('active');
+			});
+
+			// Close menu when clicking outside
+			document.addEventListener('click', (e) => {
+				if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+					navMenu.classList.remove('active');
+					navToggle.classList.remove('active');
+				}
+			});
+
+			// Add scroll effect to navigation
+			let lastScroll = 0;
+			const nav = document.querySelector('.nav-bar');
+
+			window.addEventListener('scroll', () => {
+				const currentScroll = window.pageYOffset;
+
+				if (currentScroll > 100) {
+					nav.classList.add('scrolled');
+				} else {
+					nav.classList.remove('scrolled');
+				}
+
+				lastScroll = currentScroll;
+			});
+		</script>
 	</body>
 </html>

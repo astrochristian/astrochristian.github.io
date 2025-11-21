@@ -1,132 +1,209 @@
 <!DOCTYPE HTML>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
+<html lang="en">
 	<head>
 		<title>Christian Kirkham</title>
 		<meta name="description" content="I'm Christian Kirkham, an astronomy PhD Student at the University of Cambridge. I specialise in astrophysics, specifically 21-cm radio cosmology, working on Bayesian analysis and calibration for the REACH telescope.">
 		<meta name="keywords" content="christian kirkham,christian,kirkham,astronomy,astrophysics,PhD,PhD student,cambridge,university of cambridge,cavendish,cavendish astrophysics,21cm,21cm radio cosmology,radio cosmology,radio,bayesian,bayesian inference,polychord,eloy de lera acedo,cavendish radio cosmology,reach,reach telescope,cosmic dawn,cosmology,observational cosmology,observational">
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="assets/css/style.css" />
 		<link rel="icon" type="image/ico" href="/images/favicon.ico">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
 	</head>
-	<body class="is-preload">
+	<body>
+		<!-- Navigation -->
+		<nav class="nav-bar">
+			<div class="nav-container">
+				<a href="/" class="nav-logo">Christian Kirkham</a>
+				<button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+				<ul class="nav-menu" id="navMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/research">Research</a></li>
+					<li><a href="/talks">Talks</a></li>
+					<li><a href="CV_christian_kirkham.pdf">CV</a></li>
+					<li><a href="/misc">Misc</a></li>
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</div>
+		</nav>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+		<!-- Hero Section -->
+		<header class="hero">
+			<div class="hero-content">
+				<h1 class="hero-title">Christian Kirkham</h1>
+				<p class="hero-subtitle">Astrophysics PhD Student</p>
+				<p class="hero-affiliation">University of Cambridge</p>
+				<div class="hero-links">
+					<a href="https://github.com/astrochristian" class="hero-link" target="_blank" rel="noopener">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+						GitHub
+					</a>
+					<a href="https://www.linkedin.com/in/christian-k-0a3699216/" class="hero-link" target="_blank" rel="noopener">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+						LinkedIn
+					</a>
+				</div>
+			</div>
+			<div class="hero-scroll">
+				<span>Scroll</span>
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+			</div>
+		</header>
 
-				<!-- Header -->
-					<header id="header" class="alt">
-						<a href="/" class="logo"><strong>Christian Kirkham</strong> <span>Astrophysics PhD Student</span></a>
-						<nav>
-							<a href="#menu">Menu</a>
-						</nav>
-					</header>
-
-				<!-- Menu -->
-					<nav id="menu">
-						<ul class="links">
-							<li><a href="/">Home</a></li>
-							<li><a href="/research">Research</a></li>
-							<li><a href="CV_christian_kirkham.pdf">CV</a></li>
-                            <li><a href="/talks">Talks</a></li>
-							<li><a href="/misc">Misc</a></li>							
-							<li><a href="/contact">Contact Me</a></li>
-						</ul>
-						<ul class="actions stacked">
-							<li><a href="https://github.com/astrochristian" class="button fit">Github</a></li>
-						</ul>
-					</nav>
-
-				<!-- Banner -->
-					<section id="banner" class="major">
-						<div class="inner">
-							<header class="major">
-								<h1>Hi, my name is Christian</h1>
-							</header>
-							<div class="content">
-								<p>I am an astrophysics PhD student at the University of Cambridge</p>
+		<!-- Main Content -->
+		<main class="main-content">
+			<!-- About Section -->
+			<section class="section about-section">
+				<div class="container">
+					<div class="section-intro">
+						<h2 class="section-title">About Me</h2>
+						<p class="section-lead">I am an astrophysics PhD student at the University of Cambridge, working on 21-cm radio cosmology with the REACH telescope.</p>
+					</div>
+					<div class="about-grid">
+						<div class="about-text">
+							<p>My research focuses on developing advanced Bayesian data analysis techniques for observing the earliest epochs of the Universe. I work with the REACH (Radio Experiment for the Analysis of Cosmic Hydrogen) telescope at the Karoo Radio Astronomy Observatory in South Africa.</p>
+							<p>I specialize in calibration methods, systematic mitigation using Gaussian Processes, and Bayesian inference techniques to detect the faint cosmological 21-cm signal from neutral hydrogen in the early Universe.</p>
+						</div>
+						<div class="about-highlights">
+							<div class="highlight-card">
+								<h3>Research Focus</h3>
+								<p>21-cm Radio Cosmology</p>
+							</div>
+							<div class="highlight-card">
+								<h3>Institution</h3>
+								<p>University of Cambridge</p>
+							</div>
+							<div class="highlight-card">
+								<h3>Supervisors</h3>
+								<p>Eloy de Lera Acedo<br>Dominic Anstey</p>
+							</div>
+							<div class="highlight-card">
+								<h3>Funding</h3>
+								<p>STFC</p>
 							</div>
 						</div>
-					</section>
-
-				<!-- Main -->
-					<div id="main">
-
-						<!-- One -->
-							<section id="one" class="tiles">
-								<article class="wide">
-									<span class="image">
-										<img src="images/dark_ages.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="research" class="link">Research</a></h3>
-									</header>
-								</article>
-								<article class="wide">
-									<span class="image">
-										<img src="images/jwst_carina.png" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="talks" class="link">Talks</a></h3>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/observatory.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="CV_christian_kirkham.pdf" class="link">Curriculum Vitae</a></h3>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/html.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="misc" class="link">Miscellaneous Projects</a></h3>
-									</header>
-								</article>
-
-								<article class="wide">
-									<span class="image">
-										<img src="images/vla.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="contact" class="link">Contact Me</a></h3>
-									</header>
-								</article>							
-							</section>
 					</div>
+				</div>
+			</section>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<ul class="icons">
-								<li><a href="https://github.com/astrochristian" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								<li><a href="https://www.linkedin.com/in/christian-k-0a3699216/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-							</ul>
-							<ul class="copyright">
-								<li>&copy; Christian Kirkham</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-							</ul>
-						</div>
-					</footer>
+			<!-- Quick Links Section -->
+			<section class="section links-section">
+				<div class="container">
+					<div class="links-grid">
+						<a href="/research" class="link-card">
+							<div class="link-card-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+							</div>
+							<div class="link-card-content">
+								<h3>Research</h3>
+								<p>Explore my work on REACH calibration, systematic mitigation, and publications</p>
+							</div>
+							<div class="link-card-arrow">→</div>
+						</a>
+						<a href="/talks" class="link-card">
+							<div class="link-card-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+							</div>
+							<div class="link-card-content">
+								<h3>Talks & Presentations</h3>
+								<p>Conference talks, workshops, and poster presentations</p>
+							</div>
+							<div class="link-card-arrow">→</div>
+						</a>
+						<a href="CV_christian_kirkham.pdf" class="link-card">
+							<div class="link-card-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+							</div>
+							<div class="link-card-content">
+								<h3>Curriculum Vitae</h3>
+								<p>View my academic CV and professional experience</p>
+							</div>
+							<div class="link-card-arrow">→</div>
+						</a>
+						<a href="/misc" class="link-card">
+							<div class="link-card-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+							</div>
+							<div class="link-card-content">
+								<h3>Miscellaneous Projects</h3>
+								<p>Programming languages, games, and hobby projects</p>
+							</div>
+							<div class="link-card-arrow">→</div>
+						</a>
+						<a href="/contact" class="link-card">
+							<div class="link-card-icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+							</div>
+							<div class="link-card-content">
+								<h3>Contact Me</h3>
+								<p>Get in touch via email or visit me at Cambridge</p>
+							</div>
+							<div class="link-card-arrow">→</div>
+						</a>
+					</div>
+				</div>
+			</section>
+		</main>
 
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="container">
+				<div class="footer-content">
+					<div class="footer-left">
+						<p>&copy; 2025 Christian Kirkham</p>
+					</div>
+					<div class="footer-right">
+						<a href="https://github.com/astrochristian" target="_blank" rel="noopener" aria-label="GitHub">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+						</a>
+						<a href="https://www.linkedin.com/in/christian-k-0a3699216/" target="_blank" rel="noopener" aria-label="LinkedIn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+						</a>
+					</div>
+				</div>
 			</div>
+		</footer>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		<script>
+			// Mobile navigation toggle
+			const navToggle = document.getElementById('navToggle');
+			const navMenu = document.getElementById('navMenu');
 
+			navToggle.addEventListener('click', () => {
+				navMenu.classList.toggle('active');
+				navToggle.classList.toggle('active');
+			});
+
+			// Close menu when clicking outside
+			document.addEventListener('click', (e) => {
+				if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+					navMenu.classList.remove('active');
+					navToggle.classList.remove('active');
+				}
+			});
+
+			// Add scroll effect to navigation
+			let lastScroll = 0;
+			const nav = document.querySelector('.nav-bar');
+
+			window.addEventListener('scroll', () => {
+				const currentScroll = window.pageYOffset;
+
+				if (currentScroll > 100) {
+					nav.classList.add('scrolled');
+				} else {
+					nav.classList.remove('scrolled');
+				}
+
+				lastScroll = currentScroll;
+			});
+		</script>
 	</body>
 </html>

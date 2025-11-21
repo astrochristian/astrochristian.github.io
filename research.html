@@ -1,17 +1,14 @@
 <!DOCTYPE HTML>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
+<html lang="en">
 	<head>
 		<title>Research - Christian Kirkham</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="assets/css/style.css" />
 		<link rel="icon" type="image/ico" href="/images/favicon.ico">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
 		<script type="text/javascript">
 		//<!--
 		var arxiv_authorid = "0000-0001-5385-6329";
@@ -19,126 +16,129 @@
 		//--></script>
 		<style type="text/css">
 			div.arxivfeed {margin-bottom: 5px; width:100%;}
-			.list-title {color:rgb(0, 255, 238);}
-			.list-authors {color:#c4c0ff;}
-		</style> 
-		<script type="text/javascript" src="https://arxiv.org/js/myarticles.js"></script> 
+			.list-title {color:#667eea;}
+			.list-authors {color:#555;}
+		</style>
+		<script type="text/javascript" src="https://arxiv.org/js/myarticles.js"></script>
 	</head>
-	<body class="is-preload">
+	<body>
+		<!-- Navigation -->
+		<nav class="nav-bar">
+			<div class="nav-container">
+				<a href="/" class="nav-logo">Christian Kirkham</a>
+				<button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+				<ul class="nav-menu" id="navMenu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/research" class="active">Research</a></li>
+					<li><a href="/talks">Talks</a></li>
+					<li><a href="CV_christian_kirkham.pdf">CV</a></li>
+					<li><a href="/misc">Misc</a></li>
+					<li><a href="/contact">Contact</a></li>
+				</ul>
+			</div>
+		</nav>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+		<!-- Page Header -->
+		<header class="page-header">
+			<div class="container">
+				<h1 class="page-title">Research</h1>
+				<p class="page-subtitle">21-cm Radio Cosmology with REACH</p>
+			</div>
+		</header>
 
-				<!-- Header -->
-					<header id="header" class="alt">
-						<a href="/" class="logo"><strong>Christian Kirkham</strong> <span>Astrophysics PhD Student</span></a>
-						<nav>
-							<a href="#menu">Menu</a>
-						</nav>
-					</header>
+		<!-- Main Content -->
+		<main class="main-content">
+			<div class="container content-container">
+				<!-- Research Overview -->
+				<section class="content-section">
+					<h2 class="content-heading">Current Research</h2>
 
-				<!-- Menu -->
-					<nav id="menu">
-						<ul class="links">
-							<li><a href="/">Home</a></li>
-							<li><a href="/research">Research</a></li>
-							<li><a href="CV_christian_kirkham.pdf">CV</a></li>
-                            <li><a href="/talks">Talks</a></li>
-							<li><a href="/misc">Misc</a></li>							
-							<li><a href="/contact">Contact Me</a></li>
-						</ul>
-						<ul class="actions stacked">
-							<li><a href="https://github.com/astrochristian" class="button fit">Github</a></li>
-						</ul>
-					</nav>
-
-				<!-- Main -->
-					<div id="main" class="alt">
-
-						<!-- One -->
-							<section id="one">
-								<div class="inner">
-									<header class="major">
-										<h1>Current Research</h1>
-									</header>
-									<h2>21cm Radio Cosmology</h2>
-									<span class="image main"><img src="images/research_banner.jpg" alt="" /></span>
-
-									<p>Supervised by Eloy de Lera Acedo and Dominic Anstey, and funded by the STFC, I am working on developing Bayesian data analysis techniques for the <a href="https://rdcu.be/cST2c">REACH radio telescope</a>.</p>
-
-									<h3>REACH</h3>
-
-									<p>REACH (Radio Experiment for the Analysis of Cosmic Hydrogen) is a low-frequency radio experiment located in the South African Radio Astronomy Observatory (SARAO) in the Karoo desert. It is designed to measure the global 21-cm signal from neutral hydrogen in the early Universe, which can be used to constrain cosmological parameters and test models of structure formation.</p>
-
-									<p>Due to the large dynamic ranges involved in separating the cosmological 21-cm signal from the galactic synchrotron emission and instrumental systematics, it is imperative that we have precise analysis techniques which can constrain our modelling of the external effects which will confuse our signal detection.</p>
-
-									<h3>Time-Varying Systematic Mitigation</h3>
-
-									Using Gaussian Processes we developed a method of mitigating the effects of unmodelled systematics on our ability to fit for the 21cm global signal (<a href="https://ui.adsabs.harvard.edu/abs/2023arXiv231017975K/abstract">Kirkham et al. 2023</a>). Here we found that by using GPs to fit for time covariances in the model residuals increased our uncertainties in the parameter estimation, generally improving the error of our fits when compared with the standard REACH pipeline (<a href="https://academic.oup.com/mnras/article/506/2/2041/6307526">Anstey et al. 2021</a>, <a href="https://academic.oup.com/mnras/advance-article/doi/10.1093/mnras/stad156/6987686">2023</a>).
-									
-									<br/><br/>
-
-									<h3>Calibration</h3>
-
-									I am continuing work on the calibration of the REACH receiver using Bayesian noise wave techniques (<a href="https://ui.adsabs.harvard.edu/abs/2021MNRAS.505.2638R/abstract">Roque et al. 2021</a>, <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241214023K/abstract">Kirkham et al. 2024</a>). Through this work I have developed numerous calibration techniques (Kirkham et al. in prep, Bucher et al. in prep) which push forward our understanding of REACH calibration. I am also the builder and maintainer of the REACH calibration pipeline, which allows all members of the calibration to calibrate data with a simple intuitive interface.
-
-									<br/><br/>
-
-									<h2>Publications</h2>
-
-									<div id="arxivfeed"></div>
-
-									<!--<header class="major">
-										<h1>Undergraduate Research</h1>
-									</header>
-									<h3>You can read my <a href="ckirkham_report_final2.pdf" style="text-decoration:underline;text-decoration-style: dotted;">undergraduate thesis here</a>.</h3>
-									<h2>The Hubble Tension and Cepheid Systematics</h2>
-									<h3>Gaia Parallaxes</h3>
-									
-									<span class="image right"><img src="images/gaia_data/after.png" width="30%" alt="" /></span>
-									<span class="image right"><img src="images/gaia_data/before.png" width="30%" alt="" /></span>
-
-									<p>The modern SH0ES method of calculating the Hubble constant uses parallaxes from the Gaia program as an anchor in the first rung of their distance ladder however a systematic error has been found in the data <a href="https://ui.adsabs.harvard.edu/abs/2021A%26A...649A...4L">(Lindegren et al. 2021b, hereafter L21b)</a>. By investigating the effectiveness of the suggested correction to the parallaxes using the relative difference between cluster member star parallaxes, π<sub>*</sub>, and the median parallax of the cluster, π<sub>c</sub>, I am investigating there are any residual errors after L21b correction which may have an effect on the SH0ES value of H<sub>0</sub>.</p>
-
-									<h3>Two-rung Distance Ladder</h3>
-
-									<span class="image right"><img src="images/cepheid_H0_fit_ML2.png" width="20%" alt="" /></span>
-
-									<p>While the usual SH0ES method uses a three rung method of calibrating redshifts from supernovae distances and cepheid distances, it is possible to remove the supernovae distances and calibrate redshifts directly from cepheid distances. Without any corrections due to peculiar velocities, this yields a Hubble constant which is consistent with Planck's CMB value. I am investigating how correcting for peculiar velocities changes the resulting value of H<sub>0</sub> and whether other factors such as a possible local underdensity (or Local Hole) need to be considered.</p>
-
-									<h3>Galactic Reddening</h3>
-									<p>The physics of dust reddening is still poorly understood, and it may be possible the the standard law of dust reddening, <em>A<sub>V</sub> = 3.1 E(B-V)</em>, may need to be modified. By fitting main-sequence models to Gaia G, G<sub>BP</sub>, G<sub>RP</sub> and UBV photometry of open cluster stars, I am attempting to determine whether the reddening law needs to be changed to include a distance dependence. If found, this distance dependence could have an impact on the calibration of Cepheid distances and hence the value of the Hubble constant (for example, <a href="https://ui.adsabs.harvard.edu/abs/2021arXiv210609400M/abstract">Mortsell et al. 2021</a>).</p>
-
-									<span class="image main"><img src="images/best_cg20_clusters.png" width="20%" alt="" /></span>-->
-
-								</div>
-							</section>
-
+					<div class="research-intro">
+						<p>Supervised by Eloy de Lera Acedo and Dominic Anstey, and funded by the STFC, I am working on developing Bayesian data analysis techniques for the <a href="https://rdcu.be/cST2c" target="_blank" rel="noopener">REACH radio telescope</a>.</p>
 					</div>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<div class="inner">
-							<ul class="icons">
-								<li><a href="https://github.com/astrochristian" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								<li><a href="https://www.linkedin.com/in/christian-k-0a3699216/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-							</ul>
-							<ul class="copyright">
-								<li>&copy; Christian Kirkham</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-							</ul>
-						</div>
-					</footer>
+					<div class="research-project">
+						<h3>REACH</h3>
+						<p>REACH (Radio Experiment for the Analysis of Cosmic Hydrogen) is a low-frequency radio experiment located in the South African Radio Astronomy Observatory (SARAO) in the Karoo desert. It is designed to measure the global 21-cm signal from neutral hydrogen in the early Universe, which can be used to constrain cosmological parameters and test models of structure formation.</p>
+						<p>Due to the large dynamic ranges involved in separating the cosmological 21-cm signal from the galactic synchrotron emission and instrumental systematics, it is imperative that we have precise analysis techniques which can constrain our modelling of the external effects which will confuse our signal detection.</p>
+					</div>
 
+					<div class="research-project">
+						<h3>Time-Varying Systematic Mitigation</h3>
+						<p>Using Gaussian Processes we developed a method of mitigating the effects of unmodelled systematics on our ability to fit for the 21cm global signal (<a href="https://ui.adsabs.harvard.edu/abs/2023arXiv231017975K/abstract" target="_blank" rel="noopener">Kirkham et al. 2023</a>). Here we found that by using GPs to fit for time covariances in the model residuals increased our uncertainties in the parameter estimation, generally improving the error of our fits when compared with the standard REACH pipeline (<a href="https://academic.oup.com/mnras/article/506/2/2041/6307526" target="_blank" rel="noopener">Anstey et al. 2021</a>, <a href="https://academic.oup.com/mnras/advance-article/doi/10.1093/mnras/stad156/6987686" target="_blank" rel="noopener">2023</a>).</p>
+					</div>
+
+					<div class="research-project">
+						<h3>Calibration</h3>
+						<p>I am continuing work on the calibration of the REACH receiver using Bayesian noise wave techniques (<a href="https://ui.adsabs.harvard.edu/abs/2021MNRAS.505.2638R/abstract" target="_blank" rel="noopener">Roque et al. 2021</a>, <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241214023K/abstract" target="_blank" rel="noopener">Kirkham et al. 2024</a>). Through this work I have developed numerous calibration techniques (Kirkham et al. in prep, Bucher et al. in prep) which push forward our understanding of REACH calibration. I am also the builder and maintainer of the REACH calibration pipeline, which allows all members of the calibration to calibrate data with a simple intuitive interface.</p>
+					</div>
+				</section>
+
+				<!-- Publications -->
+				<section class="content-section">
+					<h2 class="content-heading">Publications</h2>
+					<div id="arxivfeed" class="publications-list"></div>
+				</section>
 			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="container">
+				<div class="footer-content">
+					<div class="footer-left">
+						<p>&copy; 2025 Christian Kirkham</p>
+					</div>
+					<div class="footer-right">
+						<a href="https://github.com/astrochristian" target="_blank" rel="noopener" aria-label="GitHub">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+						</a>
+						<a href="https://www.linkedin.com/in/christian-k-0a3699216/" target="_blank" rel="noopener" aria-label="LinkedIn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+						</a>
+					</div>
+				</div>
+			</div>
+		</footer>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		<script>
+			// Mobile navigation toggle
+			const navToggle = document.getElementById('navToggle');
+			const navMenu = document.getElementById('navMenu');
 
+			navToggle.addEventListener('click', () => {
+				navMenu.classList.toggle('active');
+				navToggle.classList.toggle('active');
+			});
+
+			// Close menu when clicking outside
+			document.addEventListener('click', (e) => {
+				if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+					navMenu.classList.remove('active');
+					navToggle.classList.remove('active');
+				}
+			});
+
+			// Add scroll effect to navigation
+			let lastScroll = 0;
+			const nav = document.querySelector('.nav-bar');
+
+			window.addEventListener('scroll', () => {
+				const currentScroll = window.pageYOffset;
+
+				if (currentScroll > 100) {
+					nav.classList.add('scrolled');
+				} else {
+					nav.classList.remove('scrolled');
+				}
+
+				lastScroll = currentScroll;
+			});
+		</script>
 	</body>
 </html>
