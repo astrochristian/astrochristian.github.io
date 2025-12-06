@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/style.css" />
 		<link rel="icon" type="image/ico" href="/images/favicon.ico">
+		<link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="AstroChristian Blog RSS Feed">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
@@ -46,6 +47,14 @@
 			<div class="container">
 				<h1 class="page-title">Blog</h1>
 				<p class="page-subtitle">Thoughts on research, astronomy, and more</p>
+				<a href="/blog/rss.xml" class="rss-button">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M4 11a9 9 0 0 1 9 9"></path>
+						<path d="M4 4a16 16 0 0 1 16 16"></path>
+						<circle cx="5" cy="19" r="1"></circle>
+					</svg>
+					Subscribe to RSS Feed
+				</a>
 			</div>
 		</header>
 
@@ -59,6 +68,39 @@
 				</section>
 			</div>
 		</main>
+
+		<!-- Styles -->
+		<style>
+			.rss-button {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.75rem 1.5rem;
+				background: var(--primary-color);
+				color: white;
+				text-decoration: none;
+				border-radius: 0.5rem;
+				transition: all var(--transition-fast);
+				font-weight: 500;
+				font-size: 0.95rem;
+				margin-top: 1rem;
+			}
+
+			.rss-button:hover {
+				background: var(--primary-color-hover, #357abd);
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+			}
+
+			[data-theme="dark"] .rss-button:hover {
+				box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+			}
+
+			.rss-button svg {
+				width: 16px;
+				height: 16px;
+			}
+		</style>
 
 		<!-- Footer -->
 		<footer class="footer">
