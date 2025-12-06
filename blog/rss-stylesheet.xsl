@@ -521,7 +521,7 @@
 
 					function subscribeFeedly() {
 						const feedUrl = window.location.href;
-						const feedlyUrl = `https://feedly.com/i/subscription/feed/${encodeURIComponent(feedUrl)}`;
+						const feedlyUrl = `https://feedly.com/i/subscription/${encodeURIComponent(feedUrl)}`;
 						window.open(feedlyUrl, '_blank');
 					}
 
