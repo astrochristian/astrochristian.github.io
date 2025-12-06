@@ -87,6 +87,16 @@
 				border-radius: 4px;
 				margin-top: var(--spacing-sm);
 			}
+
+			.post-separator {
+				margin: var(--spacing-xl) 0;
+				border: 0;
+				border-top: 2px solid var(--border-color);
+			}
+
+			.single-post-view .post-separator {
+				display: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -109,9 +119,9 @@
 		<!-- Page Header -->
 		<header class="page-header page-header-blog">
 			<div class="container">
-				<h1 class="page-title blog-post-page-title" id="post-title">Blog Post Preview</h1>
+				<h1 class="page-title blog-post-page-title" id="pageTitle">Blog Preview</h1>
 				<div class="blog-post-page-meta">
-					<time id="post-date"></time>
+					<time id="pageDate"></time>
 				</div>
 			</div>
 		</header>
@@ -121,27 +131,21 @@
 			<div class="container">
 				<!-- Preview Controls -->
 				<div class="preview-controls">
-					<h3>Preview Blog Post</h3>
+					<h3>Preview Options</h3>
 					<select id="postSelector" class="post-selector">
-						<option value="">-- Select a post --</option>
+						<option value="">All Posts (chronological)</option>
 					</select>
 
 					<div class="divider">or</div>
 
 					<input type="file" id="fileInput" class="file-input" accept=".md" />
 					<div class="preview-info" id="previewInfo">
-						Select a post from the dropdown or choose a file from your computer
+						Loading posts...
 					</div>
 				</div>
 
-				<!-- Blog Post Content -->
-				<article class="blog-post-content">
-					<a href="/blog" class="back-to-blog">← Back to Blog</a>
-
-					<div class="blog-post-body" id="content">
-						<p><em>No file loaded yet. Use the file picker above to select a markdown file.</em></p>
-					</div>
-				</article>
+				<!-- Blog Posts Content (can be multiple) -->
+				<div id="postsContainer"></div>
 			</div>
 		</main>
 
@@ -201,7 +205,7 @@
 					const colonIndex = line.indexOf(':');
 					if (colonIndex !== -1) {
 						const key = line.substring(0, colonIndex).trim();
-						const value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+						const value = line.substring(colonIndex + 1).trim().replace(/^[\"']|[\"']$/g, '');
 						frontmatter[key] = value;
 					}
 				});
@@ -222,24 +226,47 @@
 				});
 			}
 
-			// Load and display a markdown file
-			async function loadMarkdown(content, filename = 'Unknown') {
+			// Create a post article element
+			function createPostArticle(frontmatter, htmlContent, filename) {
+				const article = document.createElement('article');
+				article.className = 'blog-post-content';
+
+				const title = frontmatter.title || 'Untitled Post';
+				const date = frontmatter.date || new Date().toISOString().split('T')[0];
+
+				article.innerHTML = `
+					<a href="/blog" class="back-to-blog">← Back to Blog</a>
+					<h1 class="blog-post-page-title">${title}</h1>
+					<div class="blog-post-page-meta">
+						<time datetime="${date}">${formatDate(date)}</time>
+					</div>
+					<div class="blog-post-body">
+						${htmlContent}
+					</div>
+				`;
+
+				return article;
+			}
+
+			// Load and display a single markdown file
+			async function loadSinglePost(content, filename = 'Unknown') {
 				try {
 					const { frontmatter, content: markdownContent } = parseFrontmatter(content);
-
-					// Update title and date
-					const title = frontmatter.title || 'Untitled Post';
-					const date = frontmatter.date || new Date().toISOString().split('T')[0];
-
-					document.getElementById('post-title').textContent = title;
-					document.getElementById('post-date').textContent = formatDate(date);
-					document.getElementById('post-date').setAttribute('datetime', date);
-
-					// Convert markdown to HTML using marked
 					const htmlContent = marked.parse(markdownContent);
 
-					// Update content
-					document.getElementById('content').innerHTML = htmlContent;
+					const container = document.getElementById('postsContainer');
+					container.innerHTML = '';
+					container.className = 'single-post-view';
+
+					const article = createPostArticle(frontmatter, htmlContent, filename);
+					container.appendChild(article);
+
+					// Update page title
+					const title = frontmatter.title || 'Untitled Post';
+					const date = frontmatter.date || new Date().toISOString().split('T')[0];
+					document.getElementById('pageTitle').textContent = title;
+					document.getElementById('pageDate').textContent = formatDate(date);
+					document.getElementById('pageDate').setAttribute('datetime', date);
 
 					// Update preview info
 					document.getElementById('previewInfo').innerHTML = `
@@ -251,7 +278,7 @@
 
 					// Re-render MathJax
 					if (window.MathJax) {
-						MathJax.typesetPromise([document.getElementById('content')]).catch((err) => {
+						MathJax.typesetPromise([container]).catch((err) => {
 							console.error('MathJax rendering error:', err);
 						});
 					}
@@ -263,6 +290,77 @@
 					console.error('Error loading markdown file:', error);
 				}
 			}
+
+			// Load and display all posts chronologically
+			async function loadAllPosts(posts) {
+				try {
+					const container = document.getElementById('postsContainer');
+					container.innerHTML = '';
+					container.className = 'multi-post-view';
+
+					// Update page title
+					document.getElementById('pageTitle').textContent = 'All Blog Posts';
+					document.getElementById('pageDate').textContent = '';
+
+					// Load all posts and sort by date
+					const loadedPosts = await Promise.all(posts.map(async (file) => {
+						try {
+							const response = await fetch(`posts/${file}`);
+							const text = await response.text();
+							const { frontmatter, content: markdownContent } = parseFrontmatter(text);
+							const htmlContent = marked.parse(markdownContent);
+
+							return {
+								frontmatter,
+								htmlContent,
+								filename: file,
+								date: new Date(frontmatter.date || '1970-01-01')
+							};
+						} catch (error) {
+							console.error(`Error loading ${file}:`, error);
+							return null;
+						}
+					}));
+
+					// Filter out failed loads and sort by date (newest first)
+					const validPosts = loadedPosts.filter(p => p !== null);
+					validPosts.sort((a, b) => b.date - a.date);
+
+					// Render all posts
+					validPosts.forEach((post, index) => {
+						const article = createPostArticle(post.frontmatter, post.htmlContent, post.filename);
+						container.appendChild(article);
+
+						// Add separator between posts (except after last post)
+						if (index < validPosts.length - 1) {
+							const separator = document.createElement('hr');
+							separator.className = 'post-separator';
+							container.appendChild(separator);
+						}
+					});
+
+					// Update preview info
+					document.getElementById('previewInfo').innerHTML = `
+						Showing all ${validPosts.length} post(s) in chronological order (newest first)
+					`;
+
+					// Re-render MathJax
+					if (window.MathJax) {
+						MathJax.typesetPromise([container]).catch((err) => {
+							console.error('MathJax rendering error:', err);
+						});
+					}
+
+				} catch (error) {
+					document.getElementById('previewInfo').innerHTML = `
+						<div class="error-message">Error loading posts: ${error.message}</div>
+					`;
+					console.error('Error loading all posts:', error);
+				}
+			}
+
+			// Store available posts globally
+			let availablePosts = [];
 
 			// Load available posts from the server
 			async function loadAvailablePosts() {
@@ -280,24 +378,41 @@
 					links.forEach(link => {
 						const href = link.getAttribute('href');
 						if (href && href.endsWith('.md')) {
-							mdFiles.push(href);
+							// Extract just the filename in case the href includes a path
+							const cleanFile = href.replace(/^.*\//, '');
+							mdFiles.push(cleanFile);
 						}
 					});
+
+					availablePosts = mdFiles;
 
 					// Populate dropdown
 					const selector = document.getElementById('postSelector');
 					mdFiles.forEach(file => {
 						const option = document.createElement('option');
-					// Extract just the filename in case the href includes a path
-					const cleanFile = file.replace(/^.*\//, "");
-					option.value = `posts/${cleanFile}`;
-						option.textContent = cleanFile;
+						option.value = file;
+						option.textContent = file;
 						selector.appendChild(option);
 					});
 
 					if (mdFiles.length > 0) {
+						// Check URL parameter for specific post
+						const urlParams = new URLSearchParams(window.location.search);
+						const selectedPost = urlParams.get('post');
+
+						if (selectedPost && mdFiles.includes(selectedPost)) {
+							// Load specific post from URL
+							selector.value = selectedPost;
+							const response = await fetch(`posts/${selectedPost}`);
+							const text = await response.text();
+							await loadSinglePost(text, selectedPost);
+						} else {
+							// Load all posts by default
+							await loadAllPosts(mdFiles);
+						}
+					} else {
 						document.getElementById('previewInfo').innerHTML = `
-							Found ${mdFiles.length} markdown file(s). Select one from the dropdown above.
+							No markdown files found. Use the file picker to select a file.
 						`;
 					}
 				} catch (error) {
@@ -310,17 +425,26 @@
 
 			// Handle dropdown selection
 			document.getElementById('postSelector').addEventListener('change', async (e) => {
-				const path = e.target.value;
-				if (!path) return;
+				const selected = e.target.value;
 
-				try {
-					const response = await fetch(path);
-					const text = await response.text();
-					await loadMarkdown(text, path.split('/').pop());
-				} catch (error) {
-					document.getElementById('previewInfo').innerHTML = `
-						<div class="error-message">Error loading ${path}: ${error.message}</div>
-					`;
+				if (!selected) {
+					// Load all posts
+					await loadAllPosts(availablePosts);
+					// Update URL
+					window.history.pushState({}, '', window.location.pathname);
+				} else {
+					// Load specific post
+					try {
+						const response = await fetch(`posts/${selected}`);
+						const text = await response.text();
+						await loadSinglePost(text, selected);
+						// Update URL with post parameter
+						window.history.pushState({}, '', `?post=${selected}`);
+					} catch (error) {
+						document.getElementById('previewInfo').innerHTML = `
+							<div class="error-message">Error loading ${selected}: ${error.message}</div>
+						`;
+					}
 				}
 			});
 
@@ -330,7 +454,12 @@
 				if (!file) return;
 
 				const text = await file.text();
-				await loadMarkdown(text, file.name);
+				await loadSinglePost(text, file.name);
+
+				// Reset dropdown to show custom file is loaded
+				document.getElementById('postSelector').value = '';
+				// Clear URL parameter
+				window.history.pushState({}, '', window.location.pathname);
 			});
 
 			// Initialize: try to load posts on page load
