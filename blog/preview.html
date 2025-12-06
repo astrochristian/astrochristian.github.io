@@ -97,6 +97,47 @@
 			.single-post-view .post-separator {
 				display: none;
 			}
+
+			.preview-toggle {
+				background: var(--bg-lighter);
+				border: 2px solid var(--border-color);
+				border-radius: 8px;
+				padding: var(--spacing-sm) var(--spacing-md);
+				margin-bottom: var(--spacing-md);
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				transition: background 0.2s ease;
+			}
+
+			.preview-toggle:hover {
+				background: var(--bg-white);
+			}
+
+			.preview-toggle h3 {
+				margin: 0;
+				font-size: 1rem;
+				color: var(--text-medium);
+			}
+
+			.preview-toggle-icon {
+				transition: transform 0.2s ease;
+			}
+
+			.preview-toggle-icon.open {
+				transform: rotate(180deg);
+			}
+
+			.preview-controls-content {
+				max-height: 0;
+				overflow: hidden;
+				transition: max-height 0.3s ease;
+			}
+
+			.preview-controls-content.open {
+				max-height: 500px;
+			}
 		</style>
 	</head>
 	<body>
@@ -129,9 +170,17 @@
 		<!-- Main Content -->
 		<main class="main-content">
 			<div class="container">
-				<!-- Preview Controls -->
+			<!-- Preview Controls Toggle -->
+			<div class="preview-toggle" id="previewToggle">
+				<h3>Preview Options</h3>
+				<svg class="preview-toggle-icon" id="toggleIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<polyline points="6 9 12 15 18 9"></polyline>
+				</svg>
+			</div>
+
+			<!-- Preview Controls Content (collapsible) -->
+			<div class="preview-controls-content" id="previewControlsContent">
 				<div class="preview-controls">
-					<h3>Preview Options</h3>
 					<select id="postSelector" class="post-selector">
 						<option value="">All Posts (chronological)</option>
 					</select>
@@ -143,10 +192,11 @@
 						Loading posts...
 					</div>
 				</div>
-
-				<!-- Blog Posts Content (can be multiple) -->
-				<div id="postsContainer"></div>
 			</div>
+
+			<!-- Blog Posts Content (can be multiple) -->
+			<div id="postsContainer"></div>
+		</div>
 		</main>
 
 		<!-- Footer -->
@@ -422,6 +472,22 @@
 					`;
 				}
 			}
+
+			// Handle preview controls toggle
+			const previewToggle = document.getElementById('previewToggle');
+			const previewControlsContent = document.getElementById('previewControlsContent');
+			const toggleIcon = document.getElementById('toggleIcon');
+
+			previewToggle.addEventListener('click', () => {
+				const isOpen = previewControlsContent.classList.contains('open');
+				if (isOpen) {
+					previewControlsContent.classList.remove('open');
+					toggleIcon.classList.remove('open');
+				} else {
+					previewControlsContent.classList.add('open');
+					toggleIcon.classList.add('open');
+				}
+			});
 
 			// Handle dropdown selection
 			document.getElementById('postSelector').addEventListener('change', async (e) => {
