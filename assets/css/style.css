@@ -1489,10 +1489,53 @@ html[data-theme="dark"] .photo-glow {
 .blog-post-page-meta {
 	font-size: 1rem;
 	opacity: 0.9;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-md);
+	flex-wrap: wrap;
 }
 
 .blog-post-page-meta time {
 	font-style: italic;
+}
+
+.claude-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	padding: 0.4rem 0.8rem;
+	background-color: rgba(0, 0, 0, 0.1);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 20px;
+	font-size: 0.85rem;
+	font-weight: 500;
+	color: rgba(0, 0, 0, 0.7);
+	white-space: nowrap;
+	transition: all var(--transition-fast);
+}
+
+.claude-badge:hover {
+	background-color: rgba(0, 0, 0, 0.15);
+	border-color: rgba(0, 0, 0, 0.3);
+}
+
+.claude-icon {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	margin-right: 2px;
+}
+
+/* Dark mode styling for Claude badge */
+[data-theme="dark"] .claude-badge {
+	background-color: rgba(255, 255, 255, 0.1);
+	border-color: rgba(255, 255, 255, 0.2);
+	color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .claude-badge:hover {
+	background-color: rgba(255, 255, 255, 0.15);
+	border-color: rgba(255, 255, 255, 0.3);
 }
 
 .blog-posts-list {

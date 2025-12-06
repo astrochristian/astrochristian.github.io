@@ -192,9 +192,21 @@ function buildBlog() {
 		const date = frontmatter.date || new Date().toISOString().split('T')[0];
 		const excerpt = frontmatter.excerpt || '';
 		const slug = frontmatter.slug || generateSlug(title);
+		const writtenBy = frontmatter['written-by'] || 'human';
 
 		// Convert markdown to HTML
 		const htmlContent = parseMarkdown(markdownContent);
+
+		// Generate Claude badge HTML if written by Claude
+		const claudeBadgeHTML = writtenBy === 'claude' ? `
+			<div class="claude-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="16" height="16" class="claude-icon">
+					<path d="M64 0 C28.7 0 0 28.7 0 64 C0 99.3 28.7 128 64 128 C99.3 128 128 99.3 128 64 C128 28.7 99.3 0 64 0 Z" fill="#1B1B1B"/>
+					<text x="64" y="85" font-size="80" font-weight="bold" text-anchor="middle" fill="white" font-family="Arial">C</text>
+				</svg>
+				<span>Written with Claude</span>
+			</div>
+		` : '';
 
 		// Replace template placeholders
 		let html = template;
@@ -202,6 +214,7 @@ function buildBlog() {
 		html = html.replace(/\{\{DATE\}\}/g, date);
 		html = html.replace(/\{\{FORMATTED_DATE\}\}/g, formatDate(date));
 		html = html.replace(/\{\{CONTENT\}\}/g, htmlContent);
+		html = html.replace(/\{\{CLAUDE_BADGE\}\}/g, claudeBadgeHTML);
 
 		// Write HTML file
 		const outputPath = path.join(outputDir, 'blog', `${slug}.html`);

@@ -3,7 +3,10 @@ title: Welcome to My Blog
 date: 2025-12-06
 excerpt: An introduction to my blog where I'll share thoughts on radio cosmology, Bayesian inference, and astronomical research.
 slug: welcome-to-my-blog
+written-by: claude
 ---
+
+> **Note**: This article was written with Claude, an AI assistant. While the content has been carefully reviewed and verified, please refer to primary sources and official documentation for critical technical details.
 
 ## Welcome!
 
