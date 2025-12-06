@@ -23,6 +23,32 @@ const path = require('path');
 function parseMarkdown(markdown) {
 	let html = markdown;
 
+	// Store math expressions to protect them from markdown processing
+	const mathExpressions = [];
+	let mathIndex = 0;
+
+	// Protect display math ($$...$$)
+	html = html.replace(/\$\$([\s\S]+?)\$\$/g, (match) => {
+		const placeholder = `ĦĦĦMATHDISPLAYĦĦĦ${mathIndex}ĦĦĦENDĦĦĦ`;
+		mathExpressions[mathIndex] = match; // match already includes $$
+		mathIndex++;
+		return placeholder;
+	});
+
+	// Protect inline math ($...$)
+	html = html.replace(/\$(.+?)\$/g, (match) => {
+		const placeholder = `ĦĦĦMATHINLINEĦĦĦ${mathIndex}ĦĦĦENDĦĦĦ`;
+		mathExpressions[mathIndex] = match; // match already includes $
+		mathIndex++;
+		return placeholder;
+	});
+
+	// Code blocks (must come before inline code)
+	html = html.replace(/```(.*?)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');
+
+	// Inline code
+	html = html.replace(/`(.+?)`/g, '<code>$1</code>');
+
 	// Headers
 	html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
 	html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
@@ -35,12 +61,6 @@ function parseMarkdown(markdown) {
 	// Italic
 	html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
 	html = html.replace(/_(.+?)_/g, '<em>$1</em>');
-
-	// Code blocks (must come before inline code)
-	html = html.replace(/```(.*?)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');
-
-	// Inline code
-	html = html.replace(/`(.+?)`/g, '<code>$1</code>');
 
 	// Images
 	html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />');
@@ -86,6 +106,15 @@ function parseMarkdown(markdown) {
 	// Clean up multiple paragraph tags
 	html = html.replace(/<p><\/p>/g, '');
 	html = html.replace(/<p>\s*<\/p>/g, '');
+
+	// Restore math expressions
+	mathExpressions.forEach((math, index) => {
+		if (math.startsWith('$$')) {
+			html = html.replace(`ĦĦĦMATHDISPLAYĦĦĦ${index}ĦĦĦENDĦĦĦ`, math);
+		} else {
+			html = html.replace(`ĦĦĦMATHINLINEĦĦĦ${index}ĦĦĦENDĦĦĦ`, math);
+		}
+	});
 
 	return html;
 }

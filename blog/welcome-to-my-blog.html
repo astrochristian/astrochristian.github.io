@@ -79,8 +79,8 @@
 <li><strong>Bayesian Methods</strong>: Techniques for parameter estimation and systematic mitigation</li>
 <li><strong>Data Analysis</strong>: Python tips, visualization strategies, and computational methods</li>
 <li><strong>Astrophysics Research</strong>: Insights from conferences, papers, and collaborations</li></ul></p><p><h3>A Quick Example with Math</h3></p><p>One of the key challenges in 21-cm cosmology is detecting the faint neutral hydrogen signal. The brightness temperature of the 21-cm line can be expressed as:</p><p>$
-T<em>{21} \approx 27 \text{ mK} \left(\frac{\Omega</em>b h^2}{0.023}\right) \left(\frac{0.15}{\Omega<em>m h^2}\right)^{1/2} \left(\frac{1+z}{10}\right)^{1/2} (1 - T</em>{\gamma}/T_S)
-$</p><p>where $T<em>{\gamma}$ is the CMB temperature and $T</em>S$ is the spin temperature of neutral hydrogen.</p><p><h3>Code Example</h3></p><p>Here's a simple Python example for calculating the redshift from a given frequency:</p><p><pre><code class="language-python">def frequency<em>to</em>redshift(freq_mhz):
+T_{21} \approx 27 \text{ mK} \left(\frac{\Omega_b h^2}{0.023}\right) \left(\frac{0.15}{\Omega_m h^2}\right)^{1/2} \left(\frac{1+z}{10}\right)^{1/2} (1 - T_{\gamma}/T_S)
+$</p><p>where $T_{\gamma}$ is the CMB temperature and $T_S$ is the spin temperature of neutral hydrogen.</p><p><h3>Code Example</h3></p><p>Here's a simple Python example for calculating the redshift from a given frequency:</p><p><pre><code class="language-python">def frequency<em>to</em>redshift(freq_mhz):
     """Convert frequency to redshift for 21-cm observations"""
     f_21 = 1420.4  # 21-cm rest frequency in MHz
     z = (f<em>21 / freq</em>mhz) - 1
