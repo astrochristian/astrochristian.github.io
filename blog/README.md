@@ -189,6 +189,8 @@ blog/
 ├── README.md                  # This file
 ├── build-blog.js             # Build script
 ├── post-template.html        # HTML template for posts
+├── index.html                # Blog listing page (auto-generated)
+├── rss.xml                   # RSS feed (auto-generated)
 ├── posts/                    # Your markdown files go here
 │   └── welcome-to-my-blog.md
 ├── images/                   # Your images go here
@@ -196,6 +198,37 @@ blog/
 ├── posts-index.json          # Auto-generated index (don't edit)
 └── *.html                    # Auto-generated post pages (don't edit)
 ```
+
+---
+
+## Features
+
+### Blog Listing Page
+
+Visit `/blog/` to see all published posts. The listing page shows:
+- All posts sorted by date (newest first)
+- Post title, date, and excerpt
+- "Read More" link to full post
+- RSS feed subscription button
+- Light/dark theme support
+
+This page is **automatically generated** when you run the build script.
+
+### RSS Feed
+
+Subscribe to the blog using `/blog/rss.xml` in any RSS reader. The feed includes:
+- All published posts
+- Post titles, dates, and excerpts
+- Links to full posts
+- Last build date
+
+RSS autodiscovery is enabled on all pages, so readers can subscribe directly from the blog.
+
+### Claude Attribution
+
+Posts marked with `written-by: claude` in the frontmatter display:
+- A Claude badge with the AI assistant icon
+- A disclaimer blockquote explaining AI co-authorship
 
 ---
 

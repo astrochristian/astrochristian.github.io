@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	<channel>
+		<title>AstroChristian Blog</title>
+		<link>https://astrochristian.github.io/blog/</link>
+		<description>Exploring radio cosmology, 21-cm science, and the beautiful intersection of astronomy and philosophy</description>
+		<language>en-us</language>
+		<lastBuildDate>Sat, 06 Dec 2025 03:08:28 GMT</lastBuildDate>
+		<image>
+			<url>https://astrochristian.github.io/assets/images/logo.png</url>
+			<title>AstroChristian Blog</title>
+			<link>https://astrochristian.github.io/blog/</link>
+		</image>
+
+		<item>
+			<title>Welcome to My Blog</title>
+			<link>https://astrochristian.github.io/blog/welcome-to-my-blog.html</link>
+			<guid>https://astrochristian.github.io/blog/welcome-to-my-blog.html</guid>
+			<pubDate>Sat, 06 Dec 2025 00:00:00 GMT</pubDate>
+			<description>An introduction to my blog where I&apos;ll share thoughts on radio cosmology, Bayesian inference, and astronomical research.</description>
+		</item>
+
+	</channel>
+</rss>

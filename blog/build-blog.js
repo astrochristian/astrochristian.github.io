@@ -235,8 +235,251 @@ function buildBlog() {
 	const indexPath = path.join(outputDir, 'blog', 'posts-index.json');
 	fs.writeFileSync(indexPath, JSON.stringify(postsIndex, null, 2));
 
+	// Sort posts by date (newest first)
+	const sortedPosts = postsIndex.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+	// Generate RSS feed
+	generateRSSFeed(sortedPosts, outputDir);
+
+	// Generate blog index page
+	generateBlogIndex(sortedPosts, outputDir);
+
 	console.log(`\nBlog built successfully! Generated ${postsIndex.length} post(s).`);
 	console.log(`Posts index written to: blog/posts-index.json`);
+	console.log(`RSS feed written to: blog/rss.xml`);
+	console.log(`Blog index written to: blog/index.html`);
+}
+
+// Generate RSS feed
+function generateRSSFeed(posts, outputDir) {
+	const baseUrl = 'https://astrochristian.github.io';
+	const blogUrl = `${baseUrl}/blog`;
+	const buildDate = new Date().toUTCString();
+
+	let rssContent = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	<channel>
+		<title>AstroChristian Blog</title>
+		<link>${blogUrl}/</link>
+		<description>Exploring radio cosmology, 21-cm science, and the beautiful intersection of astronomy and philosophy</description>
+		<language>en-us</language>
+		<lastBuildDate>${buildDate}</lastBuildDate>
+		<image>
+			<url>${baseUrl}/assets/images/logo.png</url>
+			<title>AstroChristian Blog</title>
+			<link>${blogUrl}/</link>
+		</image>
+`;
+
+	posts.forEach(post => {
+		const postUrl = `${blogUrl}/${post.slug}.html`;
+		const pubDate = new Date(post.date).toUTCString();
+
+		rssContent += `
+		<item>
+			<title>${escapeXml(post.title)}</title>
+			<link>${postUrl}</link>
+			<guid>${postUrl}</guid>
+			<pubDate>${pubDate}</pubDate>
+			<description>${escapeXml(post.excerpt)}</description>
+		</item>
+`;
+	});
+
+	rssContent += `
+	</channel>
+</rss>`;
+
+	const rssPath = path.join(outputDir, 'blog', 'rss.xml');
+	fs.writeFileSync(rssPath, rssContent);
+}
+
+// Generate blog index page
+function generateBlogIndex(posts, outputDir) {
+	const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blog - AstroChristian</title>
+	<link rel="stylesheet" href="../assets/css/style.css">
+	<link rel="alternate" type="application/rss+xml" href="rss.xml" title="AstroChristian Blog RSS Feed">
+</head>
+<body>
+	<div class="container">
+		<nav class="navbar">
+			<div class="navbar-brand">
+				<a href="/">AstroChristian</a>
+			</div>
+			<ul class="nav-links">
+				<li><a href="/index.html">Home</a></li>
+				<li><a href="/research.html">Research</a></li>
+				<li><a href="/blog/">Blog</a></li>
+				<li><a href="/talks.html">Talks</a></li>
+				<li><a href="/contact.html">Contact</a></li>
+			</ul>
+		</nav>
+
+		<main class="blog-container">
+			<header class="blog-header">
+				<h1>Blog</h1>
+				<p class="blog-description">Exploring radio cosmology, 21-cm science, and the beautiful intersection of astronomy and philosophy</p>
+				<a href="rss.xml" class="rss-link">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M4 11a9 9 0 0 1 9 9"></path>
+						<path d="M4 4a16 16 0 0 1 16 16"></path>
+						<circle cx="5" cy="19" r="1"></circle>
+					</svg>
+					Subscribe to RSS Feed
+				</a>
+			</header>
+
+			<section class="blog-posts-list">
+${posts.map(post => `
+				<article class="blog-post-preview">
+					<h2 class="blog-post-title">
+						<a href="${post.slug}.html">${post.title}</a>
+					</h2>
+					<time class="blog-post-date" datetime="${post.date}">
+						${formatDate(post.date)}
+					</time>
+					<p class="blog-post-excerpt">${post.excerpt}</p>
+					<a href="${post.slug}.html" class="read-more">Read More →</a>
+				</article>
+`).join('')}
+			</section>
+		</main>
+	</div>
+
+	<style>
+		.blog-header {
+			margin-bottom: 3rem;
+			text-align: center;
+		}
+
+		.blog-header h1 {
+			font-size: 2.5rem;
+			margin-bottom: 0.5rem;
+			color: var(--text-color);
+		}
+
+		.blog-description {
+			font-size: 1.1rem;
+			color: var(--text-secondary);
+			margin-bottom: 1.5rem;
+		}
+
+		.rss-link {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 0.75rem 1.5rem;
+			background: var(--accent-color, #4a90e2);
+			color: white;
+			text-decoration: none;
+			border-radius: 0.5rem;
+			transition: background 0.2s;
+		}
+
+		.rss-link:hover {
+			background: var(--accent-hover, #357abd);
+		}
+
+		.blog-posts-list {
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+		}
+
+		.blog-post-preview {
+			padding: 1.5rem;
+			border: 1px solid var(--border-color, #e0e0e0);
+			border-radius: 0.5rem;
+			background: var(--background-secondary, white);
+			transition: box-shadow 0.2s;
+		}
+
+		.blog-post-preview:hover {
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+
+		.blog-post-title {
+			margin: 0 0 0.5rem 0;
+			font-size: 1.5rem;
+		}
+
+		.blog-post-title a {
+			color: var(--link-color, #4a90e2);
+			text-decoration: none;
+		}
+
+		.blog-post-title a:hover {
+			text-decoration: underline;
+		}
+
+		.blog-post-date {
+			display: block;
+			font-size: 0.9rem;
+			color: var(--text-secondary);
+			margin-bottom: 1rem;
+		}
+
+		.blog-post-excerpt {
+			margin: 0.5rem 0;
+			color: var(--text-color);
+			line-height: 1.6;
+		}
+
+		.read-more {
+			display: inline-block;
+			margin-top: 1rem;
+			color: var(--link-color, #4a90e2);
+			text-decoration: none;
+			font-weight: 500;
+			transition: color 0.2s;
+		}
+
+		.read-more:hover {
+			color: var(--link-hover, #357abd);
+		}
+
+		[data-theme="dark"] .blog-post-preview {
+			background: var(--background-secondary, #1a1a1a);
+			border-color: #333;
+		}
+
+		[data-theme="dark"] .blog-post-preview:hover {
+			box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+		}
+	</style>
+
+	<script>
+		// Theme toggle (matching existing site behavior)
+		const savedTheme = localStorage.getItem('theme') || 'light';
+		document.documentElement.setAttribute('data-theme', savedTheme);
+
+		function toggleTheme() {
+			const current = document.documentElement.getAttribute('data-theme');
+			const next = current === 'light' ? 'dark' : 'light';
+			document.documentElement.setAttribute('data-theme', next);
+			localStorage.setItem('theme', next);
+		}
+	</script>
+</body>
+</html>`;
+
+	const indexPath = path.join(outputDir, 'blog', 'index.html');
+	fs.writeFileSync(indexPath, htmlContent);
+}
+
+// Escape XML special characters
+function escapeXml(str) {
+	return String(str)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&apos;');
 }
 
 // Run the build
