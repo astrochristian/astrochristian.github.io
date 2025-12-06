@@ -257,6 +257,7 @@ function generateRSSFeed(posts, outputDir) {
 	const buildDate = new Date().toUTCString();
 
 	let rssContent = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/blog/rss-stylesheet.xsl"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 	<channel>
 		<title>AstroChristian Blog</title>
