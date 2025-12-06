@@ -15,6 +15,7 @@ const htmlFiles = [
   'index.html',
   'research.html',
   'talks.html',
+  'blog.html',
   'misc.html',
   'contact.html'
 ];
