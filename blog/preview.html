@@ -1,0 +1,261 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>Blog Post Preview - Christian Kirkham</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/style.css" />
+		<link rel="icon" type="image/ico" href="/images/favicon.ico">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+
+		<!-- MathJax for LaTeX rendering -->
+		<script>
+			MathJax = {
+				tex: {
+					inlineMath: [['$', '$'], ['\\(', '\\)']],
+					displayMath: [['$$', '$$'], ['\\[', '\\]']],
+					processEscapes: true,
+					processEnvironments: true
+				},
+				options: {
+					skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+				}
+			};
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+
+		<style>
+			.preview-controls {
+				background: var(--bg-lighter);
+				padding: var(--spacing-md);
+				margin-bottom: var(--spacing-lg);
+				border-radius: 8px;
+				border: 2px solid var(--border-color);
+			}
+
+			.preview-controls h3 {
+				margin-top: 0;
+				margin-bottom: var(--spacing-sm);
+			}
+
+			.file-input {
+				display: block;
+				margin-bottom: var(--spacing-sm);
+				padding: var(--spacing-sm);
+				border: 1px solid var(--border-color);
+				border-radius: 4px;
+				background: var(--bg-white);
+				color: var(--text-medium);
+				width: 100%;
+				max-width: 400px;
+			}
+
+			.load-button {
+				padding: var(--spacing-sm) var(--spacing-md);
+				background: var(--primary-color);
+				color: white;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-weight: 500;
+				transition: background var(--transition-fast);
+			}
+
+			.load-button:hover {
+				background: var(--primary-dark);
+			}
+
+			.preview-info {
+				margin-top: var(--spacing-md);
+				padding: var(--spacing-sm);
+				background: var(--bg-white);
+				border-radius: 4px;
+				font-size: 0.9rem;
+			}
+
+			.error-message {
+				color: #ef4444;
+				padding: var(--spacing-sm);
+				background: rgba(239, 68, 68, 0.1);
+				border-radius: 4px;
+				margin-top: var(--spacing-sm);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Navigation -->
+		<nav class="nav-bar">
+			<div class="nav-container">
+				<a href="/" class="nav-logo">
+					<img src="../images/reach-logo_cutout.png" alt="REACH" class="reach-logo" />
+					Christian Kirkham
+				</a>
+				<div class="nav-right">
+					<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+						<svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+						<svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+					</button>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Page Header -->
+		<header class="page-header page-header-blog">
+			<div class="container">
+				<h1 class="page-title blog-post-page-title" id="post-title">Blog Post Preview</h1>
+				<div class="blog-post-page-meta">
+					<time id="post-date"></time>
+				</div>
+			</div>
+		</header>
+
+		<!-- Main Content -->
+		<main class="main-content">
+			<div class="container">
+				<!-- Preview Controls -->
+				<div class="preview-controls">
+					<h3>Load Markdown File</h3>
+					<input type="file" id="fileInput" class="file-input" accept=".md" />
+					<div class="preview-info" id="previewInfo">
+						Select a markdown file from <code>blog/posts/</code> to preview it
+					</div>
+				</div>
+
+				<!-- Blog Post Content -->
+				<article class="blog-post-content">
+					<a href="/blog" class="back-to-blog">← Back to Blog</a>
+
+					<div class="blog-post-body" id="content">
+						<p><em>No file loaded yet. Use the file picker above to select a markdown file.</em></p>
+					</div>
+				</article>
+			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="container">
+				<div class="footer-content">
+					<div class="footer-left">
+						<p>&copy; 2025 Christian Kirkham</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		<script>
+			// Dark mode toggle
+			const themeToggle = document.getElementById('themeToggle');
+			const html = document.documentElement;
+
+			const currentTheme = localStorage.getItem('theme') || 'dark';
+			html.setAttribute('data-theme', currentTheme);
+
+			themeToggle.addEventListener('click', () => {
+				const theme = html.getAttribute('data-theme');
+				const newTheme = theme === 'dark' ? 'light' : 'dark';
+				html.setAttribute('data-theme', newTheme);
+				localStorage.setItem('theme', newTheme);
+			});
+
+			// Configure marked for our blog
+			marked.setOptions({
+				breaks: true,
+				gfm: true,
+				headerIds: true,
+				mangle: false
+			});
+
+			// Parse frontmatter
+			function parseFrontmatter(content) {
+				const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+				const match = content.match(frontmatterRegex);
+
+				if (!match) {
+					return {
+						frontmatter: {},
+						content: content
+					};
+				}
+
+				const frontmatterText = match[1];
+				const markdownContent = match[2];
+
+				const frontmatter = {};
+				frontmatterText.split('\n').forEach(line => {
+					const colonIndex = line.indexOf(':');
+					if (colonIndex !== -1) {
+						const key = line.substring(0, colonIndex).trim();
+						const value = line.substring(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+						frontmatter[key] = value;
+					}
+				});
+
+				return {
+					frontmatter,
+					content: markdownContent
+				};
+			}
+
+			// Format date
+			function formatDate(dateString) {
+				const date = new Date(dateString);
+				return date.toLocaleDateString('en-US', {
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric'
+				});
+			}
+
+			// Handle file selection
+			document.getElementById('fileInput').addEventListener('change', async (e) => {
+				const file = e.target.files[0];
+				if (!file) return;
+
+				try {
+					const text = await file.text();
+					const { frontmatter, content: markdownContent } = parseFrontmatter(text);
+
+					// Update title and date
+					const title = frontmatter.title || 'Untitled Post';
+					const date = frontmatter.date || new Date().toISOString().split('T')[0];
+
+					document.getElementById('post-title').textContent = title;
+					document.getElementById('post-date').textContent = formatDate(date);
+					document.getElementById('post-date').setAttribute('datetime', date);
+
+					// Convert markdown to HTML using marked
+					const htmlContent = marked.parse(markdownContent);
+
+					// Update content
+					document.getElementById('content').innerHTML = htmlContent;
+
+					// Update preview info
+					document.getElementById('previewInfo').innerHTML = `
+						<strong>Loaded:</strong> ${file.name}<br>
+						<strong>Title:</strong> ${title}<br>
+						<strong>Date:</strong> ${formatDate(date)}<br>
+						${frontmatter.slug ? `<strong>Slug:</strong> ${frontmatter.slug}` : ''}
+					`;
+
+					// Re-render MathJax
+					if (window.MathJax) {
+						MathJax.typesetPromise([document.getElementById('content')]).catch((err) => {
+							console.error('MathJax rendering error:', err);
+						});
+					}
+
+				} catch (error) {
+					document.getElementById('previewInfo').innerHTML = `
+						<div class="error-message">Error loading file: ${error.message}</div>
+					`;
+					console.error('Error loading markdown file:', error);
+				}
+			});
+		</script>
+	</body>
+</html>

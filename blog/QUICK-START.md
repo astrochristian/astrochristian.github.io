@@ -39,9 +39,17 @@ Check your site in 1-2 minutes!
 
 ---
 
-## Preview Locally (Optional)
+## Preview Locally (Two Ways)
 
-Want to see your post before pushing?
+### Option 1: Live Browser Preview (Easiest)
+
+1. Open `blog/preview.html` in VSCode Live Server
+2. Click "Choose File" and select your markdown file
+3. See it rendered instantly with math and formatting!
+
+No build step needed - it runs entirely in the browser.
+
+### Option 2: Build Script
 
 ```bash
 cd blog
