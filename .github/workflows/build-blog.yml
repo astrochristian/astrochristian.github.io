@@ -45,7 +45,7 @@ jobs:
           if git diff --quiet; then
             echo "No changes to commit"
           else
-            git add blog/*.html blog/posts-index.json
+            git add blog/*.html blog/posts-index.json blog/rss.xml
             git commit -m "chore: Auto-build blog posts from markdown [skip ci]"
             git push
           fi
