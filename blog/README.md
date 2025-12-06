@@ -44,28 +44,39 @@ To include images in your post:
 ![Alt text description](images/your-image.jpg)
 ```
 
-### 5. Build the Blog
+### 5. Commit and Push
 
-Run the build script to convert your markdown to HTML:
+**That's it!** Just commit and push your markdown file:
+
+```bash
+git add blog/posts/your-post.md
+# If you added images, also add them:
+git add blog/images/your-image.jpg
+git commit -m "Add new blog post: Your Post Title"
+git push
+```
+
+**GitHub Actions will automatically:**
+- Detect the new markdown file
+- Run the build script
+- Generate the HTML page
+- Update the blog index
+- Commit and push the changes
+
+Your post will be live in about 1-2 minutes!
+
+---
+
+## Manual Build (Optional)
+
+If you want to preview your post locally before pushing, you can manually run the build script:
 
 ```bash
 cd blog
 node build-blog.js
 ```
 
-This will:
-- Generate an HTML page for your post at `/blog/your-post-url-slug.html`
-- Update the blog index at `/blog/posts-index.json`
-
-### 6. Commit and Push
-
-```bash
-git add .
-git commit -m "Add new blog post: Your Post Title"
-git push
-```
-
-That's it! Your post is now live.
+This will generate the HTML files locally so you can preview them.
 
 ---
 

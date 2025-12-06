@@ -1,0 +1,51 @@
+name: Build Blog Posts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'blog/posts/**.md'
+      - 'blog/build-blog.js'
+      - 'blog/post-template.html'
+      - '.github/workflows/build-blog.yml'
+
+jobs:
+  build-blog:
+    runs-on: ubuntu-latest
+    # Prevent infinite loop by skipping if commit is from the bot
+    if: "!contains(github.event.head_commit.message, 'Auto-build blog posts')"
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Build blog posts
+        run: |
+          cd blog
+          node build-blog.js
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Check if there are any changes
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add blog/*.html blog/posts-index.json
+            git commit -m "chore: Auto-build blog posts from markdown [skip ci]"
+            git push
+          fi
