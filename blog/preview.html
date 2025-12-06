@@ -40,7 +40,7 @@
 				margin-bottom: var(--spacing-sm);
 			}
 
-			.file-input {
+			.post-selector {
 				display: block;
 				margin-bottom: var(--spacing-sm);
 				padding: var(--spacing-sm);
@@ -50,21 +50,26 @@
 				color: var(--text-medium);
 				width: 100%;
 				max-width: 400px;
+				font-size: 1rem;
 			}
 
-			.load-button {
-				padding: var(--spacing-sm) var(--spacing-md);
-				background: var(--primary-color);
-				color: white;
-				border: none;
+			.file-input {
+				display: block;
+				margin-top: var(--spacing-md);
+				padding: var(--spacing-sm);
+				border: 1px solid var(--border-color);
 				border-radius: 4px;
-				cursor: pointer;
-				font-weight: 500;
-				transition: background var(--transition-fast);
+				background: var(--bg-white);
+				color: var(--text-medium);
+				width: 100%;
+				max-width: 400px;
 			}
 
-			.load-button:hover {
-				background: var(--primary-dark);
+			.divider {
+				margin: var(--spacing-md) 0;
+				text-align: center;
+				color: var(--text-light);
+				font-size: 0.9rem;
 			}
 
 			.preview-info {
@@ -116,10 +121,16 @@
 			<div class="container">
 				<!-- Preview Controls -->
 				<div class="preview-controls">
-					<h3>Load Markdown File</h3>
+					<h3>Preview Blog Post</h3>
+					<select id="postSelector" class="post-selector">
+						<option value="">-- Select a post --</option>
+					</select>
+
+					<div class="divider">or</div>
+
 					<input type="file" id="fileInput" class="file-input" accept=".md" />
 					<div class="preview-info" id="previewInfo">
-						Select a markdown file from <code>blog/posts/</code> to preview it
+						Select a post from the dropdown or choose a file from your computer
 					</div>
 				</div>
 
@@ -211,14 +222,10 @@
 				});
 			}
 
-			// Handle file selection
-			document.getElementById('fileInput').addEventListener('change', async (e) => {
-				const file = e.target.files[0];
-				if (!file) return;
-
+			// Load and display a markdown file
+			async function loadMarkdown(content, filename = 'Unknown') {
 				try {
-					const text = await file.text();
-					const { frontmatter, content: markdownContent } = parseFrontmatter(text);
+					const { frontmatter, content: markdownContent } = parseFrontmatter(content);
 
 					// Update title and date
 					const title = frontmatter.title || 'Untitled Post';
@@ -236,7 +243,7 @@
 
 					// Update preview info
 					document.getElementById('previewInfo').innerHTML = `
-						<strong>Loaded:</strong> ${file.name}<br>
+						<strong>Loaded:</strong> ${filename}<br>
 						<strong>Title:</strong> ${title}<br>
 						<strong>Date:</strong> ${formatDate(date)}<br>
 						${frontmatter.slug ? `<strong>Slug:</strong> ${frontmatter.slug}` : ''}
@@ -255,6 +262,78 @@
 					`;
 					console.error('Error loading markdown file:', error);
 				}
+			}
+
+			// Load available posts from the server
+			async function loadAvailablePosts() {
+				try {
+					// Fetch the directory listing (this works with VSCode Live Server)
+					const response = await fetch('posts/');
+					const text = await response.text();
+
+					// Parse HTML to extract .md files
+					const parser = new DOMParser();
+					const doc = parser.parseFromString(text, 'text/html');
+					const links = doc.querySelectorAll('a');
+
+					const mdFiles = [];
+					links.forEach(link => {
+						const href = link.getAttribute('href');
+						if (href && href.endsWith('.md')) {
+							mdFiles.push(href);
+						}
+					});
+
+					// Populate dropdown
+					const selector = document.getElementById('postSelector');
+					mdFiles.forEach(file => {
+						const option = document.createElement('option');
+						option.value = `posts/${file}`;
+						option.textContent = file;
+						selector.appendChild(option);
+					});
+
+					if (mdFiles.length > 0) {
+						document.getElementById('previewInfo').innerHTML = `
+							Found ${mdFiles.length} markdown file(s). Select one from the dropdown above.
+						`;
+					}
+				} catch (error) {
+					console.log('Could not auto-load posts (this is normal):', error.message);
+					document.getElementById('previewInfo').innerHTML = `
+						Auto-loading posts from server not available. Use the file picker below to select a markdown file.
+					`;
+				}
+			}
+
+			// Handle dropdown selection
+			document.getElementById('postSelector').addEventListener('change', async (e) => {
+				const path = e.target.value;
+				if (!path) return;
+
+				try {
+					const response = await fetch(path);
+					const text = await response.text();
+					await loadMarkdown(text, path.split('/').pop());
+				} catch (error) {
+					document.getElementById('previewInfo').innerHTML = `
+						<div class="error-message">Error loading ${path}: ${error.message}</div>
+					`;
+				}
+			});
+
+			// Handle file selection
+			document.getElementById('fileInput').addEventListener('change', async (e) => {
+				const file = e.target.files[0];
+				if (!file) return;
+
+				const text = await file.text();
+				await loadMarkdown(text, file.name);
+			});
+
+			// Initialize: try to load posts on page load
+			window.addEventListener('DOMContentLoaded', () => {
+				loadAvailablePosts();
 			});
 		</script>
 	</body>
