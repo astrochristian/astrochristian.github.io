@@ -288,8 +288,10 @@
 					const selector = document.getElementById('postSelector');
 					mdFiles.forEach(file => {
 						const option = document.createElement('option');
-						option.value = `posts/${file}`;
-						option.textContent = file;
+					// Extract just the filename in case the href includes a path
+					const cleanFile = file.replace(/^.*\//, "");
+					option.value = `posts/${cleanFile}`;
+						option.textContent = cleanFile;
 						selector.appendChild(option);
 					});
 
