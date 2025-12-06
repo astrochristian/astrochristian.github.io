@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 	<head>
-		<title>Contact - Christian Kirkham</title>
+		<title>Blog - Christian Kirkham</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/style.css" />
@@ -33,93 +33,30 @@
 					<li><a href="/">Home</a></li>
 					<li><a href="/research">Research</a></li>
 					<li><a href="/talks">Talks</a></li>
-					<li><a href="/blog">Blog</a></li>
+					<li><a href="/blog" class="active">Blog</a></li>
 					<li><a href="CV_christian_kirkham.pdf">CV</a></li>
 					<li><a href="/misc">Misc</a></li>
-					<li><a href="/contact" class="active">Contact</a></li>
+					<li><a href="/contact">Contact</a></li>
 				</ul>
 			</div>
 		</nav>
 
 		<!-- Page Header -->
-		<header class="page-header page-header-contact">
+		<header class="page-header page-header-blog">
 			<div class="container">
-				<h1 class="page-title">Contact Me</h1>
-				<p class="page-subtitle">Get in touch</p>
+				<h1 class="page-title">Blog</h1>
+				<p class="page-subtitle">Thoughts on research, astronomy, and more</p>
 			</div>
 		</header>
 
 		<!-- Main Content -->
 		<main class="main-content">
 			<div class="container content-container">
-				<div class="contact-grid">
-					<!-- Contact Form -->
-					<section class="contact-form-section">
-						<h2 class="content-heading">Send a Message</h2>
-						<form method="post" action="https://formspree.io/f/mdojndvr" class="contact-form">
-							<div class="form-group">
-								<label for="name">Name</label>
-								<input type="text" name="name" id="name" required />
-							</div>
-							<div class="form-group">
-								<label for="email">Email</label>
-								<input type="email" name="email" id="email" required />
-							</div>
-							<div class="form-group">
-								<label for="message">Message</label>
-								<textarea name="message" id="message" rows="6" required></textarea>
-							</div>
-							<div class="form-actions">
-								<button type="submit" class="btn btn-primary">Send Message</button>
-								<button type="reset" class="btn btn-secondary">Clear</button>
-							</div>
-						</form>
-					</section>
-
-					<!-- Contact Information -->
-					<section class="contact-info-section">
-						<h2 class="content-heading">Contact Information</h2>
-
-						<div class="contact-info-card">
-							<div class="contact-info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-							</div>
-							<div class="contact-info-content">
-								<h3>Email</h3>
-								<p>cjk55 [at] cam.ac.uk</p>
-							</div>
-						</div>
-
-						<div class="contact-info-card">
-							<div class="contact-info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-							</div>
-							<div class="contact-info-content">
-								<h3>Address</h3>
-								<p>
-									Battcock Centre for Experimental Astrophysics<br/>
-									Cavendish Laboratory<br/>
-									JJ Thomson Avenue<br/>
-									Cambridge<br/>
-									CB3 0HE
-								</p>
-							</div>
-						</div>
-
-						<div class="contact-info-card">
-							<div class="contact-info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-							</div>
-							<div class="contact-info-content">
-								<h3>Connect</h3>
-								<div class="social-links">
-									<a href="https://github.com/astrochristian" target="_blank" rel="noopener">GitHub</a>
-									<a href="https://www.linkedin.com/in/christian-k-0a3699216/" target="_blank" rel="noopener">LinkedIn</a>
-								</div>
-							</div>
-						</div>
-					</section>
-				</div>
+				<section class="content-section">
+					<div id="blog-posts" class="blog-posts-list">
+						<!-- Blog posts will be loaded here -->
+					</div>
+				</section>
 			</div>
 		</main>
 
@@ -129,7 +66,6 @@
 				<div class="footer-content">
 					<div class="footer-left">
 						<p>&copy; 2025 Christian Kirkham</p>
-						<!-- LAST_UPDATED -->
 					</div>
 					<div class="footer-right">
 						<a href="https://github.com/astrochristian" target="_blank" rel="noopener" aria-label="GitHub">
@@ -191,17 +127,57 @@
 					nav.classList.remove('scrolled');
 				}
 
-			lastScroll = currentScroll;
-		});
-	</script>
-	<!-- Footer -->
-	<footer class="footer">
-		<div class="footer-content">
-			<div class="footer-left">
-				<p>&copy; 2025 Christian Kirkham</p>
-				<!-- LAST_UPDATED -->
-			</div>
-		</div>
-	</footer>
+				lastScroll = currentScroll;
+			});
+
+			// Load blog posts
+			async function loadBlogPosts() {
+				try {
+					const response = await fetch('/blog/posts-index.json');
+					const posts = await response.json();
+
+					const blogPostsContainer = document.getElementById('blog-posts');
+
+					if (posts.length === 0) {
+						blogPostsContainer.innerHTML = '<p class="no-posts">No blog posts yet. Check back soon!</p>';
+						return;
+					}
+
+					// Sort posts by date (newest first)
+					posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+					posts.forEach(post => {
+						const postElement = document.createElement('article');
+						postElement.className = 'blog-post-preview';
+
+						const dateObj = new Date(post.date);
+						const formattedDate = dateObj.toLocaleDateString('en-US', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric'
+						});
+
+						postElement.innerHTML = `
+							<h3 class="blog-post-title">
+								<a href="/blog/${post.slug}.html">${post.title}</a>
+							</h3>
+							<div class="blog-post-meta">
+								<time datetime="${post.date}">${formattedDate}</time>
+							</div>
+							<p class="blog-post-excerpt">${post.excerpt}</p>
+							<a href="/blog/${post.slug}.html" class="read-more">Read more →</a>
+						`;
+
+						blogPostsContainer.appendChild(postElement);
+					});
+				} catch (error) {
+					console.error('Error loading blog posts:', error);
+					document.getElementById('blog-posts').innerHTML =
+						'<p class="no-posts">No blog posts yet. Check back soon!</p>';
+				}
+			}
+
+			loadBlogPosts();
+		</script>
 	</body>
 </html>

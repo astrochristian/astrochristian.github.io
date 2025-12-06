@@ -1,21 +1,37 @@
 <!DOCTYPE HTML>
 <html lang="en">
 	<head>
-		<title>Contact - Christian Kirkham</title>
+		<title>Welcome to My Blog - Christian Kirkham</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/style.css" />
+		<link rel="stylesheet" href="../assets/css/style.css" />
 		<link rel="icon" type="image/ico" href="/images/favicon.ico">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+
+		<!-- MathJax for LaTeX rendering -->
+		<script>
+			MathJax = {
+				tex: {
+					inlineMath: [['$', '$'], ['\\(', '\\)']],
+					displayMath: [['$$', '$$'], ['\\[', '\\]']],
+					processEscapes: true,
+					processEnvironments: true
+				},
+				options: {
+					skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+				}
+			};
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 	</head>
 	<body>
 		<!-- Navigation -->
 		<nav class="nav-bar">
 			<div class="nav-container">
 				<a href="/" class="nav-logo">
-					<img src="images/reach-logo_cutout.png" alt="REACH" class="reach-logo" />
+					<img src="../images/reach-logo_cutout.png" alt="REACH" class="reach-logo" />
 					Christian Kirkham
 				</a>
 				<div class="nav-right">
@@ -33,93 +49,48 @@
 					<li><a href="/">Home</a></li>
 					<li><a href="/research">Research</a></li>
 					<li><a href="/talks">Talks</a></li>
-					<li><a href="/blog">Blog</a></li>
-					<li><a href="CV_christian_kirkham.pdf">CV</a></li>
+					<li><a href="/blog" class="active">Blog</a></li>
+					<li><a href="/CV_christian_kirkham.pdf">CV</a></li>
 					<li><a href="/misc">Misc</a></li>
-					<li><a href="/contact" class="active">Contact</a></li>
+					<li><a href="/contact">Contact</a></li>
 				</ul>
 			</div>
 		</nav>
 
 		<!-- Page Header -->
-		<header class="page-header page-header-contact">
+		<header class="page-header page-header-blog">
 			<div class="container">
-				<h1 class="page-title">Contact Me</h1>
-				<p class="page-subtitle">Get in touch</p>
+				<h1 class="page-title blog-post-page-title">Welcome to My Blog</h1>
+				<div class="blog-post-page-meta">
+					<time datetime="2025-12-06">December 6, 2025</time>
+				</div>
 			</div>
 		</header>
 
 		<!-- Main Content -->
 		<main class="main-content">
-			<div class="container content-container">
-				<div class="contact-grid">
-					<!-- Contact Form -->
-					<section class="contact-form-section">
-						<h2 class="content-heading">Send a Message</h2>
-						<form method="post" action="https://formspree.io/f/mdojndvr" class="contact-form">
-							<div class="form-group">
-								<label for="name">Name</label>
-								<input type="text" name="name" id="name" required />
-							</div>
-							<div class="form-group">
-								<label for="email">Email</label>
-								<input type="email" name="email" id="email" required />
-							</div>
-							<div class="form-group">
-								<label for="message">Message</label>
-								<textarea name="message" id="message" rows="6" required></textarea>
-							</div>
-							<div class="form-actions">
-								<button type="submit" class="btn btn-primary">Send Message</button>
-								<button type="reset" class="btn btn-secondary">Clear</button>
-							</div>
-						</form>
-					</section>
+			<div class="container">
+				<article class="blog-post-content">
+					<a href="/blog" class="back-to-blog">← Back to Blog</a>
 
-					<!-- Contact Information -->
-					<section class="contact-info-section">
-						<h2 class="content-heading">Contact Information</h2>
+					<div class="blog-post-body">
+						
+<h2>Welcome!</h2></p><p>I'm excited to start this blog where I'll share insights from my research on 21-cm radio cosmology, Bayesian data analysis, and other topics in astrophysics.</p><p><h3>What to Expect</h3></p><p>In this blog, you can expect posts about:</p><p><ul><li><strong>Radio Cosmology</strong>: Discussions on detecting the cosmic dawn signal with REACH</li>
+<li><strong>Bayesian Methods</strong>: Techniques for parameter estimation and systematic mitigation</li>
+<li><strong>Data Analysis</strong>: Python tips, visualization strategies, and computational methods</li>
+<li><strong>Astrophysics Research</strong>: Insights from conferences, papers, and collaborations</li></ul></p><p><h3>A Quick Example with Math</h3></p><p>One of the key challenges in 21-cm cosmology is detecting the faint neutral hydrogen signal. The brightness temperature of the 21-cm line can be expressed as:</p><p>$
+T<em>{21} \approx 27 \text{ mK} \left(\frac{\Omega</em>b h^2}{0.023}\right) \left(\frac{0.15}{\Omega<em>m h^2}\right)^{1/2} \left(\frac{1+z}{10}\right)^{1/2} (1 - T</em>{\gamma}/T_S)
+$</p><p>where $T<em>{\gamma}$ is the CMB temperature and $T</em>S$ is the spin temperature of neutral hydrogen.</p><p><h3>Code Example</h3></p><p>Here's a simple Python example for calculating the redshift from a given frequency:</p><p><pre><code class="language-python">def frequency<em>to</em>redshift(freq_mhz):
+    """Convert frequency to redshift for 21-cm observations"""
+    f_21 = 1420.4  # 21-cm rest frequency in MHz
+    z = (f<em>21 / freq</em>mhz) - 1
+    return z</p><p><h1>Example: What redshift corresponds to 100 MHz?</h1>
+z = frequency<em>to</em>redshift(100)
+print(f"Redshift: z = {z:.2f}")  # Output: z = 13.20
+</code></pre></p><p><h3>Looking Ahead</h3></p><p>I'm looking forward to sharing more detailed technical posts, research updates, and thoughts on the fascinating field of radio cosmology. Stay tuned!</p><p><hr /></p><p><em>Feel free to reach out if you have questions or want to discuss any of the topics I cover.</em>
 
-						<div class="contact-info-card">
-							<div class="contact-info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-							</div>
-							<div class="contact-info-content">
-								<h3>Email</h3>
-								<p>cjk55 [at] cam.ac.uk</p>
-							</div>
-						</div>
-
-						<div class="contact-info-card">
-							<div class="contact-info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-							</div>
-							<div class="contact-info-content">
-								<h3>Address</h3>
-								<p>
-									Battcock Centre for Experimental Astrophysics<br/>
-									Cavendish Laboratory<br/>
-									JJ Thomson Avenue<br/>
-									Cambridge<br/>
-									CB3 0HE
-								</p>
-							</div>
-						</div>
-
-						<div class="contact-info-card">
-							<div class="contact-info-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-							</div>
-							<div class="contact-info-content">
-								<h3>Connect</h3>
-								<div class="social-links">
-									<a href="https://github.com/astrochristian" target="_blank" rel="noopener">GitHub</a>
-									<a href="https://www.linkedin.com/in/christian-k-0a3699216/" target="_blank" rel="noopener">LinkedIn</a>
-								</div>
-							</div>
-						</div>
-					</section>
-				</div>
+					</div>
+				</article>
 			</div>
 		</main>
 
@@ -129,7 +100,6 @@
 				<div class="footer-content">
 					<div class="footer-left">
 						<p>&copy; 2025 Christian Kirkham</p>
-						<!-- LAST_UPDATED -->
 					</div>
 					<div class="footer-right">
 						<a href="https://github.com/astrochristian" target="_blank" rel="noopener" aria-label="GitHub">
@@ -191,17 +161,8 @@
 					nav.classList.remove('scrolled');
 				}
 
-			lastScroll = currentScroll;
-		});
-	</script>
-	<!-- Footer -->
-	<footer class="footer">
-		<div class="footer-content">
-			<div class="footer-left">
-				<p>&copy; 2025 Christian Kirkham</p>
-				<!-- LAST_UPDATED -->
-			</div>
-		</div>
-	</footer>
+				lastScroll = currentScroll;
+			});
+		</script>
 	</body>
 </html>
