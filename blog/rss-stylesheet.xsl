@@ -419,7 +419,7 @@
 									</svg>
 									Copy Feed URL
 								</a>
-								<a href="https://feedly.com/i/subscription/feed/" class="subscribe-btn">
+								<a href="#" class="subscribe-btn" onclick="subscribeFeedly(); return false;">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<circle cx="12" cy="12" r="10"></circle>
 										<path d="M12 6v6l4 2"></path>
@@ -517,6 +517,12 @@
 								btn.innerHTML = originalText;
 							}, 2000);
 						});
+					}
+
+					function subscribeFeedly() {
+						const feedUrl = window.location.href;
+						const feedlyUrl = `https://feedly.com/i/subscription/feed/${encodeURIComponent(feedUrl)}`;
+						window.open(feedlyUrl, '_blank');
 					}
 
 					updateThemeButton();
