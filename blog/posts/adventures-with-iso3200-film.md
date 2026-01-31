@@ -72,9 +72,9 @@ I was scared when waiting for these photos to develop that I'd made a terrible m
 
 As a photographer I am heavily inspired by the album covers of Godspeed You! Black Emperor:
 
-<img src=https://upload.wikimedia.org/wikipedia/en/9/90/Gybeinfinity.jpg height="250 px"/>
-<img src=https://f4.bcbits.com/img/a3340410897_10.jpg height="250 px"/>
-<img src=https://f4.bcbits.com/img/a2430150895_10.jpg height="250 px"/>
-<img src=https://cstrecords.com/cdn/shop/files/GYBE_pic_master.jpg?v=1615580766 height="250 px"/>
+<img src=https://upload.wikimedia.org/wikipedia/en/9/90/Gybeinfinity.jpg height="250"/>
+<img src=https://f4.bcbits.com/img/a3340410897_10.jpg height="250"/>
+<img src=https://f4.bcbits.com/img/a2430150895_10.jpg height="250"/>
+<img src=https://cstrecords.com/cdn/shop/files/GYBE_pic_master.jpg?v=1615580766 height="250"/>
 
 I am happy that I've achieved this low fidelity while documented a very cool trip up to Yorkshire! Think I might go back to nice easy Kodak Gold 200 for a bit though.
