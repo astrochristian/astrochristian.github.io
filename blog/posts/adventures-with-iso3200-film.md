@@ -22,49 +22,49 @@ On the second day we ventured up to Ilkley Moor (baht 'at) which was wet and shr
 
 ## Cambridge in the Snow
 
-![A streetlamp](../images/adventures-with-iso-3200-film/000417900005_left_enhanced.jpg)
+![A streetlamp](images/adventures-with-iso-3200-film/000417900005_left_enhanced.jpg)
 
-![Storey's Field Centre](../images/adventures-with-iso-3200-film/000417900006_right_enhanced.jpg)
+![Storey's Field Centre](images/adventures-with-iso-3200-film/000417900006_right_enhanced.jpg)
 
-![A snowy Cambridge street](../images/adventures-with-iso-3200-film/000417900009_left_enhanced.jpg)
+![A snowy Cambridge street](images/adventures-with-iso-3200-film/000417900009_left_enhanced.jpg)
 
 
-![Churchill rugby pitch](../images/adventures-with-iso-3200-film/000417900012_right_enhanced.jpg)
+![Churchill rugby pitch](images/adventures-with-iso-3200-film/000417900012_right_enhanced.jpg)
 
 ## Brimham Rocks
 
-![Squirelling Hole](../images/adventures-with-iso-3200-film/000417900016_right_enhanced.jpg)
+![Squirelling Hole](images/adventures-with-iso-3200-film/000417900016_right_enhanced.jpg)
 
-![A Brimham Rock](../images/adventures-with-iso-3200-film/000417900017_left_enhanced.jpg)
+![A Brimham Rock](images/adventures-with-iso-3200-film/000417900017_left_enhanced.jpg)
 
-![Tereza against the rocks](../images/adventures-with-iso-3200-film/000417900020_right_enhanced.jpg)
+![Tereza against the rocks](images/adventures-with-iso-3200-film/000417900020_right_enhanced.jpg)
 
 
-![Preparing to climb](../images/adventures-with-iso-3200-film/000417900021_left_enhanced.jpg)
+![Preparing to climb](images/adventures-with-iso-3200-film/000417900021_left_enhanced.jpg)
 
-![Looking up to Lover's Leap](../images/adventures-with-iso-3200-film/000417900021_right_enhanced.jpg)
+![Looking up to Lover's Leap](images/adventures-with-iso-3200-film/000417900021_right_enhanced.jpg)
 
-![Climbing](../images/adventures-with-iso-3200-film/000417900022_right_enhanced.jpg)
+![Climbing](images/adventures-with-iso-3200-film/000417900022_right_enhanced.jpg)
 
-![Edouard spraying beta](../images/adventures-with-iso-3200-film/000417900024_right_enhanced.jpg)
+![Edouard spraying beta](images/adventures-with-iso-3200-film/000417900024_right_enhanced.jpg)
 
-![More climbing](../images/adventures-with-iso-3200-film/000417900025_left_enhanced.jpg)
+![More climbing](images/adventures-with-iso-3200-film/000417900025_left_enhanced.jpg)
 
-![High knees climbing](../images/adventures-with-iso-3200-film/000417900027_left_enhanced.jpg)
+![High knees climbing](images/adventures-with-iso-3200-film/000417900027_left_enhanced.jpg)
 
 ## Ilkley Moor
 
-![Edouard in the mist](../images/adventures-with-iso-3200-film/000417900028_left_enhanced.jpg)
+![Edouard in the mist](images/adventures-with-iso-3200-film/000417900028_left_enhanced.jpg)
 
-![Post-apocalyptic Ilkley Moor](../images/adventures-with-iso-3200-film/000417900030_left_enhanced.jpg)
+![Post-apocalyptic Ilkley Moor](images/adventures-with-iso-3200-film/000417900030_left_enhanced.jpg)
 
-![Navigating the mud](../images/adventures-with-iso-3200-film/000417900030_right_enhanced.jpg)
+![Navigating the mud](images/adventures-with-iso-3200-film/000417900030_right_enhanced.jpg)
 
-![The expedition team](../images/adventures-with-iso-3200-film/000417900031_right_enhanced.jpg)
+![The expedition team](images/adventures-with-iso-3200-film/000417900031_right_enhanced.jpg)
 
-![Silhouetted](../images/adventures-with-iso-3200-film/000417900032_left_enhanced.jpg)
+![Silhouetted](images/adventures-with-iso-3200-film/000417900032_left_enhanced.jpg)
 
-![Descent](../images/adventures-with-iso-3200-film/000417900032_right_enhanced.jpg)
+![Descent](images/adventures-with-iso-3200-film/000417900032_right_enhanced.jpg)
 
 # Conclusions
 

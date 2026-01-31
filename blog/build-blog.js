@@ -43,6 +43,16 @@ function parseMarkdown(markdown) {
 		return placeholder;
 	});
 
+	// Protect raw HTML tags from markdown processing
+	const htmlTags = [];
+	let htmlTagIndex = 0;
+	html = html.replace(/<[^>]+>/g, (match) => {
+		const placeholder = `ĦĦĦHTMLTAGĦĦĦ${htmlTagIndex}ĦĦĦENDĦĦĦ`;
+		htmlTags[htmlTagIndex] = match;
+		htmlTagIndex++;
+		return placeholder;
+	});
+
 	// Code blocks (must come before inline code)
 	html = html.replace(/```(.*?)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');
 
@@ -54,6 +64,25 @@ function parseMarkdown(markdown) {
 	html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
 	html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
 
+	// Images (protect output from bold/italic processing)
+	html = html.replace(/!\[(.*?)\]\((.*?)\)/g, (match, alt, src) => {
+		const placeholder = `ĦĦĦHTMLTAGĦĦĦ${htmlTagIndex}ĦĦĦENDĦĦĦ`;
+		htmlTags[htmlTagIndex] = `<img src="${src}" alt="${alt}" />`;
+		htmlTagIndex++;
+		return placeholder;
+	});
+
+	// Links (protect output from bold/italic processing)
+	html = html.replace(/\[(.+?)\]\((.+?)\)/g, (match, text, href) => {
+		const openPlaceholder = `ĦĦĦHTMLTAGĦĦĦ${htmlTagIndex}ĦĦĦENDĦĦĦ`;
+		htmlTags[htmlTagIndex] = `<a href="${href}">`;
+		htmlTagIndex++;
+		const closePlaceholder = `ĦĦĦHTMLTAGĦĦĦ${htmlTagIndex}ĦĦĦENDĦĦĦ`;
+		htmlTags[htmlTagIndex] = `</a>`;
+		htmlTagIndex++;
+		return `${openPlaceholder}${text}${closePlaceholder}`;
+	});
+
 	// Bold
 	html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 	html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
@@ -62,11 +91,10 @@ function parseMarkdown(markdown) {
 	html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
 	html = html.replace(/_(.+?)_/g, '<em>$1</em>');
 
-	// Images
-	html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />');
-
-	// Links
-	html = html.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
+	// Restore raw HTML tags
+	htmlTags.forEach((tag, index) => {
+		html = html.replace(`ĦĦĦHTMLTAGĦĦĦ${index}ĦĦĦENDĦĦĦ`, tag);
+	});
 
 	// Blockquotes
 	html = html.replace(/^\> (.+)/gim, '<blockquote>$1</blockquote>');
