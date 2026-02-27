@@ -123,7 +123,7 @@
   <p class="subtitle">Periodic compounding</p>
 
   <div class="formula">
-    <var>A</var> = <var>P</var> (1 + <var>r</var> / <var>n</var>)<sup><var>n·t</var></sup>
+    <var>A</var> = <var>P</var> (1 + <var>r</var>)<sup><var>t</var></sup>
   </div>
 
   <div class="field">
@@ -132,32 +132,13 @@
   </div>
 
   <div class="field">
-    <label>Annual Interest Rate (r) — %</label>
+    <label>Interest Rate (r) — %</label>
     <input type="number" id="rate" value="5" min="0" step="any">
   </div>
 
   <div class="field">
-    <label>Compounding Frequency (n)</label>
-    <div class="field-row">
-      <input type="number" id="compFreq" value="12" min="1" step="1">
-      <select id="compUnit">
-        <option value="year">per Year</option>
-        <option value="month">per Month</option>
-        <option value="day">per Day</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="field">
-    <label>Time Period (t)</label>
-    <div class="field-row">
-      <input type="number" id="time" value="10" min="0" step="any">
-      <select id="timeUnit">
-        <option value="years">Years</option>
-        <option value="months">Months</option>
-        <option value="days">Days</option>
-      </select>
-    </div>
+    <label>Iterations (t)</label>
+    <input type="number" id="time" value="10" min="0" step="1">
   </div>
 
   <div class="result" id="result">
@@ -171,27 +152,13 @@
 function calculate() {
   const P = parseFloat(document.getElementById('principal').value);
   const rPct = parseFloat(document.getElementById('rate').value);
-  const nVal = parseFloat(document.getElementById('compFreq').value);
-  const nUnit = document.getElementById('compUnit').value;
-  const tVal = parseFloat(document.getElementById('time').value);
-  const tUnit = document.getElementById('timeUnit').value;
+  const t = parseFloat(document.getElementById('time').value);
 
   const el = document.getElementById('result');
-  if ([P, rPct, nVal, tVal].some(v => isNaN(v))) { el.classList.remove('visible'); return; }
+  if ([P, rPct, t].some(v => isNaN(v))) { el.classList.remove('visible'); return; }
 
   const r = rPct / 100;
-
-  // Normalise n to compounding periods per year
-  const nPerYear = nUnit === 'year' ? nVal
-                 : nUnit === 'month' ? nVal * 12
-                 : nVal * 365;
-
-  // Normalise t to years
-  const tYears = tUnit === 'years' ? tVal
-               : tUnit === 'months' ? tVal / 12
-               : tVal / 365;
-
-  const A = P * Math.pow(1 + r / nPerYear, nPerYear * tYears);
+  const A = P * Math.pow(1 + r, t);
   const interest = A - P;
 
   const fmt = v => v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
