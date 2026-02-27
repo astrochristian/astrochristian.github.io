@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compound Interest Calculator</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    max-width: 480px;
+    width: 100%;
+    padding: 2.5rem 2rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: .25rem;
+  }
+
+  .subtitle {
+    font-size: .85rem;
+    color: #86868b;
+    margin-bottom: 2rem;
+  }
+
+  .formula {
+    background: #f5f5f7;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+
+  .formula var { font-style: italic; font-family: 'Times New Roman', serif; font-size: 1.15rem; }
+  .formula sup { font-size: .75em; }
+
+  label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 500;
+    color: #6e6e73;
+    margin-bottom: .35rem;
+  }
+
+  .field { margin-bottom: 1.25rem; }
+
+  .field-row {
+    display: flex;
+    gap: .5rem;
+  }
+
+  .field-row input { flex: 1; }
+  .field-row select { width: 120px; }
+
+  input, select {
+    width: 100%;
+    padding: .6rem .75rem;
+    border: 1px solid #d2d2d7;
+    border-radius: 8px;
+    font-size: .95rem;
+    font-family: inherit;
+    background: #fff;
+    color: #1d1d1f;
+    transition: border-color .15s;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: #0071e3;
+  }
+
+  .result {
+    margin-top: 1.75rem;
+    padding: 1.25rem;
+    background: #f5f5f7;
+    border-radius: 10px;
+    display: none;
+  }
+
+  .result.visible { display: block; }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: .4rem 0;
+    font-size: .9rem;
+  }
+
+  .result-row span:first-child { color: #6e6e73; }
+  .result-row span:last-child { font-weight: 600; }
+
+  .result-row.total {
+    border-top: 1px solid #d2d2d7;
+    margin-top: .5rem;
+    padding-top: .75rem;
+    font-size: 1rem;
+  }
+
+  .result-row.total span:last-child { color: #0071e3; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Compound Interest Calculator</h1>
+  <p class="subtitle">Periodic compounding</p>
+
+  <div class="formula">
+    <var>A</var> = <var>P</var> (1 + <var>r</var> / <var>n</var>)<sup><var>n·t</var></sup>
+  </div>
+
+  <div class="field">
+    <label>Principal (P)</label>
+    <input type="number" id="principal" value="1000" min="0" step="any">
+  </div>
+
+  <div class="field">
+    <label>Annual Interest Rate (r) — %</label>
+    <input type="number" id="rate" value="5" min="0" step="any">
+  </div>
+
+  <div class="field">
+    <label>Compounding Frequency (n)</label>
+    <div class="field-row">
+      <input type="number" id="compFreq" value="12" min="1" step="1">
+      <select id="compUnit">
+        <option value="year">per Year</option>
+        <option value="month">per Month</option>
+        <option value="day">per Day</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Time Period (t)</label>
+    <div class="field-row">
+      <input type="number" id="time" value="10" min="0" step="any">
+      <select id="timeUnit">
+        <option value="years">Years</option>
+        <option value="months">Months</option>
+        <option value="days">Days</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-row"><span>Principal</span><span id="outP"></span></div>
+    <div class="result-row"><span>Interest Earned</span><span id="outI"></span></div>
+    <div class="result-row total"><span>Final Amount</span><span id="outA"></span></div>
+  </div>
+</div>
+
+<script>
+function calculate() {
+  const P = parseFloat(document.getElementById('principal').value);
+  const rPct = parseFloat(document.getElementById('rate').value);
+  const nVal = parseFloat(document.getElementById('compFreq').value);
+  const nUnit = document.getElementById('compUnit').value;
+  const tVal = parseFloat(document.getElementById('time').value);
+  const tUnit = document.getElementById('timeUnit').value;
+
+  const el = document.getElementById('result');
+  if ([P, rPct, nVal, tVal].some(v => isNaN(v))) { el.classList.remove('visible'); return; }
+
+  const r = rPct / 100;
+
+  // Normalise n to compounding periods per year
+  const nPerYear = nUnit === 'year' ? nVal
+                 : nUnit === 'month' ? nVal * 12
+                 : nVal * 365;
+
+  // Normalise t to years
+  const tYears = tUnit === 'years' ? tVal
+               : tUnit === 'months' ? tVal / 12
+               : tVal / 365;
+
+  const A = P * Math.pow(1 + r / nPerYear, nPerYear * tYears);
+  const interest = A - P;
+
+  const fmt = v => v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  document.getElementById('outP').textContent = '£' + fmt(P);
+  document.getElementById('outI').textContent = '£' + fmt(interest);
+  document.getElementById('outA').textContent = '£' + fmt(A);
+  el.classList.add('visible');
+}
+
+document.querySelectorAll('input, select').forEach(el =>
+  el.addEventListener('input', calculate)
+);
+calculate();
+</script>
+</body>
+</html>
